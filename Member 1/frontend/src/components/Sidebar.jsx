@@ -11,6 +11,7 @@ import {
   User,
   Info,
   LayoutDashboard,
+  Brain,
 } from "lucide-react";
 
 import { Link, useLocation } from "react-router-dom";
@@ -65,8 +66,15 @@ function Sidebar() {
       path: "/medical-vault",
       icon: Vault,
     },
+    {
+     name: "Disease Prediction",
+     path: "/disease-prediction",
+     icon: Brain,
+  },
+
   ];
 
+  
   const accountMenu = [
     {
       name: "Profile",

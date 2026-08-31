@@ -9,6 +9,8 @@ import Medicines from "./pages/Medicines";
 import HealthcareServices from "./pages/HealthcareServices";
 import BloodSupport from "./pages/BloodSupport";
 import MyHealth from "./pages/MyHealth";
+import HealthTracking from "./pages/HealthTracking";
+import DiseasePrediction from "./pages/DiseasePrediction";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 
@@ -29,19 +31,20 @@ function App() {
         />
 
         <Route
+           path="/disease-prediction"
+           element={<DiseasePrediction />}
+        />
+
+        {/* Medical Vault */}
+        <Route
           path="/reports-vault"
           element={<ReportsVault />}
         />
 
         <Route
-  path="/reports-vault"
-  element={<ReportsVault />}
-/>
-
-<Route
-  path="/medical-vault"
-  element={<ReportsVault />}
-/>
+          path="/medical-vault"
+          element={<ReportsVault />}
+        />
 
         <Route
           path="/medicines"
@@ -61,6 +64,12 @@ function App() {
         <Route
           path="/my-health"
           element={<MyHealth />}
+        />
+
+        {/* Health Tracking */}
+        <Route
+          path="/health-tracking"
+          element={<HealthTracking />}
         />
 
         <Route
