@@ -1,0 +1,308 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.header {
+  padding: 35px 7%;
+  background: white;
+  border-bottom: 1px solid #e5e9f0;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.header p {
+  margin: 10px 0 0;
+  color: #667085;
+}
+
+.container {
+  width: 86%;
+  max-width: 1250px;
+  margin: 30px auto;
+}
+
+.search-card,
+.results-section,
+.blood-bank-section,
+.request-card {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 30px rgba(20, 30, 50, 0.06);
+}
+
+.section-title h2,
+.section-heading h2 {
+  margin: 0;
+}
+
+.section-title p,
+.section-heading p {
+  margin: 7px 0 0;
+  color: #667085;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 18px;
+  align-items: end;
+  margin-top: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d9dee8;
+  border-radius: 10px;
+  outline: none;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+}
+
+.search-button,
+.reset-button,
+.request-button {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 17px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.search-button {
+  background: #dc2626;
+  color: white;
+}
+
+.reset-button {
+  background: #eef1f6;
+  color: #344054;
+}
+
+.section-heading {
+  margin-bottom: 20px;
+}
+
+.donor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.donor-card {
+  display: flex;
+  gap: 18px;
+  border: 1px solid #e5e9f0;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.blood-badge {
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.donor-info h3,
+.blood-bank-card h3 {
+  margin: 0 0 10px;
+}
+
+.donor-info p,
+.blood-bank-card p {
+  margin: 7px 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+.contact-button,
+.maps-button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contact-button {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.maps-button {
+  background: #eef4ff;
+  color: #1d4ed8;
+}
+
+.empty-card {
+  text-align: center;
+  padding: 55px 20px;
+  border: 1px dashed #d9dee8;
+  border-radius: 14px;
+}
+
+.empty-icon {
+  font-size: 45px;
+}
+
+.empty-card h3 {
+  margin-bottom: 5px;
+}
+
+.empty-card p {
+  color: #667085;
+}
+
+.blood-bank-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.blood-bank-card {
+  display: flex;
+  gap: 15px;
+  padding: 20px;
+  border: 1px solid #e5e9f0;
+  border-radius: 14px;
+}
+
+.bank-icon {
+  font-size: 32px;
+}
+
+.request-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff7ed;
+}
+
+.request-icon {
+  font-size: 45px;
+}
+
+.request-card h2 {
+  margin: 0;
+}
+
+.request-card p {
+  color: #667085;
+  line-height: 1.6;
+}
+
+.request-button {
+  background: #dc2626;
+  color: white;
+}
+
+.notice {
+  padding: 17px 20px;
+  border-radius: 12px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #667085;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .donor-grid,
+  .blood-bank-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 28px;
+  }
+
+  .container {
+    width: 92%;
+  }
+
+  .search-card,
+  .results-section,
+  .blood-bank-section,
+  .request-card {
+    padding: 18px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .request-card {
+    align-items: flex-start;
+  }
+}

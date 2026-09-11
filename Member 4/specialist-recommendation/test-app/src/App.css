@@ -1,0 +1,296 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f8fb;
+  color: #1f2937;
+}
+
+.specialist-page {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #eef7ff, #f7fbff);
+}
+
+.specialist-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+
+.specialist-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.header-icon {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: #ffffff;
+  font-size: 34px;
+  box-shadow: 0 8px 25px rgba(31, 78, 121, 0.12);
+}
+
+.specialist-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  color: #16324f;
+}
+
+.specialist-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* Search Card */
+
+.search-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(31, 78, 121, 0.1);
+  margin-bottom: 25px;
+}
+
+.search-card label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.search-row {
+  display: flex;
+  gap: 12px;
+}
+
+.search-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 15px 17px;
+  border: 1px solid #d7e1ea;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.search-row input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.search-row button {
+  border: none;
+  border-radius: 12px;
+  padding: 0 24px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.search-row button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.input-hint {
+  margin: 12px 0 0;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Result */
+
+.result-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(31, 78, 121, 0.1);
+  border-left: 5px solid #2563eb;
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.result-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.result-label {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.result-title h2 {
+  margin: 5px 0 0;
+  font-size: 27px;
+  color: #16324f;
+}
+
+.department-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reason-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.reason-section h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #334155;
+}
+
+.reason-section p {
+  margin: 0;
+  line-height: 1.7;
+  color: #64748b;
+}
+
+.recommendation-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 22px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.recommendation-note p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* No Result */
+
+.no-result {
+  background: #ffffff;
+  padding: 35px;
+  text-align: center;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(31, 78, 121, 0.08);
+}
+
+.no-result-icon {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.no-result h3 {
+  margin: 5px 0 8px;
+  color: #334155;
+}
+
+.no-result p {
+  margin: 5px 0;
+  color: #64748b;
+}
+
+/* Information Section */
+
+.info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.info-item {
+  display: flex;
+  gap: 15px;
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(31, 78, 121, 0.07);
+}
+
+.info-item > span {
+  font-size: 27px;
+}
+
+.info-item h3 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  color: #334155;
+}
+
+.info-item p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+  .specialist-page {
+    padding: 35px 15px;
+  }
+
+  .specialist-header {
+    align-items: flex-start;
+  }
+
+  .specialist-header h1 {
+    font-size: 25px;
+  }
+
+  .header-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 27px;
+  }
+
+  .search-row {
+    flex-direction: column;
+  }
+
+  .search-row button {
+    height: 48px;
+  }
+
+  .info-section {
+    grid-template-columns: 1fr;
+  }
+}
