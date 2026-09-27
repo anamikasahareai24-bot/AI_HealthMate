@@ -1,5 +1,26 @@
-venv/
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment / secrets
 .env
+.env.*
+
+# VS Code
 .vscode/
+
+# Temporary uploaded reports
+temp_uploaded_report.*
+
+# Chatbot cache
+chatbot/cache.json
+
+# Jupyter
+.ipynb_checkpoints/
