@@ -1,0 +1,11 @@
+{
+  "model_type": "OneVsRest Logistic Regression",
+  "num_classes": 413,
+  "num_features": 377,
+  "train_samples": 147563,
+  "test_samples": 36891,
+  "accuracy": 0.8422,
+  "macro_f1": 0.8264,
+  "training_time_seconds": 265.4,
+  "random_state": 42
+}

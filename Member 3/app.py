@@ -1,8 +1,29 @@
+
 import streamlit as st
 import pandas as pd
-from src.predict_new_disease import predict_disease
+import sys
+from pathlib import Path
+
 from report_analyzer.report_analyzer import analyze_file
 from chatbot.healthbot import get_healthbot_response
+
+# ============================================================
+# PATH SETUP
+# ============================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+DISEASE2_DIR = BASE_DIR / "disease2"
+DISEASE2_SRC = DISEASE2_DIR / "src"
+
+if str(DISEASE2_SRC) not in sys.path:
+    sys.path.insert(0, str(DISEASE2_SRC))
+
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+from predict import DiseasePredictor
+from src.specialist_recommendation import get_specialist_recommendation
+
 
 # ============================================================
 # PAGE CONFIG
@@ -16,26 +37,28 @@ st.set_page_config(
 
 
 # ============================================================
-# LOAD ALL SYMPTOMS
+# LOAD DISEASE2 MODEL
 # ============================================================
 
-DATA_PATH = "datasets/processed/train_new.csv"
+@st.cache_resource
+def load_predictor():
+    return DiseasePredictor()
 
-df = pd.read_csv(DATA_PATH)
 
-ALL_SYMPTOMS = [
-    str(col)
-    for col in df.columns
-    if col != "disease"
-]
+try:
+    predictor = load_predictor()
+except Exception as e:
+    predictor = None
+    st.error(f"Unable to load disease prediction model: {e}")
 
 
 # ============================================================
-# COMMON SYMPTOMS
+# SYMPTOMS FROM NEW MODEL
 # ============================================================
 
-# Exactly 10 common symptoms are shown as checkboxes.
-common_symptoms_candidates = [
+ALL_SYMPTOMS = predictor.symptom_list if predictor else []
+
+common_symptom_names = [
     "fever",
     "cough",
     "nausea",
@@ -48,17 +71,21 @@ common_symptoms_candidates = [
     "joint_pain"
 ]
 
-# Keep only symptoms that actually exist in the model dataset.
-COMMON_SYMPTOMS = [
-    symptom
-    for symptom in common_symptoms_candidates
-    if symptom in ALL_SYMPTOMS
-]
+# Match symptom names regardless of spaces/underscores/case.
+def normalize_symptom(symptom):
+    return str(symptom).strip().lower().replace(" ", "_")
 
-# All model symptoms are available through the single
-# Search & Select box. This also allows searching a common symptom
-# such as fever, even though it is already available as a checkbox.
-SEARCH_SYMPTOMS = ALL_SYMPTOMS
+
+symptom_lookup = {
+    normalize_symptom(symptom): symptom
+    for symptom in ALL_SYMPTOMS
+}
+
+COMMON_SYMPTOMS = [
+    symptom_lookup[normalize_symptom(symptom)]
+    for symptom in common_symptom_names
+    if normalize_symptom(symptom) in symptom_lookup
+]
 
 
 # ============================================================
@@ -70,6 +97,9 @@ if "selected_symptoms" not in st.session_state:
 
 if "page" not in st.session_state:
     st.session_state.page = "Disease Prediction"
+
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = []
 
 
 # ============================================================
@@ -93,124 +123,126 @@ st.divider()
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button(
-        "🩺 Disease Prediction",
-        use_container_width=True
-    ):
+    if st.button("🩺 Disease Prediction", use_container_width=True):
         st.session_state.page = "Disease Prediction"
 
 with col2:
-    if st.button(
-        "📄 Report Analyzer",
-        use_container_width=True
-    ):
+    if st.button("📄 Report Analyzer", use_container_width=True):
         st.session_state.page = "Report Analyzer"
 
 with col3:
-    if st.button(
-        "💬 AI Chatbot",
-        use_container_width=True
-    ):
+    if st.button("💬 AI Chatbot", use_container_width=True):
         st.session_state.page = "AI Chatbot"
-
 
 st.divider()
 
 
 # ============================================================
-# DISEASE PREDICTION
+# DISEASE PREDICTION - NEW DISEASE2 MODEL
 # ============================================================
 
 if st.session_state.page == "Disease Prediction":
 
     st.header("🩺 Disease Prediction")
+    st.caption("Antigravity Disease Prediction Model")
+
+    if predictor is None:
+        st.error(
+            "Disease prediction model is unavailable. "
+            "Check the disease2 model files and paths."
+        )
+        st.stop()
 
     st.write(
         "Select common symptoms below or search for other symptoms."
     )
 
-    st.info(
-        "Select symptoms using the checkboxes or search for any other symptom in the single search box."
-    )
-
-    # ========================================================
+    # --------------------------------------------------------
     # COMMON SYMPTOMS
-    # ========================================================
+    # --------------------------------------------------------
 
     st.subheader("Common Symptoms")
-
-    col1, col2 = st.columns(2)
+    cols = st.columns(2)
 
     for i, symptom in enumerate(COMMON_SYMPTOMS):
+        with cols[i % 2]:
+            checked = st.checkbox(
+                symptom.replace("_", " ").title(),
+                value=symptom in st.session_state.selected_symptoms,
+                key=f"disease2_common_{symptom}"
+            )
 
-        display_name = symptom.replace("_", " ").title()
+            if (
+                checked
+                and symptom not in st.session_state.selected_symptoms
+            ):
+                st.session_state.selected_symptoms.append(symptom)
 
-        if i % 2 == 0:
-            with col1:
-                checked = st.checkbox(
-                    display_name,
-                    value=symptom in st.session_state.selected_symptoms,
-                    key=f"common_{symptom}"
-                )
-
-                if checked and symptom not in st.session_state.selected_symptoms:
-                    st.session_state.selected_symptoms.append(symptom)
-
-                elif not checked and symptom in st.session_state.selected_symptoms:
-                    st.session_state.selected_symptoms.remove(symptom)
-
-        else:
-            with col2:
-                checked = st.checkbox(
-                    display_name,
-                    value=symptom in st.session_state.selected_symptoms,
-                    key=f"common_{symptom}"
-                )
-
-                if checked and symptom not in st.session_state.selected_symptoms:
-                    st.session_state.selected_symptoms.append(symptom)
-
-                elif not checked and symptom in st.session_state.selected_symptoms:
-                    st.session_state.selected_symptoms.remove(symptom)
+            elif (
+                not checked
+                and symptom in st.session_state.selected_symptoms
+            ):
+                st.session_state.selected_symptoms.remove(symptom)
 
     st.divider()
 
-    # ========================================================
-    # SINGLE SEARCH & SELECT BOX
-    # ========================================================
+    # --------------------------------------------------------
+    # SEARCH & SELECT SYMPTOMS
+    # --------------------------------------------------------
 
-    st.subheader("Other Symptoms")
+    st.subheader("Search & Select Symptoms")
 
-    st.write("Search and select any additional symptom:")
-
-    search_options = [""] + SEARCH_SYMPTOMS
-
-    selected_from_search = st.selectbox(
-        "🔍 Search & Select Symptoms",
-        options=search_options,
-        index=0,
-        format_func=lambda x: (
-            "Type to search symptoms..."
-            if x == ""
-            else x.replace("_", " ").title()
-        ),
-        key="symptom_search_select"
+    
+    
+    selected_from_search = st.multiselect(
+        "Search symptoms",
+        options=ALL_SYMPTOMS,
+        format_func=lambda x: x.replace("_", " ").title(),
+        key="disease2_search_symptoms"
     )
 
-    # Add selected symptom to the final list.
-    if selected_from_search and selected_from_search not in st.session_state.selected_symptoms:
-        st.session_state.selected_symptoms.append(selected_from_search)
+    common_selected = [
+        symptom for symptom in COMMON_SYMPTOMS
+        if st.session_state.get(f"disease2_common_{symptom}", False)
+    ]
 
-    # ========================================================
+    st.session_state.selected_symptoms = list(dict.fromkeys(
+        common_selected + selected_from_search
+    ))
+
+
+   
+    
+    # --------------------------------------------------------
+    # REMOVE SYMPTOM CALLBACK
+    # --------------------------------------------------------
+
+    def remove_symptom(symptom):
+        if symptom in st.session_state.selected_symptoms:
+            st.session_state.selected_symptoms.remove(symptom)
+
+        common_key = f"disease2_common_{symptom}"
+        if common_key in st.session_state:
+            st.session_state[common_key] = False
+
+        search_key = "disease2_search_symptoms"
+        if search_key in st.session_state:
+            st.session_state[search_key] = [
+                s for s in st.session_state[search_key]
+                if s != symptom
+            ]
+
+
+    # --------------------------------------------------------
     # SELECTED SYMPTOMS
-    # ========================================================
+    # --------------------------------------------------------
 
     st.subheader("Selected Symptoms")
 
-    if st.session_state.selected_symptoms:
+    selected = st.session_state.selected_symptoms.copy()
 
-        for symptom in list(st.session_state.selected_symptoms):
-
+    if selected:
+        for symptom in selected:
             display_name = symptom.replace("_", " ").title()
 
             col1, col2 = st.columns([8, 1])
@@ -219,22 +251,20 @@ if st.session_state.page == "Disease Prediction":
                 st.write(f"☑️ {display_name}")
 
             with col2:
-                if st.button(
+                st.button(
                     "✕",
-                    key=f"remove_symptom_{symptom}"
-                ):
-                    st.session_state.selected_symptoms.remove(symptom)
-                    st.rerun()
-
+                    key=f"remove_symptom_{symptom}",
+                    on_click=remove_symptom,
+                    args=(symptom,)
+                )
     else:
-        st.caption("No symptoms selected yet.")
-
-    st.write("")
+        st.info("No symptoms selected yet.")
 
 
-# ========================================================
-    # PREDICT BUTTON
-    # ========================================================
+
+    # --------------------------------------------------------
+    # PREDICT
+    # --------------------------------------------------------
 
     if st.button(
         "🔍 Predict Disease",
@@ -242,155 +272,124 @@ if st.session_state.page == "Disease Prediction":
         use_container_width=True
     ):
 
-        selected_symptoms = st.session_state.selected_symptoms
+        selected = st.session_state.selected_symptoms
 
-
-        if len(selected_symptoms) < 2:
-
+        if len(selected) < 4:
             st.warning(
-                "Please select at least 2 symptoms."
+                f"Please select at least 4 symptoms. "
+                f"You have selected {len(selected)}."
             )
 
         else:
-
             with st.spinner("Analyzing symptoms..."):
 
                 try:
-
-                    result = predict_disease(
-                        selected_symptoms
+                    result = predictor.predict_disease(
+                        selected,
+                        top_k=3
                     )
 
-                    status = result.get(
-                        "status",
-                        "unknown"
-                    )
-
-                    message = result.get(
-                        "message",
-                        ""
-                    )
-
-                    predictions = result.get(
-                        "predictions",
-                        []
-                    )
-
-
-                    # ========================================
-                    # STATUS MESSAGE
-                    # ========================================
-
-                    if status == "low_confidence":
-
-                        st.warning(message)
-
-                    elif status == "success":
-
-                        st.success(message)
-
-                    else:
-
-                        st.info(message)
-
-
-                    # ========================================
-                    # RESULTS
-                    # ========================================
-
-                    if predictions:
-
-                        st.subheader(
-                            "Possible Conditions"
+                    if result.get("status") != "success":
+                        st.error(
+                            result.get(
+                                "message",
+                                result.get(
+                                    "disclaimer",
+                                    "Prediction failed."
+                                )
+                            )
                         )
 
+                    else:
+                        predictions = result.get(
+                            "top_predictions",
+                            []
+                        )
 
-                        for i, prediction in enumerate(
-                            predictions,
-                            start=1
-                        ):
+                        st.subheader("Top 3 Predictions")
 
-                            disease = prediction.get(
-                                "disease",
-                                "Unknown"
-                            )
-
-                            confidence = float(
-                                prediction.get(
-                                    "confidence",
-                                    0
-                                )
-                            )
-
-                            specialist = prediction.get(
-                                "recommended_specialist",
-                                "General Physician"
-                            )
-
-
-                            st.markdown(
-                                f"### {i}. {disease}"
-                            )
-
-
-                            result_col1, result_col2 = st.columns(2)
-
-
-                            with result_col1:
-
-                                st.metric(
-                                    "Model Score",
-                                    f"{confidence:.2f}%"
+                        if predictions:
+                            for i, prediction in enumerate(
+                                predictions[:3],
+                                start=1
+                            ):
+                                disease = prediction.get(
+                                    "disease",
+                                    "Unknown"
                                 )
 
+                                # Use raw_probability when available.
+                                raw_score = prediction.get(
+                                    "raw_probability"
+                                )
 
-                            with result_col2:
+                                if raw_score is not None:
+                                    score = float(raw_score) * 100
+                                else:
+                                    score = float(
+                                        prediction.get(
+                                            "model_confidence",
+                                            prediction.get("confidence", 0)
+                                        )
+                                    )
+
+                                try:
+                                    recommendation = (
+                                        get_specialist_recommendation(
+                                            disease
+                                        )
+                                    )
+                                    specialist = recommendation.get(
+                                        "recommended_specialist",
+                                        "Consult a General Physician"
+                                    )
+                                except Exception:
+                                    specialist = (
+                                        "Consult a General Physician"
+                                    )
+
+                                st.markdown(f"### {i}. {disease}")
+
+                                st.progress(
+                                    min(max(score / 100, 0.0), 1.0)
+                                )
 
                                 st.write(
-                                    "**Recommended Specialist**"
+                                    f"**Model Score:** {score:.2f}%"
                                 )
 
-                                st.info(
-                                    specialist
-                                )
+                                st.write("**Recommended Specialist**")
+                                st.info(specialist)
 
+                                st.divider()
 
-                            st.divider()
+                        else:
+                            st.warning("No prediction available.")
 
-
-                    else:
-
-                        st.warning(
-                            "No prediction available."
+                        unrecognized = result.get(
+                            "unrecognized_symptoms",
+                            []
                         )
 
+                        if unrecognized:
+                            st.warning(
+                                "Some symptoms were not recognized: "
+                                + ", ".join(unrecognized)
+                            )
 
                 except Exception as e:
-
-                    st.error(
-                        "An error occurred while making "
-                        "the prediction."
-                    )
-
-                    st.exception(e)
-
-
-    # ========================================================
-    # DISCLAIMER
-    # ========================================================
+                    st.error(f"Prediction failed: {e}")
 
     st.caption(
-        "⚠️ This is an AI/ML project prototype. "
-        "The predictions are possible conditions based on "
-        "selected symptoms and are not a medical diagnosis."
+        "⚠️ This is an AI/ML project prototype. Model scores are "
+        "not confirmed diagnoses or validated probabilities of "
+        "having a disease. Consult a qualified healthcare professional "
+        "for medical advice."
     )
 
 
-
-
-
 # ============================================================
-# REPORT ANALYZER
+# REPORT ANALYZER - EXISTING CODE PRESERVED
 # ============================================================
 
 elif st.session_state.page == "Report Analyzer":
@@ -400,10 +399,6 @@ elif st.session_state.page == "Report Analyzer":
     st.write(
         "Upload a medical report in PDF or image format for analysis."
     )
-
-    # --------------------------------------------------------
-    # EXPLANATION LANGUAGE
-    # --------------------------------------------------------
 
     explanation_language = st.selectbox(
         "🌐 Explanation Language",
@@ -436,10 +431,6 @@ elif st.session_state.page == "Report Analyzer":
 
         st.divider()
 
-        # ----------------------------------------------------
-        # PREVIEW IMAGE
-        # ----------------------------------------------------
-
         if file_type.startswith("image"):
 
             st.subheader("📷 Report Preview")
@@ -449,10 +440,6 @@ elif st.session_state.page == "Report Analyzer":
                 caption=uploaded_file.name,
                 use_container_width=True
             )
-
-        # ----------------------------------------------------
-        # PDF INFORMATION
-        # ----------------------------------------------------
 
         elif file_type == "application/pdf":
 
@@ -483,39 +470,23 @@ elif st.session_state.page == "Report Analyzer":
                 with open(temp_file_path, "wb") as f:
                     f.write(uploaded_file.getbuffer())
 
-                with st.spinner(
-                    "Analyzing medical report..."
-                ):
+                with st.spinner("Analyzing medical report..."):
 
                     report = analyze_file(
                         temp_file_path,
                         language=explanation_language
                     )
 
-                st.success(
-                    "✅ Report analyzed successfully!"
-                )
+                st.success("✅ Report analyzed successfully!")
 
-                # --------------------------------------------
-                # EXTRACTED PARAMETERS
-                # --------------------------------------------
-
-                st.subheader(
-                    "🧪 Extracted Parameters"
-                )
+                st.subheader("🧪 Extracted Parameters")
 
                 parameters = report["parameters"]
 
                 if parameters:
-
                     for parameter, value in parameters.items():
-
-                        st.write(
-                            f"**{parameter}:** {value}"
-                        )
-
+                        st.write(f"**{parameter}:** {value}")
                 else:
-
                     st.warning(
                         "No recognized medical parameters "
                         "were found in the report."
@@ -523,13 +494,7 @@ elif st.session_state.page == "Report Analyzer":
 
                 st.divider()
 
-                # --------------------------------------------
-                # REPORT ANALYSIS
-                # --------------------------------------------
-
-                st.subheader(
-                    "📊 Report Analysis"
-                )
+                st.subheader("📊 Report Analysis")
 
                 results = report["results"]
 
@@ -538,61 +503,40 @@ elif st.session_state.page == "Report Analyzer":
                     status = data["status"]
 
                     if status == "Normal":
-
                         st.success(
                             f"🟢 {parameter}: "
                             f"{data['value']} → Normal"
                         )
 
                     elif status == "High":
-
                         st.warning(
                             f"🟠 {parameter}: "
                             f"{data['value']} → High"
                         )
 
                     elif status == "Low":
-
                         st.error(
                             f"🔴 {parameter}: "
                             f"{data['value']} → Low"
                         )
 
                     else:
-
                         st.info(
                             f"🔵 {parameter}: "
-                            f"{data['value']} → "
-                            f"{status}"
+                            f"{data['value']} → {status}"
                         )
 
                 st.divider()
 
-                # --------------------------------------------
-                # PARAMETER EXPLANATIONS
-                # --------------------------------------------
+                st.subheader("💡 What Do These Parameters Mean?")
 
-                st.subheader(
-                    "💡 What Do These Parameters Mean?"
-                )
-
-                explanations = report.get(
-                    "explanations",
-                    {}
-                )
+                explanations = report.get("explanations", {})
 
                 if explanations:
-
                     for parameter, explanation in explanations.items():
-
-                        with st.expander(
-                            f"🔹 What is {parameter}?"
-                        ):
-
+                        with st.expander(f"🔹 What is {parameter}?"):
                             st.write(explanation)
-
                 else:
-
                     st.info(
                         "No parameter explanations are available."
                     )
@@ -605,47 +549,36 @@ elif st.session_state.page == "Report Analyzer":
                 )
 
             except Exception as e:
-
                 st.error(
                     "❌ An error occurred while analyzing the report."
                 )
-
                 st.exception(e)
 
     else:
-
         st.info(
             "📤 Please upload a medical report in PDF or image format."
         )
+
+
 # ============================================================
-# AI CHATBOT
+# AI CHATBOT - EXISTING CODE PRESERVED
 # ============================================================
 
 elif st.session_state.page == "AI Chatbot":
 
     st.header("💬 AI Healthcare Chatbot")
 
-    st.write(
-        "Ask a healthcare-related question."
-    )
-
-    # Conversation memory
-    if "chat_messages" not in st.session_state:
-        st.session_state.chat_messages = []
+    st.write("Ask a healthcare-related question.")
 
     # Display previous messages
     for message in st.session_state.chat_messages:
-
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
-    question = st.chat_input(
-        "Ask your health question..."
-    )
+    question = st.chat_input("Ask your health question...")
 
     if question:
 
-        # Show user message
         st.session_state.chat_messages.append({
             "role": "user",
             "content": question
@@ -656,7 +589,6 @@ elif st.session_state.page == "AI Chatbot":
 
         try:
 
-            # Convert history for chatbot
             conversation_history = [
                 {
                     "role": message["role"],
@@ -676,7 +608,6 @@ elif st.session_state.page == "AI Chatbot":
 
                     st.write(answer)
 
-            # Save AI response
             st.session_state.chat_messages.append({
                 "role": "assistant",
                 "content": answer

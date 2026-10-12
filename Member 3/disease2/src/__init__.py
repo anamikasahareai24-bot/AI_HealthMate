@@ -1,0 +1,3 @@
+"""
+Disease Prediction System Package
+"""
