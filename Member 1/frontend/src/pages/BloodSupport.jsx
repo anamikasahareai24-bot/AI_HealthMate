@@ -1,218 +1,217 @@
-import { useState } from "react";
-import { Droplets, Phone, AlertCircle } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import {
+  Droplets,
+  HeartPulse,
+  Search,
+  MapPin,
+  Phone,
+  Clock3,
+  ShieldCheck,
+  AlertTriangle,
+  Navigation,
+  ExternalLink,
+} from "lucide-react";
+
+import { getCurrentCoordinates, getNearbyCarePlaces } from "../services/liveLocations.js";
+import "./BloodSupport.css";
+
+const ERaktKoshStockUrl = "https://eraktkosh.mohfw.gov.in/BLDAHIMS/bloodbank/stockAvailability.cnt";
 
 function BloodSupport() {
-  const [formData, setFormData] = useState({
-    type: "Blood Required",
-    bloodGroup: "",
-    units: "",
-    contact: "",
-    emergency: "No",
-    message: "",
-  });
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [search, setSearch] = useState("");
+  const [bloodBanks, setBloodBanks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [locationStatus, setLocationStatus] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+  const filteredBanks = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return bloodBanks.filter((bank) =>
+      `${bank.name} ${bank.location} ${bank.type}`.toLowerCase().includes(query)
+    );
+  }, [bloodBanks, search]);
+
+  const loadNearbyBanks = async () => {
+    setLoading(true);
+    setLocationStatus("Getting your location and loading fresh nearby listings…");
+    try {
+      const coordinates = await getCurrentCoordinates();
+      const results = await getNearbyCarePlaces({ ...coordinates, bloodBanksOnly: true });
+      setBloodBanks(results);
+      setLocationStatus(
+        results.length
+          ? `Loaded ${results.length} mapped blood-centre listings. Confirm the centre is active and check current stock on eRaktKosh.`
+          : "No mapped blood centres were found within 10 km. Check live availability on eRaktKosh."
+      );
+    } catch (error) {
+      setBloodBanks([]);
+      setLocationStatus(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const openMaps = (bank) => {
+    const query = `${bank.latitude},${bank.longitude}`;
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
-    alert("Blood support request submitted successfully!");
-
-    setFormData({
-      type: "Blood Required",
-      bloodGroup: "",
-      units: "",
-      contact: "",
-      emergency: "No",
-      message: "",
-    });
+  const openLiveStock = () => {
+    window.open(ERaktKoshStockUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 px-6 py-10">
-      <div className="mx-auto max-w-4xl">
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-100">
-              <Droplets size={25} className="text-red-600" />
-            </div>
-
-            <div>
-              <p className="text-sm font-semibold text-red-600">
-                Blood Support
-              </p>
-
-              <h1 className="text-3xl font-bold text-slate-900">
-                Blood Assistance
-              </h1>
-            </div>
+    <div className="blood-page">
+      <section className="blood-header">
+        <div>
+          <div className="blood-eyebrow">
+            <Droplets size={14} />
+            BLOOD SUPPORT
           </div>
+          <h1>Find Blood. <span>Save Lives.</span></h1>
+          <p>Find nearby blood-centre map listings and check current blood stock on the Government of India eRaktKosh portal.</p>
+        </div>
+        <div className="blood-header-icon"><Droplets size={38} /></div>
+      </section>
 
-          <p className="mt-3 max-w-2xl text-slate-600">
-            Create a blood support request or share your availability
-            as a donor.
-          </p>
+      <section className="blood-emergency">
+        <div className="blood-emergency-icon"><AlertTriangle size={22} /></div>
+        <div className="blood-emergency-text">
+          <strong>Need blood urgently?</strong>
+          <span>Check current blood-group availability with eRaktKosh. Stock can change; confirm with the blood centre.</span>
+        </div>
+        <a className="live-blood-stock-button" href={ERaktKoshStockUrl} target="_blank" rel="noreferrer">
+          <ExternalLink size={16} />
+          Check Live Stock
+        </a>
+      </section>
+
+      <section className="blood-search-card">
+        <div className="blood-search">
+          <Search size={18} />
+          <input
+            type="text"
+            placeholder="Search live blood-centre listings..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
         </div>
 
-        {/* Form */}
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-
-          <h2 className="text-xl font-bold text-slate-900">
-            Blood Support Request
-          </h2>
-
-          <p className="mt-1 text-sm text-slate-500">
-            Please provide the required information below.
-          </p>
-
-          <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-
-            {/* Request Type */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Request Type
-              </label>
-
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-              >
-                <option>Blood Required</option>
-                <option>Blood Donor</option>
-              </select>
-            </div>
-
-            {/* Blood Group + Units */}
-            <div className="grid gap-5 md:grid-cols-2">
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Blood Group
-                </label>
-
-                <select
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  required
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-                >
-                  <option value="">Select Blood Group</option>
-                  <option>A+</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B-</option>
-                  <option>AB+</option>
-                  <option>AB-</option>
-                  <option>O+</option>
-                  <option>O-</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Required Units
-                </label>
-
-                <input
-                  type="number"
-                  name="units"
-                  value={formData.units}
-                  onChange={handleChange}
-                  placeholder="e.g. 2"
-                  min="1"
-                  required
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-                />
-              </div>
-
-            </div>
-
-            {/* Contact */}
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <Phone size={16} />
-                Contact Number
-              </label>
-
-              <input
-                type="tel"
-                name="contact"
-                value={formData.contact}
-                onChange={handleChange}
-                placeholder="Enter contact number"
-                required
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-              />
-            </div>
-
-            {/* Emergency */}
-            <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <AlertCircle size={16} />
-                Is this an emergency?
-              </label>
-
-              <select
-                name="emergency"
-                value={formData.emergency}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-              >
-                <option>No</option>
-                <option>Yes</option>
-              </select>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Additional Message
-              </label>
-
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows="4"
-                placeholder="Add any additional information..."
-                className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-              />
-            </div>
-
-            {/* Submit */}
+        <div className="blood-group-label">Choose a blood group for the eRaktKosh stock search</div>
+        <div className="blood-groups">
+          {bloodGroups.map((group) => (
             <button
-              type="submit"
-              className="w-full rounded-xl bg-red-600 px-6 py-3.5 font-semibold text-white transition hover:bg-red-700"
+              type="button"
+              key={group}
+              className={bloodGroup === group ? "blood-group active" : "blood-group"}
+              aria-pressed={bloodGroup === group}
+              onClick={() => setBloodGroup((current) => current === group ? "" : group)}
             >
-              Submit Blood Request
+              {group}
             </button>
-
-          </form>
+          ))}
         </div>
 
-        {/* Safety Note */}
-        <div className="mt-6 rounded-2xl border border-red-100 bg-red-50 p-5">
-          <p className="text-sm font-semibold text-red-900">
-            Important
-          </p>
+        <div className="blood-live-actions">
+          <button type="button" className="location-button" onClick={loadNearbyBanks} disabled={loading}>
+            <MapPin size={17} />
+            {loading ? "Finding nearby centres…" : "Use My Location"}
+          </button>
+          <button type="button" className="blood-stock-link" onClick={openLiveStock}>
+            <ExternalLink size={15} />
+            {bloodGroup ? `Open eRaktKosh · select ${bloodGroup}` : "Open eRaktKosh live stock"}
+          </button>
+        </div>
+      </section>
 
-          <p className="mt-1 text-sm leading-6 text-red-800">
-            For a serious medical emergency, contact your local emergency
-            services or a healthcare professional immediately.
-          </p>
+      {locationStatus && <div className="blood-live-status" role="status">{locationStatus} {bloodBanks.length > 0 && "Source: OpenStreetMap live query."}</div>}
+
+      <section className="blood-stats">
+        <div className="blood-stat">
+          <div><MapPin size={20} /></div>
+          <section><strong>{locationStatus ? bloodBanks.length : "—"}</strong><span>Nearby map listings</span></section>
+        </div>
+        <div className="blood-stat">
+          <div><Droplets size={20} /></div>
+          <section><strong>{bloodGroup || "—"}</strong><span>Selected blood group</span></section>
+        </div>
+        <div className="blood-stat">
+          <div><HeartPulse size={20} /></div>
+          <section><strong>eRaktKosh</strong><span>Official stock source</span></section>
+        </div>
+        <div className="blood-stat">
+          <div><ShieldCheck size={20} /></div>
+          <section><strong>Live query</strong><span>Nearby map source</span></section>
+        </div>
+      </section>
+
+      <section className="donor-section">
+        <div className="donor-heading">
+          <div>
+            <span>NEARBY BLOOD CENTRES</span>
+            <h2>Blood-centre map listings</h2>
+          </div>
+          <p>{locationStatus ? `${filteredBanks.length} listings found` : "Search your location to see results"}</p>
         </div>
 
-      </div>
+        {filteredBanks.length === 0 ? (
+          <div className="no-donors">
+            <Droplets size={34} />
+            <h3>{bloodBanks.length ? "No matching blood centres" : "No live listings loaded yet"}</h3>
+            <p>{bloodBanks.length ? "Try another search." : "Use My Location to load fresh nearby map listings. No sample donors or locations are shown."}</p>
+            <a href={ERaktKoshStockUrl} target="_blank" rel="noreferrer" className="blood-stock-link">
+              <ExternalLink size={15} /> Check live stock on eRaktKosh
+            </a>
+          </div>
+        ) : (
+          <div className="donor-grid">
+            {filteredBanks.map((bank) => (
+              <article className="donor-card" key={bank.id}>
+                <div className="donor-top">
+                  <div className="donor-avatar"><Droplets size={22} /></div>
+                  <div className="donor-blood">BLOOD CENTRE</div>
+                </div>
+
+                <h3>{bank.name}</h3>
+                <div className="verified-donor"><MapPin size={12} /> Map listing · stock not verified</div>
+
+                <div className="donor-info">
+                  <div><MapPin size={14} /><span>{bank.location}</span></div>
+                  <div><Navigation size={14} /><span>{bank.distance}</span></div>
+                  <div><Clock3 size={14} /><span>{bank.open}</span></div>
+                </div>
+
+                <div className="availability unavailable"><span />Check live stock with eRaktKosh</div>
+
+                <div className="donor-actions">
+                  {bank.phone ? (
+                    <a href={`tel:${bank.phone}`} className="contact-donor"><Phone size={14} />Call centre</a>
+                  ) : (
+                    <button className="contact-donor" type="button" onClick={openLiveStock}><ExternalLink size={14} />eRaktKosh</button>
+                  )}
+                  <button className="donor-map" type="button" onClick={() => openMaps(bank)} aria-label={`Open map for ${bank.name}`}>
+                    <Navigation size={14} />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="blood-info">
+        <div className="blood-info-icon"><ShieldCheck size={24} /></div>
+        <div>
+          <h3>Use current availability information</h3>
+          <p>Nearby map listings do not confirm blood stock or donor availability. eRaktKosh provides current blood availability from registered centres; call the centre to confirm before travelling.</p>
+        </div>
+      </section>
     </div>
   );
 }

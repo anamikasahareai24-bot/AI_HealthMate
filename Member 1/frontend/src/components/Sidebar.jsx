@@ -1,25 +1,29 @@
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
 import {
-  Home,
-  Bot,
-  FileText,
-  Pill,
-  Hospital,
   HeartPulse,
+  Home,
+  LayoutDashboard,
+  Brain,
+  Pill,
+  FileText,
+  Hospital,
   Droplets,
   Activity,
   Vault,
   User,
   Info,
-  LayoutDashboard,
-  Brain,
+  X,
 } from "lucide-react";
 
-import { Link, useLocation } from "react-router-dom";
+import "./Sidebar.css";
 
 function Sidebar() {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  const mainMenu = [
+  const menu = [
     {
       name: "Home",
       path: "/",
@@ -31,18 +35,27 @@ function Sidebar() {
       icon: LayoutDashboard,
     },
     {
-      name: "AI Health Assistant",
-      path: "/ai-health-center",
-      icon: Bot,
+      name: "Health Profile",
+      path: "/health-profile",
+      icon: HeartPulse,
     },
-    
+    {
+      name: "Disease Prediction",
+      path: "/disease-prediction",
+      icon: Brain,
+    },
     {
       name: "Medicine Assistant",
       path: "/medicines",
       icon: Pill,
     },
     {
-      name: "Nearby Healthcare",
+      name: "Report Analyzer",
+      path: "/report-analyzer",
+      icon: FileText,
+    },
+    {
+      name: "Healthcare Services",
       path: "/healthcare-services",
       icon: Hospital,
     },
@@ -56,26 +69,12 @@ function Sidebar() {
       path: "/my-health",
       icon: HeartPulse,
     },
-    {
-      name: "Health Tracking",
-      path: "/health-tracking",
-      icon: Activity,
-    },
+    
     {
       name: "Medical Vault",
       path: "/medical-vault",
       icon: Vault,
     },
-    {
-     name: "Disease Prediction",
-     path: "/disease-prediction",
-     icon: Brain,
-  },
-
-  ];
-
-  
-  const accountMenu = [
     {
       name: "Profile",
       path: "/profile",
@@ -88,129 +87,109 @@ function Sidebar() {
     },
   ];
 
+  const handleNavigate = () => {
+    setOpen(false);
+  };
+
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-slate-200 bg-white">
+    <>
+      {/* 3 DOT BUTTON */}
 
-      {/* Logo */}
-      <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-5">
+      <button
+        className="sidebar-menu-button"
+        onClick={() => setOpen(true)}
+        aria-label="Open navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600">
-          <HeartPulse
-            size={24}
-            className="text-white"
-          />
+      {/* DARK OVERLAY */}
+
+      {open && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setOpen(false)}
+        ></div>
+      )}
+
+      {/* SIDEBAR */}
+
+      <aside className={`health-sidebar ${open ? "sidebar-open" : ""}`}>
+        {/* HEADER */}
+
+        <div className="sidebar-header">
+          <div className="sidebar-logo">
+            <div className="sidebar-logo-icon">
+              <HeartPulse size={22} />
+            </div>
+
+            <div>
+              <strong>AI HealthMate</strong>
+              <span>Smart Healthcare</span>
+            </div>
+          </div>
+
+          <button
+            className="sidebar-close"
+            onClick={() => setOpen(false)}
+          >
+            <X size={21} />
+          </button>
         </div>
 
-        <div>
-          <h1 className="font-bold text-slate-900">
-            AI HealthMate
-          </h1>
+        {/* MENU */}
 
-          <p className="text-xs text-slate-500">
-            Smart Healthcare
-          </p>
-        </div>
-
-      </div>
-
-
-      {/* Main Menu */}
-      <div className="flex-1 overflow-y-auto px-3 py-5">
-
-        <p className="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-          Healthcare
-        </p>
-
-        <nav className="space-y-1">
-
-          {mainMenu.map((item) => {
-            const Icon = item.icon;
-
-            const isActive =
-              location.pathname === item.path;
-
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
-                  isActive
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-              >
-                <Icon size={19} />
-
-                <span>
-                  {item.name}
-                </span>
-              </Link>
-            );
-          })}
-
-        </nav>
-
-
-        {/* Account */}
-        <div className="mt-8">
-
-          <p className="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-400">
-            Account
+        <div className="sidebar-content">
+          <p className="sidebar-title">
+            HEALTHCARE
           </p>
 
-          <nav className="space-y-1">
-
-            {accountMenu.map((item) => {
+          <nav className="sidebar-nav">
+            {menu.map((item) => {
               const Icon = item.icon;
 
-              const isActive =
+              const active =
                 location.pathname === item.path;
 
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
-                    isActive
-                      ? "bg-blue-50 text-blue-700"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  onClick={handleNavigate}
+                  className={`sidebar-link ${
+                    active ? "active" : ""
                   }`}
                 >
-                  <Icon size={19} />
+                  <Icon size={18} />
 
-                  <span>
-                    {item.name}
-                  </span>
+                  <span>{item.name}</span>
                 </Link>
               );
             })}
-
           </nav>
-
         </div>
 
-      </div>
+        {/* FOOTER */}
 
+        <div className="sidebar-footer">
+          <div className="sidebar-safety">
+            <HeartPulse size={18} />
 
-      {/* Bottom Safety Message */}
-      <div className="border-t border-slate-200 p-4">
+            <div>
+              <strong>Health Information</strong>
 
-        <div className="rounded-xl bg-slate-50 p-3">
-
-          <p className="text-xs font-semibold text-slate-700">
-            Health Information
-          </p>
-
-          <p className="mt-1 text-xs leading-5 text-slate-500">
-            AI-generated information is for educational purposes
-            and does not replace professional medical advice.
-          </p>
-
+              <p>
+                AI-assisted information is for educational
+                purposes and does not replace professional
+                medical advice.
+              </p>
+            </div>
+          </div>
         </div>
-
-      </div>
-
-    </aside>
+      </aside>
+    </>
   );
 }
 

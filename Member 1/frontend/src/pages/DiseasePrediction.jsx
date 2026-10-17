@@ -1,506 +1,763 @@
-import { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
+  Brain,
+  HeartPulse,
+  Thermometer,
+  Activity,
+  AlertCircle,
+  CheckCircle2,
+  RotateCcw,
+  ArrowRight,
+  ShieldCheck,
+  Stethoscope,
+  Sparkles,
   Search,
   X,
-  Brain,
-  ChevronDown,
-  Loader2,
-  AlertTriangle,
-  ShieldCheck,
 } from "lucide-react";
 
+import diseases from "../data/diseases.json";
+import "./DiseasePrediction.css";
+
 function DiseasePrediction() {
-  const commonSymptoms = [
-    "Fever",
-    "Headache",
-    "Cough",
-    "Fatigue",
-    "Nausea",
-    "Vomiting",
-    "Dizziness",
-    "Chest Pain",
-    "Abdominal Pain",
-    "Shortness of Breath",
-  ];
+  const [formData, setFormData] = useState({
+    age: "",
+    gender: "",
+    fever: "no",
+    cough: "no",
+    fatigue: "no",
+    headache: "no",
+    breathing: "no",
+    chestPain: "no",
+    nausea: "no",
+    bodyPain: "no",
+  });
 
-  // Temporary sample options for UI testing.
-  // Replace this array with your actual 377 supported symptoms.
-  const otherSymptoms = [
-    "Fever",
-    "Headache",
-    "Cough",
-    "Fatigue",
-    "Nausea",
-    "Vomiting",
-    "Dizziness",
-    "Chest Pain",
-    "Abdominal Pain",
-    "Shortness of Breath",
-    "Sore Throat",
-    "Runny Nose",
-    "Muscle Pain",
-    "Joint Pain",
-    "Back Pain",
-    "Skin Rash",
-    "Itching",
-    "Sneezing",
-    "Weakness",
-    "Loss of Appetite",
-    "Abdominal Bloating",
-    "Difficulty Swallowing",
-    "Chest Tightness",
-    "Nasal Congestion",
-  ];
+  const [result, setResult] = useState(null);
+  const [diseaseSearch, setDiseaseSearch] = useState("");
+  const [selectedDiseases, setSelectedDiseases] = useState([]);
+  const selectedSymptoms = [
+    ["fever", "Fever"],
+    ["cough", "Cough"],
+    ["fatigue", "Fatigue"],
+    ["headache", "Headache"],
+    ["breathing", "Breathing difficulty"],
+    ["chestPain", "Chest pain"],
+    ["nausea", "Nausea"],
+    ["bodyPain", "Body pain"],
+  ].filter(([key]) => formData[key] === "yes").map(([, label]) => label);
 
-  const [selectedSymptoms, setSelectedSymptoms] = useState([]);
-  const [search, setSearch] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [predictions, setPredictions] = useState([]);
-  const [lowConfidence, setLowConfidence] = useState(false);
+  const searchSynonyms = {
+    "bukhar": ["fever"],
+    "बुखार": ["fever"],
+    "dard": ["pain"],
+    "दर्द": ["pain"],
+    "pet dard": ["abdominal pain", "stomach pain"],
+    "पेट दर्द": ["abdominal pain", "stomach pain"],
+    "saans ki takleef": ["breathing difficulty", "shortness of breath"],
+    "सांस की तकलीफ": ["breathing difficulty", "shortness of breath"],
+    "khansi": ["cough"],
+    "खांसी": ["cough"],
+    "sir dard": ["headache"],
+    "सिर दर्द": ["headache"],
+    "ulti": ["vomiting"],
+    "उल्टी": ["vomiting"],
+  };
+  const normalizeSearch = (value) =>
+    value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const normalizedQuery = normalizeSearch(diseaseSearch);
+  const expandedQueries = [
+    normalizedQuery,
+    ...(searchSynonyms[normalizedQuery] || []).map(normalizeSearch),
+  ].filter(Boolean);
+  const matchingDiseases = normalizedQuery
+    ? diseases.filter((disease) => {
+        const searchableText = normalizeSearch(
+          `${disease.name} ${disease.description} ${(disease.aliases || []).join(" ")}`
+        );
+        return expandedQueries.some((query) => searchableText.includes(query));
+      })
+    : [];
 
-  const filteredSymptoms = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
 
-    return otherSymptoms
-      .filter(
-        (symptom) =>
-          !selectedSymptoms.includes(symptom) &&
-          symptom.toLowerCase().includes(query)
-      )
-      .slice(0, 8);
-  }, [search, selectedSymptoms]);
-
-  const toggleSymptom = (symptom) => {
-    setSelectedSymptoms((prev) => {
-      if (prev.includes(symptom)) {
-        return prev.filter((item) => item !== symptom);
-      }
-
-      return [...prev, symptom];
-    });
-
-    setPredictions([]);
-    setLowConfidence(false);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? "yes" : "no") : value,
+    }));
   };
 
-  const removeSymptom = (symptom) => {
-    setSelectedSymptoms((prev) =>
-      prev.filter((item) => item !== symptom)
+  const handlePrediction = (e) => {
+    e.preventDefault();
+
+    const requiredFields = [
+      "age",
+      "gender",
+      "fever",
+      "cough",
+      "fatigue",
+      "headache",
+      "breathing",
+      "chestPain",
+      "nausea",
+      "bodyPain",
+    ];
+
+    const isComplete = requiredFields.every(
+      (field) => formData[field] !== ""
     );
 
-    setPredictions([]);
-    setLowConfidence(false);
-  };
+    if (!isComplete) {
+      setResult({
+        type: "warning",
+        title: "Complete your information",
+        message:
+          "Please answer all questions before running the prediction.",
+      });
 
-  const predictConditions = () => {
-    if (selectedSymptoms.length < 2) {
       return;
     }
 
-    setLoading(true);
-    setPredictions([]);
-    setLowConfidence(false);
+    /*
+      TEMPORARY FRONTEND DEMO RESULT
 
-    // Temporary UI demo response.
-    // Later replace this part with your real ML/API prediction.
-    setTimeout(() => {
-      setPredictions([
-        {
-          name: "Contact Dermatitis",
-          confidence: 15.18,
-        },
-        {
-          name: "Allergy",
-          confidence: 1.96,
-        },
-        {
-          name: "Eczema",
-          confidence: 1.45,
-        },
-      ]);
+      Actual machine-learning model/API can be connected here later.
+    */
 
-      setLowConfidence(true);
-      setLoading(false);
-    }, 1200);
+    const symptoms = [
+      formData.fever,
+      formData.cough,
+      formData.fatigue,
+      formData.headache,
+      formData.breathing,
+      formData.chestPain,
+      formData.nausea,
+      formData.bodyPain,
+    ];
+
+    const yesCount = symptoms.filter(
+      (item) => item === "yes"
+    ).length;
+
+    if (yesCount >= 6) {
+      setResult({
+        type: "attention",
+        title: "Further medical evaluation recommended",
+        message:
+          "Multiple symptoms were reported. This screening result is not a diagnosis. Please consider consulting a qualified healthcare professional.",
+      });
+    } else if (yesCount >= 3) {
+      setResult({
+        type: "moderate",
+        title: "Some symptoms detected",
+        message:
+          "Your responses indicate several symptoms. Monitor your condition and consider speaking with a healthcare professional if symptoms continue or worsen.",
+      });
+    } else {
+      setResult({
+        type: "normal",
+        title: "No major warning pattern detected",
+        message:
+          "Based on the information entered, no strong warning pattern was detected by this demo screening.",
+      });
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      age: "",
+      gender: "",
+      fever: "no",
+      cough: "no",
+      fatigue: "no",
+      headache: "no",
+      breathing: "no",
+      chestPain: "no",
+      nausea: "no",
+      bodyPain: "no",
+    });
+
+    setResult(null);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 px-6 py-10">
-      <div className="mx-auto max-w-5xl">
+    <div className="disease-page">
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3">
+      {/* =========================
+          PAGE HEADER
+      ========================= */}
 
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
-              <Brain
-                size={27}
-                className="text-blue-600"
-              />
-            </div>
+      <section className="disease-header">
 
-            <div>
-              <p className="text-sm font-semibold text-blue-600">
-                AI HEALTHMATE
-              </p>
+        <div>
 
-              <h1 className="text-3xl font-bold text-slate-900">
-                Disease Prediction
-              </h1>
-            </div>
-
+          <div className="disease-eyebrow">
+            <Sparkles size={14} />
+            AI HEALTH SCREENING
           </div>
 
-          <p className="mt-3 max-w-3xl text-slate-600">
-            Select your symptoms to explore possible health
-            conditions based on the available prediction model.
+          <h1>
+            Disease <span>Prediction</span>
+          </h1>
+
+          <p>
+            Enter your basic health information and symptoms
+            to receive an AI-assisted preliminary health
+            screening.
           </p>
-        </div>
-
-        {/* Symptom Selection */}
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-slate-900">
-              Symptom Selection
-            </h2>
-
-            <p className="mt-1 text-sm text-slate-500">
-              Select at least two symptoms to continue.
-            </p>
-          </div>
-
-          {/* Common Symptoms */}
-          <section>
-            <div className="mb-4">
-              <h3 className="font-bold text-slate-900">
-                1. Common Symptoms
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Choose one or more commonly reported symptoms.
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-
-              {commonSymptoms.map((symptom) => {
-                const selected =
-                  selectedSymptoms.includes(symptom);
-
-                return (
-                  <label
-                    key={symptom}
-                    className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition ${
-                      selected
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 bg-white hover:border-blue-300 hover:bg-slate-50"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected}
-                      onChange={() =>
-                        toggleSymptom(symptom)
-                      }
-                      className="h-4 w-4 accent-blue-600"
-                    />
-
-                    <span className="text-sm font-medium text-slate-700">
-                      {symptom}
-                    </span>
-                  </label>
-                );
-              })}
-
-            </div>
-          </section>
-
-          {/* Other Symptoms */}
-          <section className="mt-10">
-            <div className="mb-4">
-              <h3 className="font-bold text-slate-900">
-                2. Other Symptoms
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Search and select from the supported symptoms.
-              </p>
-            </div>
-
-            <div className="relative">
-
-              <div
-                className={`flex items-center rounded-xl border bg-white ${
-                  dropdownOpen
-                    ? "border-blue-500 ring-2 ring-blue-100"
-                    : "border-slate-300"
-                }`}
-              >
-
-                <Search
-                  size={19}
-                  className="ml-4 text-slate-400"
-                />
-
-                <input
-                  type="text"
-                  value={search}
-                  onFocus={() =>
-                    setDropdownOpen(true)
-                  }
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setDropdownOpen(true);
-                  }}
-                  placeholder="Search symptoms..."
-                  className="w-full bg-transparent px-3 py-3.5 text-sm outline-none"
-                />
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setDropdownOpen((prev) => !prev)
-                  }
-                  className="mr-3 text-slate-400"
-                >
-                  <ChevronDown size={20} />
-                </button>
-
-              </div>
-
-              {dropdownOpen && (
-                <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-
-                  {filteredSymptoms.length > 0 ? (
-                    <div className="max-h-64 overflow-y-auto p-2">
-
-                      {filteredSymptoms.map((symptom) => (
-                        <button
-                          type="button"
-                          key={symptom}
-                          onClick={() => {
-                            toggleSymptom(symptom);
-                            setSearch("");
-                          }}
-                          className="block w-full rounded-lg px-3 py-3 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700"
-                        >
-                          {symptom}
-                        </button>
-                      ))}
-
-                    </div>
-                  ) : (
-                    <div className="p-5 text-center text-sm text-slate-500">
-                      No supported symptom found.
-                    </div>
-                  )}
-
-                </div>
-              )}
-
-            </div>
-          </section>
-
-          {/* Selected Symptoms */}
-          <section className="mt-8">
-
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-bold text-slate-900">
-                Selected Symptoms
-              </h3>
-
-              <span className="text-sm text-slate-500">
-                {selectedSymptoms.length} selected
-              </span>
-            </div>
-
-            {selectedSymptoms.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
-
-                {selectedSymptoms.map((symptom) => (
-                  <div
-                    key={symptom}
-                    className="flex items-center gap-2 rounded-full bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700"
-                  >
-                    {symptom}
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        removeSymptom(symptom)
-                      }
-                      className="rounded-full hover:bg-blue-100"
-                      aria-label={`Remove ${symptom}`}
-                    >
-                      <X size={15} />
-                    </button>
-                  </div>
-                ))}
-
-              </div>
-            ) : (
-              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-center text-sm text-slate-500">
-                No symptoms selected yet.
-              </div>
-            )}
-
-          </section>
-
-          {/* Validation */}
-          {selectedSymptoms.length === 1 && (
-            <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-              <p className="text-sm font-medium text-amber-800">
-                Please select at least one more symptom to
-                predict possible conditions.
-              </p>
-            </div>
-          )}
-
-          {/* Predict Button */}
-          <button
-            type="button"
-            disabled={
-              selectedSymptoms.length < 2 || loading
-            }
-            onClick={predictConditions}
-            className={`mt-8 flex w-full items-center justify-center gap-2 rounded-xl px-6 py-4 font-semibold transition ${
-              selectedSymptoms.length >= 2 && !loading
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "cursor-not-allowed bg-slate-200 text-slate-400"
-            }`}
-          >
-            {loading ? (
-              <>
-                <Loader2
-                  size={19}
-                  className="animate-spin"
-                />
-                Analyzing Symptoms...
-              </>
-            ) : (
-              <>
-                <Brain size={19} />
-                Predict Possible Conditions
-              </>
-            )}
-          </button>
 
         </div>
 
-        {/* Results */}
-        {predictions.length > 0 && (
-          <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+        <div className="prediction-header-icon">
+          <Brain size={38} />
+        </div>
 
-            <div className="flex items-start gap-3">
+      </section>
 
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-50">
-                <ShieldCheck
-                  size={23}
-                  className="text-green-600"
-                />
-              </div>
 
-              <div>
-                <h2 className="text-xl font-bold text-slate-900">
-                  Possible Conditions
-                </h2>
+      {/* =========================
+          DISCLAIMER
+      ========================= */}
 
-                <p className="mt-1 text-sm text-slate-500">
-                  These are model-generated possibilities, not
-                  a medical diagnosis.
-                </p>
-              </div>
+      <div className="prediction-disclaimer">
 
-            </div>
+        <ShieldCheck size={18} />
 
-            <div className="mt-6 space-y-4">
+        <div>
+          <strong>Important health notice</strong>
 
-              {predictions.map((prediction, index) => (
-                <div
-                  key={prediction.name}
-                  className="rounded-2xl border border-slate-200 p-5"
-                >
-
-                  <div className="flex items-center justify-between gap-4">
-
-                    <div className="flex items-center gap-3">
-
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">
-                        {index + 1}
-                      </div>
-
-                      <h3 className="font-bold text-slate-900">
-                        {prediction.name}
-                      </h3>
-
-                    </div>
-
-                    <span className="text-sm font-semibold text-blue-600">
-                      {prediction.confidence.toFixed(2)}%
-                    </span>
-
-                  </div>
-
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
-                    <div
-                      className="h-full rounded-full bg-blue-500"
-                      style={{
-                        width: `${Math.min(
-                          prediction.confidence,
-                          100
-                        )}%`,
-                      }}
-                    />
-                  </div>
-
-                  <p className="mt-2 text-xs text-slate-400">
-                    Confidence
-                  </p>
-
-                </div>
-              ))}
-
-            </div>
-
-            {/* Low Confidence */}
-            {lowConfidence && (
-              <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-
-                <AlertTriangle
-                  size={21}
-                  className="mt-0.5 shrink-0 text-amber-600"
-                />
-
-                <p className="text-sm leading-6 text-amber-800">
-                  Prediction confidence is low. Please select
-                  more symptoms or consult a healthcare
-                  professional.
-                </p>
-
-              </div>
-            )}
-
-          </div>
-        )}
-
-        {/* Disclaimer */}
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-
-          <p className="text-sm leading-6 text-slate-600">
-            <strong className="text-slate-800">
-              Medical Disclaimer:
-            </strong>{" "}
-            This tool provides possible conditions based on
-            the selected symptoms and is not a medical
-            diagnosis. Please consult a qualified healthcare
-            professional for proper diagnosis and treatment.
+          <p>
+            This tool is for educational and screening purposes
+            only. It does not provide a medical diagnosis or
+            replace professional medical advice.
           </p>
-
         </div>
 
       </div>
+
+
+      <section className="disease-search-card" aria-labelledby="disease-search-title">
+        <div className="disease-search-heading">
+          <div className="disease-search-icon">
+            <Search size={20} />
+          </div>
+          <div>
+            <span className="section-label">DISEASE DIRECTORY</span>
+            <h2 id="disease-search-title">Search diseases</h2>
+            <p>Search all 820 diseases from the Member 3 dataset in Hindi, Hinglish, or English.</p>
+          </div>
+        </div>
+
+        <input
+          className="disease-search-input"
+          type="search"
+          value={diseaseSearch}
+          onChange={(event) => setDiseaseSearch(event.target.value)}
+          placeholder="Search in Hindi, Hinglish, or English..."
+          aria-label="Search diseases by name or description"
+        />
+
+        {diseaseSearch.trim() && (
+          <div className="disease-search-results">
+            <p className="disease-result-count">
+              {matchingDiseases.length} result{matchingDiseases.length === 1 ? "" : "s"}
+              {matchingDiseases.length > 10 ? " · Showing first 10" : ""}
+            </p>
+            {matchingDiseases.length ? (
+              <div className="disease-result-list">
+                {matchingDiseases.slice(0, 10).map((disease) => (
+                  <button
+                    type="button"
+                    key={disease.name}
+                    className={`disease-result-item ${selectedDiseases.some((item) => item.name === disease.name) ? "active" : ""}`}
+                    aria-pressed={selectedDiseases.some((item) => item.name === disease.name)}
+                    onClick={() =>
+                      setSelectedDiseases((current) =>
+                        current.some((item) => item.name === disease.name)
+                          ? current.filter((item) => item.name !== disease.name)
+                          : [...current, disease]
+                      )
+                    }
+                  >
+                    <span>{disease.name}</span>
+                    {selectedDiseases.some((item) => item.name === disease.name) ? (
+                      <CheckCircle2 className="disease-result-check selected" size={18} />
+                    ) : (
+                      <span className="disease-result-check" aria-hidden="true" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="disease-no-results">No matching diseases found.</p>
+            )}
+          </div>
+        )}
+
+        {(selectedDiseases.length > 0 || selectedSymptoms.length > 0) && (
+          <div className="selected-diseases-section">
+            {selectedDiseases.length > 0 && (
+              <>
+                <h3>Selected diseases ({selectedDiseases.length})</h3>
+                <div className="selected-diseases-list">
+                  {selectedDiseases.map((disease) => (
+                <article className="selected-disease-card" key={disease.name}>
+                  <div className="selected-disease-copy">
+                    <h4>{disease.name}</h4>
+                    <p>{disease.description}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="remove-selected-disease"
+                    aria-label={`Remove ${disease.name}`}
+                    onClick={() =>
+                      setSelectedDiseases((current) =>
+                        current.filter((item) => item.name !== disease.name)
+                      )
+                    }
+                  >
+                    <X size={17} />
+                  </button>
+                </article>
+                  ))}
+                </div>
+              </>
+            )}
+            {selectedSymptoms.length > 0 && (
+              <div className="selected-symptoms-summary">
+                <h3>Selected symptoms</h3>
+                <div className="selected-symptoms-list">
+                  {selectedSymptoms.map((symptom) => (
+                    <span className="selected-symptom-chip" key={symptom}>
+                      <CheckCircle2 size={15} />
+                      {symptom}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* =========================
+          MAIN CONTENT
+      ========================= */}
+
+      <div className="prediction-layout">
+
+
+        {/* =========================
+            FORM
+        ========================= */}
+
+        <form
+          className="prediction-card"
+          onSubmit={handlePrediction}
+        >
+
+          <div className="prediction-card-header">
+
+            <div className="section-icon">
+              <Stethoscope size={21} />
+            </div>
+
+            <div>
+              <span className="section-label">
+                HEALTH INFORMATION
+              </span>
+
+              <h2>
+                Tell us about your symptoms
+              </h2>
+            </div>
+
+          </div>
+
+
+          {/* BASIC INFORMATION */}
+
+          <div className="form-section">
+
+            <div className="form-section-title">
+              Basic Information
+            </div>
+
+            <div className="form-grid">
+
+              <div className="input-group">
+
+                <label>
+                  Age
+                </label>
+
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder="Enter your age"
+                  min="1"
+                  max="120"
+                />
+
+              </div>
+
+
+              <div className="input-group">
+
+                <label>
+                  Gender
+                </label>
+
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                >
+
+                  <option value="">
+                    Select gender
+                  </option>
+
+                  <option value="male">
+                    Male
+                  </option>
+
+                  <option value="female">
+                    Female
+                  </option>
+
+                  <option value="other">
+                    Other
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* SYMPTOMS */}
+
+          <div className="form-section">
+
+            <div className="form-section-title">
+              Common Symptoms
+            </div>
+            <p className="symptom-hint">Tick the symptoms you currently have.</p>
+
+
+            <div className="symptom-grid">
+
+              <SymptomField
+                icon={<Thermometer size={17} />}
+                label="Fever"
+                name="fever"
+                value={formData.fever}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<Activity size={17} />}
+                label="Cough"
+                name="cough"
+                value={formData.cough}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<HeartPulse size={17} />}
+                label="Fatigue"
+                name="fatigue"
+                value={formData.fatigue}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<AlertCircle size={17} />}
+                label="Headache"
+                name="headache"
+                value={formData.headache}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<Activity size={17} />}
+                label="Breathing difficulty"
+                name="breathing"
+                value={formData.breathing}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<HeartPulse size={17} />}
+                label="Chest pain"
+                name="chestPain"
+                value={formData.chestPain}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<AlertCircle size={17} />}
+                label="Nausea"
+                name="nausea"
+                value={formData.nausea}
+                onChange={handleChange}
+              />
+
+              <SymptomField
+                icon={<Activity size={17} />}
+                label="Body pain"
+                name="bodyPain"
+                value={formData.bodyPain}
+                onChange={handleChange}
+              />
+
+            </div>
+
+          </div>
+
+
+          {/* BUTTONS */}
+
+          <div className="prediction-actions">
+
+            <button
+              type="button"
+              className="reset-button"
+              onClick={resetForm}
+            >
+              <RotateCcw size={17} />
+              Reset
+            </button>
+
+            <button
+              type="submit"
+              className="predict-button"
+            >
+              <Brain size={18} />
+              Analyze Symptoms
+              <ArrowRight size={17} />
+            </button>
+
+          </div>
+
+        </form>
+
+
+        {/* =========================
+            RESULT PANEL
+        ========================= */}
+
+        <aside className="prediction-side">
+
+
+          {/* RESULT */}
+
+          <div className="result-card">
+
+            <div className="result-card-top">
+
+              <div className="result-icon">
+                {result?.type === "attention" ? (
+                  <AlertCircle size={25} />
+                ) : result?.type === "warning" ? (
+                  <AlertCircle size={25} />
+                ) : (
+                  <Brain size={25} />
+                )}
+              </div>
+
+              <span>
+                AI SCREENING
+              </span>
+
+            </div>
+
+
+            {!result ? (
+
+              <div className="empty-result">
+
+                <div className="empty-brain">
+                  <Brain size={35} />
+                </div>
+
+                <h3>
+                  Your result will appear here
+                </h3>
+
+                <p>
+                  Complete the symptom assessment and
+                  click “Analyze Symptoms” to see your
+                  preliminary screening result.
+                </p>
+
+              </div>
+
+            ) : (
+
+              <div
+                className={`result-content ${result.type}`}
+              >
+
+                <div className="result-status">
+
+                  {result.type === "normal" ? (
+                    <CheckCircle2 size={25} />
+                  ) : (
+                    <AlertCircle size={25} />
+                  )}
+
+                </div>
+
+                <h3>
+                  {result.title}
+                </h3>
+
+                <p>
+                  {result.message}
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+
+
+          {/* HOW IT WORKS */}
+
+          <div className="how-card">
+
+            <div className="how-title">
+              <Brain size={18} />
+              How it works
+            </div>
+
+            <div className="how-step">
+
+              <span>01</span>
+
+              <div>
+                <strong>
+                  Enter information
+                </strong>
+
+                <p>
+                  Provide your age, gender and symptoms.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div className="how-step">
+
+              <span>02</span>
+
+              <div>
+                <strong>
+                  AI screening
+                </strong>
+
+                <p>
+                  Your responses are analyzed for patterns.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div className="how-step">
+
+              <span>03</span>
+
+              <div>
+                <strong>
+                  Review result
+                </strong>
+
+                <p>
+                  Use the result as a health-information guide.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* EMERGENCY */}
+
+          <div className="emergency-card">
+
+            <AlertCircle size={19} />
+
+            <div>
+
+              <strong>
+                Experiencing severe symptoms?
+              </strong>
+
+              <p>
+                Seek immediate medical attention for
+                serious or rapidly worsening symptoms.
+              </p>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+  );
+}
+
+
+/* =========================
+   SYMPTOM COMPONENT
+========================= */
+
+function SymptomField({
+  icon,
+  label,
+  name,
+  value,
+  onChange,
+}) {
+  return (
+    <div className="symptom-field">
+
+      <div className="symptom-label">
+
+        <div className="symptom-icon">
+          {icon}
+        </div>
+
+        <span>
+          {label}
+        </span>
+
+      </div>
+
+      <label className="symptom-toggle" aria-label={`${label} present`}>
+        <input
+          type="checkbox"
+          name={name}
+          checked={value === "yes"}
+          onChange={onChange}
+        />
+        <span className="symptom-checkbox" aria-hidden="true" />
+      </label>
+
     </div>
   );
 }

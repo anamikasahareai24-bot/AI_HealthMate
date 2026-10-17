@@ -1,462 +1,244 @@
+import React from "react";
 import { Link } from "react-router-dom";
+
 import {
+  Activity,
   ArrowRight,
-  Bot,
+  Brain,
+  CheckCircle2,
+  ChevronRight,
+  Droplets,
   FileText,
   HeartPulse,
+  Hospital,
+  Pill,
   ShieldCheck,
+  Sparkles,
+  Stethoscope,
 } from "lucide-react";
 
-import Navbar from "../components/Navbar";
+import "./Home.css";
+
+const features = [
+  {
+    icon: Brain,
+    title: "Disease Prediction",
+    text: "Analyze symptoms and explore AI-assisted health insights.",
+    link: "/disease-prediction",
+  },
+  {
+    icon: Pill,
+    title: "Medicine Assistant",
+    text: "Explore medicine information and useful safety details.",
+    link: "/medicines",
+  },
+  {
+    icon: FileText,
+    title: "Report Analyzer",
+    text: "Understand important information from your medical reports.",
+    link: "/report-analyzer",
+  },
+  {
+    icon: Hospital,
+    title: "Healthcare Services",
+    text: "Explore useful healthcare services and medical resources.",
+    link: "/healthcare-services",
+  },
+  {
+    icon: Droplets,
+    title: "Blood Support",
+    text: "Access blood-related support information and resources.",
+    link: "/blood-support",
+  },
+];
 
 function Home() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="home-page">
 
-      {/* ================= NAVBAR ================= */}
-      <Navbar />
+      {/* HERO */}
 
+      <section className="hero-section">
 
-      {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+        <div className="hero-glow glow-one"></div>
+        <div className="hero-glow glow-two"></div>
 
-        {/* Background decoration */}
-        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blue-100/60 blur-3xl" />
+        <div className="hero-container">
 
-        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-cyan-100/60 blur-3xl" />
+          {/* LEFT */}
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
+          <div className="hero-copy">
 
-          {/* ================= LEFT CONTENT ================= */}
-          <div>
-
-            {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 shadow-sm">
-
-              <HeartPulse
-                size={18}
-                className="text-blue-600"
-              />
-
-              <span className="text-sm font-semibold text-blue-700">
-                AI-Powered Healthcare Assistant
-              </span>
-
+            <div className="hero-badge">
+              <Sparkles size={15} />
+              <span>AI-Powered Healthcare</span>
             </div>
 
-
-            {/* Heading */}
-            <h1 className="max-w-2xl text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
-
-              Your Health.
+            <h1>
+              Healthcare that
               <br />
-
-              <span className="text-blue-600">
-                Smarter with AI.
-              </span>
-
+              <span>understands you.</span>
             </h1>
 
-
-            {/* Description */}
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-              AI HealthMate helps you understand health information,
-              organize medical records, manage medicines and discover
-              useful healthcare services — all in one place.
+            <p className="hero-description">
+              AI HealthMate brings smart healthcare tools together
+              so you can explore symptoms, medicines, medical reports
+              and healthcare resources from one simple platform.
             </p>
 
-
-            {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+            <div className="hero-actions">
 
               <Link
-                to="/ai-health-center"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700"
+                to="/disease-prediction"
+                className="main-action"
               >
-
-                <Bot size={20} />
-
-                Talk to AI Assistant
-
-                <ArrowRight size={18} />
-
+                <Brain size={18} />
+                Check Your Symptoms
+                <ArrowRight size={17} />
               </Link>
-
 
               <Link
                 to="/dashboard"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-600"
+                className="outline-action"
               >
-                Open Dashboard
+                Explore Dashboard
               </Link>
 
             </div>
 
+            <div className="hero-points">
 
-            {/* Trust Points */}
-            <div className="mt-8 flex flex-wrap gap-5 text-sm text-slate-600">
-
-              <div className="flex items-center gap-2">
-
-                <ShieldCheck
-                  size={18}
-                  className="text-green-600"
-                />
-
-                Secure Health Data
-
-              </div>
-
-
-              <div className="flex items-center gap-2">
-
-                <FileText
-                  size={18}
-                  className="text-blue-600"
-                />
-
-                Medical Records
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* ================= RIGHT VISUAL ================= */}
-          <div className="relative flex justify-center lg:justify-end">
-
-            <div className="relative h-[390px] w-full max-w-[480px]">
-
-              {/* Circle */}
-              <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100" />
-
-
-              {/* Main Card */}
-              <div className="absolute left-1/2 top-1/2 w-[290px] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white bg-white p-7 shadow-2xl">
-
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg">
-
-                  <HeartPulse size={42} />
-
-                </div>
-
-
-                <h2 className="mt-6 text-center text-2xl font-bold text-slate-900">
-                  AI HealthMate
-                </h2>
-
-
-                <p className="mt-2 text-center text-sm leading-6 text-slate-500">
-                  Your personal AI healthcare companion
-                </p>
-
-
-                {/* Mini Cards */}
-                <div className="mt-6 grid grid-cols-2 gap-3">
-
-                  <div className="rounded-xl bg-blue-50 p-3 text-center">
-
-                    <Bot
-                      size={22}
-                      className="mx-auto text-blue-600"
-                    />
-
-                    <p className="mt-2 text-xs font-semibold text-slate-700">
-                      AI Assistant
-                    </p>
-
-                  </div>
-
-
-                  <div className="rounded-xl bg-cyan-50 p-3 text-center">
-
-                    <FileText
-                      size={22}
-                      className="mx-auto text-cyan-600"
-                    />
-
-                    <p className="mt-2 text-xs font-semibold text-slate-700">
-                      Medical Reports
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              {/* Floating Card 1 */}
-              <div className="absolute left-0 top-12 rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-lg">
-
-                <p className="text-xs text-slate-500">
-                  Health Support
-                </p>
-
-                <p className="font-bold text-green-600">
-                  Available 24/7
-                </p>
-
-              </div>
-
-
-              {/* Floating Card 2 */}
-              <div className="absolute bottom-12 right-0 rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-lg">
-
-                <p className="text-xs text-slate-500">
-                  Health Journey
-                </p>
-
-                <p className="font-bold text-blue-600">
-                  Made Simple
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* ================= QUICK ACTIONS ================= */}
-      <section className="bg-white px-6 py-16">
-
-        <div className="mx-auto max-w-7xl">
-
-          <div className="text-center">
-
-            <p className="text-sm font-bold uppercase tracking-wider text-blue-600">
-              Get Started
-            </p>
-
-            <h2 className="mt-3 text-3xl font-extrabold text-slate-900">
-              Start Your Healthcare Journey
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-slate-600">
-              Choose a healthcare tool from the sidebar or start
-              directly with your AI healthcare assistant.
-            </p>
-
-          </div>
-
-
-          <div className="mt-10 flex justify-center">
-
-            <Link
-              to="/ai-health-center"
-              className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 font-semibold text-white transition hover:bg-slate-800"
-            >
-
-              <Bot size={20} />
-
-              Start with AI Assistant
-
-              <ArrowRight size={18} />
-
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-      {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-slate-50 px-6 py-20">
-
-        <div className="mx-auto max-w-7xl">
-
-          {/* Heading */}
-          <div className="mx-auto max-w-2xl text-center">
-
-            <p className="text-sm font-bold uppercase tracking-wider text-blue-600">
-              How It Works
-            </p>
-
-            <h2 className="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
-              Your Healthcare Journey, Simplified
-            </h2>
-
-            <p className="mt-4 text-slate-600">
-              AI HealthMate brings your essential healthcare tools
-              together in a simple and easy-to-use experience.
-            </p>
-
-          </div>
-
-
-          {/* Steps */}
-          <div className="mt-14 grid gap-8 md:grid-cols-4">
-
-            {/* Step 1 */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-2xl">
-                👤
-              </div>
-
-              <div className="mt-5 text-sm font-bold text-blue-600">
-                STEP 01
-              </div>
-
-              <h3 className="mt-2 text-lg font-bold text-slate-900">
-                Add Your Health Details
-              </h3>
-
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Add relevant health information and symptoms to
-                help organize your healthcare journey.
-              </p>
-
-            </div>
-
-
-            {/* Step 2 */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-100 text-2xl">
-                🤖
-              </div>
-
-              <div className="mt-5 text-sm font-bold text-purple-600">
-                STEP 02
-              </div>
-
-              <h3 className="mt-2 text-lg font-bold text-slate-900">
-                AI Analyzes Information
-              </h3>
-
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                AI-powered tools can help analyze symptoms,
-                reports and other health information.
-              </p>
-
-            </div>
-
-
-            {/* Step 3 */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-2xl">
-                📊
-              </div>
-
-              <div className="mt-5 text-sm font-bold text-green-600">
-                STEP 03
-              </div>
-
-              <h3 className="mt-2 text-lg font-bold text-slate-900">
-                Understand Your Results
-              </h3>
-
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                View easy-to-understand insights and organize
-                important health information.
-              </p>
-
-            </div>
-
-
-            {/* Step 4 */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-100 text-2xl">
-                🏥
-              </div>
-
-              <div className="mt-5 text-sm font-bold text-orange-600">
-                STEP 04
-              </div>
-
-              <h3 className="mt-2 text-lg font-bold text-slate-900">
-                Take the Next Step
-              </h3>
-
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Find relevant healthcare services and decide when
-                professional medical care may be appropriate.
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* ================= SAFETY ================= */}
-      <section className="bg-slate-50 px-6 py-16">
-
-        <div className="mx-auto max-w-5xl">
-
-          <div className="rounded-3xl border border-blue-100 bg-white p-8 shadow-sm md:p-10">
-
-            <div className="flex flex-col gap-6 md:flex-row md:items-start">
-
-              {/* Icon */}
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-2xl">
-                🛡️
-              </div>
-
-
-              {/* Content */}
               <div>
+                <CheckCircle2 size={17} />
+                Easy to use
+              </div>
 
-                <p className="text-sm font-bold uppercase tracking-wider text-blue-600">
-                  Important Health Information
-                </p>
+              <div>
+                <ShieldCheck size={17} />
+                Privacy focused
+              </div>
 
+              <div>
+                <Activity size={17} />
+                AI assisted
+              </div>
 
-                <h2 className="mt-2 text-2xl font-bold text-slate-900">
-                  AI HealthMate is a Healthcare Support Tool
-                </h2>
+            </div>
 
-
-                <p className="mt-4 leading-7 text-slate-600">
-                  AI-generated health information is intended for
-                  educational and informational purposes. It should
-                  not be considered a medical diagnosis or a replacement
-                  for advice from a qualified healthcare professional.
-                </p>
-
-
-                {/* Emergency */}
-                <div className="mt-6 rounded-2xl bg-red-50 p-5">
-
-                  <div className="flex items-start gap-3">
-
-                    <span className="text-xl">
-                      🚨
-                    </span>
+          </div>
 
 
-                    <div>
+          {/* RIGHT VISUAL */}
 
-                      <h3 className="font-bold text-red-700">
-                        Medical Emergency?
-                      </h3>
+          <div className="hero-visual">
 
-                      <p className="mt-1 text-sm leading-6 text-red-600">
-                        If you are experiencing a serious or
-                        life-threatening medical situation, seek
-                        immediate professional medical assistance
-                        or contact your local emergency service.
-                      </p>
+            <div className="visual-ring ring-one"></div>
+            <div className="visual-ring ring-two"></div>
 
-                    </div>
+            <div className="health-panel">
+
+              <div className="panel-header">
+
+                <div className="panel-brand">
+
+                  <div className="brand-mark">
+                    <HeartPulse size={19} />
+                  </div>
+
+                  <div>
+                    <small>AI HEALTHMATE</small>
+                    <strong>Health Center</strong>
+                  </div>
+
+                </div>
+
+                <div className="online-status">
+                  <span></span>
+                  Active
+                </div>
+
+              </div>
+
+
+              <div className="health-main">
+
+                <div className="health-score">
+
+                  <div className="score-circle">
+
+                    <HeartPulse size={21} />
+
+                    <strong>82</strong>
+
+                    <small>Health Score</small>
 
                   </div>
 
                 </div>
 
+
+                <div className="health-details">
+
+                  <span className="detail-label">
+                    YOUR HEALTH PROFILE
+                  </span>
+
+                  <h3>Looking good</h3>
+
+                  <div className="score-bar">
+                    <span></span>
+                  </div>
+
+                  <p>
+                    Your health information is organized
+                    and ready to explore.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div className="quick-tools">
+
+                <div className="quick-tool">
+                  <Activity size={18} />
+                  <div>
+                    <b>Vitals</b>
+                    <small>Updated</small>
+                  </div>
+                </div>
+
+                <div className="quick-tool">
+                  <Pill size={18} />
+                  <div>
+                    <b>Medicines</b>
+                    <small>Active</small>
+                  </div>
+                </div>
+
+                <div className="quick-tool">
+                  <FileText size={18} />
+                  <div>
+                    <b>Reports</b>
+                    <small>Saved</small>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            {/* FLOATING SECURITY */}
+
+            <div className="floating-info info-two">
+
+              <div className="floating-icon">
+                <ShieldCheck size={18} />
+              </div>
+
+              <div>
+                <b>Protected</b>
+                <span>Your data matters</span>
               </div>
 
             </div>
@@ -468,134 +250,114 @@ function Home() {
       </section>
 
 
-      {/* ================= FOOTER ================= */}
-      <footer className="bg-slate-900 px-6 py-12 text-white">
+      {/* FEATURES */}
 
-        <div className="mx-auto max-w-7xl">
+      <section className="feature-section">
 
-          <div className="grid gap-10 md:grid-cols-4">
+        <div className="feature-intro">
 
-            {/* Brand */}
-            <div>
+          <div className="eyebrow">
+            <Stethoscope size={15} />
+            SMART HEALTHCARE
+          </div>
 
-              <div className="flex items-center gap-2">
+          <h2>
+            Everything you need,
+            <span> in one place.</span>
+          </h2>
 
-                <HeartPulse size={26} />
+          <p>
+            Choose from a collection of healthcare tools designed
+            to make your health information easier to access.
+          </p>
 
-                <span className="text-xl font-bold">
-                  AI HealthMate
-                </span>
-
-              </div>
+        </div>
 
 
-              <p className="mt-4 text-sm leading-6 text-slate-400">
-                An AI-powered healthcare support platform designed
-                to help users understand and organize their health
-                information.
-              </p>
+        <div className="feature-grid">
 
+          {features.map((feature, index) => {
+
+            const Icon = feature.icon;
+
+            return (
+              <Link
+                key={feature.title}
+                to={feature.link}
+                className="feature-box"
+              >
+
+                <div className="feature-number">
+                  0{index + 1}
+                </div>
+
+                <div className="feature-icon">
+                  <Icon size={23} />
+                </div>
+
+                <h3>{feature.title}</h3>
+
+                <p>{feature.text}</p>
+
+                <div className="feature-link">
+                  Explore
+                  <ChevronRight size={16} />
+                </div>
+
+              </Link>
+            );
+
+          })}
+
+        </div>
+
+      </section>
+
+
+      {/* SMART SECTION */}
+
+      <section className="smart-section">
+
+        <div className="smart-container">
+
+          <div className="smart-content">
+
+            <div className="eyebrow">
+              <HeartPulse size={15} />
+              ONE SMART PLATFORM
             </div>
 
+            <h2>
+              Make healthcare
+              <br />
+              <span>simpler.</span>
+            </h2>
 
-            {/* Healthcare */}
-            <div>
+            <p>
+              AI HealthMate connects multiple healthcare utilities
+              through a clean and easy-to-use interface.
+            </p>
 
-              <h3 className="font-semibold">
-                Healthcare
-              </h3>
+            <div className="smart-list">
 
-
-              <div className="mt-4 space-y-3 text-sm text-slate-400">
-
-                <Link
-                  to="/ai-health-center"
-                  className="block hover:text-white"
-                >
-                  AI Assistant
-                </Link>
-
-
-                <Link
-                  to="/reports-vault"
-                  className="block hover:text-white"
-                >
-                  Medical Reports
-                </Link>
-
-
-                <Link
-                  to="/medicines"
-                  className="block hover:text-white"
-                >
-                  Medicine Assistant
-                </Link>
-
+              <div>
+                <CheckCircle2 size={17} />
+                Simple healthcare experience
               </div>
 
-            </div>
-
-
-            {/* Services */}
-            <div>
-
-              <h3 className="font-semibold">
-                Services
-              </h3>
-
-
-              <div className="mt-4 space-y-3 text-sm text-slate-400">
-
-                <Link
-                  to="/healthcare-services"
-                  className="block hover:text-white"
-                >
-                  Nearby Healthcare
-                </Link>
-
-
-                <Link
-                  to="/my-health"
-                  className="block hover:text-white"
-                >
-                  My Health
-                </Link>
-
-
-                <Link
-                  to="/reports-vault"
-                  className="block hover:text-white"
-                >
-                  Medical Vault
-                </Link>
-
+              <div>
+                <CheckCircle2 size={17} />
+                AI-assisted information
               </div>
 
-            </div>
+              <div>
+                <CheckCircle2 size={17} />
+                Medical reports and medicines
+              </div>
 
-
-            {/* Important */}
-            <div>
-
-              <h3 className="font-semibold">
-                Important
-              </h3>
-
-
-              <div className="mt-4 space-y-3 text-sm text-slate-400">
-
-                <p>
-                  Privacy Focused
-                </p>
-
-                <p>
-                  Secure Health Data
-                </p>
-
-                <p>
-                  AI-assisted Information
-                </p>
-
+              <div>
+                <CheckCircle2 size={17} />
+                Healthcare resources in one place
               </div>
 
             </div>
@@ -603,16 +365,95 @@ function Home() {
           </div>
 
 
-          {/* Copyright */}
-          <div className="mt-10 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+          <div className="smart-visual">
 
-            © 2026 AI HealthMate. All rights reserved.
+            <div className="smart-circle">
+
+              <div className="smart-center">
+                <HeartPulse size={42} />
+                <strong>Health</strong>
+                <small>At your fingertips</small>
+              </div>
+
+            </div>
+
+            <div className="smart-chip chip-one">
+              <Brain size={17} />
+              AI Insights
+            </div>
+
+            <div className="smart-chip chip-two">
+              <FileText size={17} />
+              Reports
+            </div>
+
+            <div className="smart-chip chip-three">
+              <Pill size={17} />
+              Medicines
+            </div>
 
           </div>
 
         </div>
+
+      </section>
+
+
+      {/* CTA */}
+
+      <section className="final-section">
+
+        <div className="final-icon">
+          <HeartPulse size={28} />
+        </div>
+
+        <h2>
+          Your health journey
+          <br />
+          starts here.
+        </h2>
+
+        <p>
+          Explore AI HealthMate and discover a simpler
+          way to access your healthcare tools.
+        </p>
+
+        <Link
+          to="/dashboard"
+          className="main-action final-button"
+        >
+          Get Started
+          <ArrowRight size={18} />
+        </Link>
+
+      </section>
+
+
+      {/* FOOTER */}
+
+      <footer className="health-footer">
+
+        <div>
+          <HeartPulse size={17} />
+          <span>AI HealthMate</span>
+        </div>
+
+        <p>
+          Healthcare information made simpler with AI.
+        </p>
 
       </footer>
+
+
+      <div className="medical-disclaimer">
+
+        <ShieldCheck size={15} />
+
+        AI HealthMate provides informational assistance
+        and does not replace professional medical advice,
+        diagnosis or treatment.
+
+      </div>
 
     </div>
   );

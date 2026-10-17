@@ -1,394 +1,505 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  ArrowLeft,
   HeartPulse,
-  Activity,
-  Droplets,
-  Scale,
-  Thermometer,
+  Weight,
+  Ruler,
+  Edit3,
+  Save,
+  X,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
   ShieldCheck,
+  Pill,
+  ClipboardList,
+  UserRound,
 } from "lucide-react";
 
+import "./MyHealth.css";
+
 function MyHealth() {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [healthData, setHealthData] = useState({
+    age: "",
+    gender: "",
+    bloodGroup: "",
+    height: "",
+    weight: "",
+  });
+
+  const [profileSummary, setProfileSummary] = useState({
+    bloodGroup: "",
+    allergies: [],
+    medicalHistory: "",
+    medications: "",
+    emergencyName: "",
+    emergencyPhone: "",
+  });
+
+  useEffect(() => {
+    try {
+      const savedProfile = localStorage.getItem("healthmate_health_profile");
+      if (!savedProfile) return;
+      const parsed = JSON.parse(savedProfile);
+      setProfileSummary((previous) => ({
+        ...previous,
+        ...parsed,
+        allergies: Array.isArray(parsed.allergies)
+          ? parsed.allergies
+          : parsed.allergies
+            ? parsed.allergies.split(", ").filter(Boolean)
+            : [],
+      }));
+    } catch (error) {
+      console.error("Unable to load health profile summary:", error);
+    }
+  }, []);
+
+  const [saved, setSaved] = useState(false);
+
+  const updateValue = (field, value) => {
+    setHealthData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const bmi = useMemo(() => {
+    const height = Number(healthData.height);
+    const weight = Number(healthData.weight);
+
+    if (!height || !weight) return "Not available";
+
+    const value = weight / ((height / 100) ** 2);
+
+    return value.toFixed(1);
+  }, [healthData.height, healthData.weight]);
+
+  const bmiStatus = useMemo(() => {
+    const value = Number(bmi);
+
+    if (!value) return "Add height and weight to calculate";
+    if (value < 18.5) return "Below normal range";
+    if (value < 25) return "Normal range";
+    if (value < 30) return "Above normal range";
+
+    return "High range";
+  }, [bmi]);
+
+  const handleSave = () => {
+    setIsEditing(false);
+    setSaved(true);
+
+    setTimeout(() => {
+      setSaved(false);
+    }, 2500);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="my-health-page">
 
       {/* ================= HEADER ================= */}
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-5">
 
-          <Link
-            to="/dashboard"
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-blue-300 hover:text-blue-600"
-          >
-            <ArrowLeft size={20} />
-          </Link>
+      <div className="my-health-header">
+
+        <div>
+          <div className="my-health-eyebrow">
+            <HeartPulse size={14} />
+            MY HEALTH
+          </div>
+
+          <h1>
+            Your Health,
+            <span> Your Data.</span>
+          </h1>
+
+          <p>
+            Keep your important health information organized
+            and easily accessible in one place.
+          </p>
+        </div>
+
+        <div className="my-health-header-icon">
+          <HeartPulse size={36} />
+        </div>
+
+      </div>
+
+
+      {/* ================= SUCCESS ================= */}
+
+      {saved && (
+        <div className="health-success">
+          <CheckCircle2 size={17} />
+          Health information saved successfully.
+        </div>
+      )}
+
+
+      {/* ================= PROFILE SUMMARY ================= */}
+
+      <section className="health-profile-card">
+
+        <div className="health-profile-left">
+
+          <div className="health-avatar">
+            <HeartPulse size={27} />
+          </div>
 
           <div>
-            <p className="text-sm font-medium text-blue-600">
-              AI HealthMate
-            </p>
+            <span className="health-small-label">
+              HEALTH PROFILE
+            </span>
 
-            <h1 className="text-2xl font-bold text-slate-900">
-              My Health
-            </h1>
+            <h2>
+              Personal Health Information
+            </h2>
+
+            <p>
+              Keep your information updated for better
+              health tracking.
+            </p>
           </div>
 
         </div>
-      </header>
 
 
-      {/* ================= MAIN ================= */}
-      <main className="mx-auto max-w-7xl px-6 py-8">
+        {!isEditing ? (
 
-        {/* Welcome */}
-        <section className="rounded-3xl bg-gradient-to-r from-blue-600 to-cyan-500 p-7 text-white shadow-lg">
+          <button
+            className="health-edit-btn"
+            onClick={() => setIsEditing(true)}
+          >
+            <Edit3 size={15} />
+            Edit Health
+          </button>
 
-          <div className="flex items-center gap-4">
+        ) : (
 
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">
-              <HeartPulse size={30} />
+          <div className="health-edit-actions">
+
+            <button
+              className="health-cancel-btn"
+              onClick={() => setIsEditing(false)}
+            >
+              <X size={15} />
+              Cancel
+            </button>
+
+            <button
+              className="health-save-btn"
+              onClick={handleSave}
+            >
+              <Save size={15} />
+              Save
+            </button>
+
+          </div>
+
+        )}
+
+      </section>
+
+
+      {/* ================= BASIC INFORMATION ================= */}
+
+      <section className="health-section">
+
+        <div className="health-section-title">
+          <div>
+            <span>PERSONAL INFORMATION</span>
+            <h2>Basic Health Details</h2>
+          </div>
+        </div>
+
+
+        <div className="health-details-grid">
+
+          <HealthField
+            label="Age"
+            value={healthData.age}
+            editing={isEditing}
+            onChange={(value) =>
+              updateValue("age", value)
+            }
+            suffix="years"
+          />
+
+          <HealthField
+            label="Gender"
+            value={healthData.gender}
+            editing={isEditing}
+            type="select"
+            options={[
+              "Male",
+              "Female",
+              "Other",
+              "Prefer not to say",
+            ]}
+            onChange={(value) =>
+              updateValue("gender", value)
+            }
+          />
+
+          <HealthField
+            label="Blood Group"
+            value={healthData.bloodGroup}
+            editing={isEditing}
+            type="select"
+            options={[
+              "A+",
+              "A-",
+              "B+",
+              "B-",
+              "AB+",
+              "AB-",
+              "O+",
+              "O-",
+            ]}
+            onChange={(value) =>
+              updateValue("bloodGroup", value)
+            }
+          />
+
+          <HealthField
+            label="Height"
+            value={healthData.height}
+            editing={isEditing}
+            onChange={(value) =>
+              updateValue("height", value)
+            }
+            suffix="cm"
+          />
+
+          <HealthField
+            label="Weight"
+            value={healthData.weight}
+            editing={isEditing}
+            onChange={(value) =>
+              updateValue("weight", value)
+            }
+            suffix="kg"
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* ================= HEALTH PROFILE SUMMARY ================= */}
+
+      <section className="health-section">
+        <div className="health-section-title">
+          <div>
+            <span>YOUR HEALTH PROFILE</span>
+            <h2>Medical Summary</h2>
+          </div>
+          <a className="health-summary-edit" href="/health-profile">
+            <Edit3 size={14} /> Update profile
+          </a>
+        </div>
+
+        <div className="health-summary-grid">
+          <HealthSummaryCard icon={ShieldCheck} title="Blood Group" value={profileSummary.bloodGroup || "Not added"} />
+          <HealthSummaryCard
+            icon={AlertCircle}
+            title="Allergies"
+            value={profileSummary.allergies?.length ? profileSummary.allergies.join(", ") : "None added"}
+          />
+          <HealthSummaryCard icon={ClipboardList} title="Medical History" value={profileSummary.medicalHistory || "Not added"} />
+          <HealthSummaryCard icon={Pill} title="Medications" value={profileSummary.medications || "Not added"} />
+          <HealthSummaryCard
+            icon={UserRound}
+            title="Emergency Contact"
+            value={[profileSummary.emergencyName, profileSummary.emergencyPhone].filter(Boolean).join(" · ") || "Not added"}
+          />
+        </div>
+      </section>
+
+
+      {/* ================= BODY METRICS ================= */}
+
+      <section className="health-section">
+
+        <div className="health-section-title">
+          <div>
+            <span>BODY METRICS</span>
+            <h2>Body Measurements</h2>
+          </div>
+        </div>
+
+
+        <div className="metrics-grid">
+
+          <div className="metric-card">
+
+            <div className="metric-icon">
+              <Weight size={21} />
             </div>
 
             <div>
-              <p className="text-sm text-blue-100">
-                Health Overview
-              </p>
+              <span>Weight</span>
 
-              <h2 className="mt-1 text-2xl font-bold">
-                Keep track of your health
-              </h2>
+              <strong>
+                {healthData.weight || "Not added"}
+                {healthData.weight && <small> kg</small>}
+              </strong>
             </div>
 
           </div>
 
-          <p className="mt-5 max-w-2xl text-sm leading-6 text-blue-50">
-            View your basic health information and keep important
-            health details organized in one place.
-          </p>
 
-        </section>
+          <div className="metric-card">
 
-
-        {/* ================= HEALTH STATUS ================= */}
-        <section className="mt-8">
-
-          <div className="mb-5">
-            <h2 className="text-xl font-bold text-slate-900">
-              Health Status
-            </h2>
-
-            <p className="mt-1 text-sm text-slate-500">
-              Your current health information
-            </p>
-          </div>
-
-
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-            {/* Heart Rate */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50">
-                <HeartPulse
-                  size={24}
-                  className="text-red-500"
-                />
-              </div>
-
-              <p className="mt-5 text-sm text-slate-500">
-                Heart Rate
-              </p>
-
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">
-                -- <span className="text-sm font-medium text-slate-400">BPM</span>
-              </h3>
-
+            <div className="metric-icon">
+              <Ruler size={21} />
             </div>
 
+            <div>
+              <span>Height</span>
 
-            {/* Blood Pressure */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-                <Activity
-                  size={24}
-                  className="text-blue-600"
-                />
-              </div>
-
-              <p className="mt-5 text-sm text-slate-500">
-                Blood Pressure
-              </p>
-
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">
-                -- / --
-              </h3>
-
-              <p className="text-xs text-slate-400">
-                mmHg
-              </p>
-
-            </div>
-
-
-            {/* Blood Group */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50">
-                <Droplets
-                  size={24}
-                  className="text-rose-600"
-                />
-              </div>
-
-              <p className="mt-5 text-sm text-slate-500">
-                Blood Group
-              </p>
-
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">
-                Not Added
-              </h3>
-
-            </div>
-
-
-            {/* Temperature */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50">
-                <Thermometer
-                  size={24}
-                  className="text-orange-600"
-                />
-              </div>
-
-              <p className="mt-5 text-sm text-slate-500">
-                Temperature
-              </p>
-
-              <h3 className="mt-1 text-2xl font-bold text-slate-900">
-                -- °C
-              </h3>
-
+              <strong>
+                {healthData.height || "Not added"}
+                {healthData.height && <small> cm</small>}
+              </strong>
             </div>
 
           </div>
 
-        </section>
 
+          <div className="metric-card">
 
-        {/* ================= PERSONAL DETAILS ================= */}
-        <section className="mt-10">
-
-          <div className="mb-5">
-            <h2 className="text-xl font-bold text-slate-900">
-              Health Details
-            </h2>
-
-            <p className="mt-1 text-sm text-slate-500">
-              Important information about your health
-            </p>
-          </div>
-
-
-          <div className="grid gap-6 lg:grid-cols-2">
-
-            {/* Basic Information */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
-              <h3 className="text-lg font-bold text-slate-900">
-                Basic Information
-              </h3>
-
-              <div className="mt-6 space-y-4">
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Age
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    Not Added
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Gender
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    Not Added
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Blood Group
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    Not Added
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-500">
-                    Weight
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    Not Added
-                  </span>
-                </div>
-
-              </div>
-
+            <div className="metric-icon">
+              <TrendingUp size={21} />
             </div>
 
+            <div>
+              <span>BMI</span>
 
-            {/* Medical Information */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <strong>
+                {bmi}
+              </strong>
 
-              <h3 className="text-lg font-bold text-slate-900">
-                Medical Information
-              </h3>
-
-              <div className="mt-6 space-y-4">
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Allergies
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    None Added
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Existing Conditions
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    None Added
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <span className="text-sm text-slate-500">
-                    Current Medicines
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    0
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-500">
-                    Medical Reports
-                  </span>
-
-                  <span className="font-semibold text-slate-900">
-                    0
-                  </span>
-                </div>
-
-              </div>
-
+              <small className="bmi-status">
+                {bmiStatus}
+              </small>
             </div>
 
           </div>
 
-        </section>
+        </div>
+
+      </section>
 
 
-        {/* ================= HEALTH SCORE ================= */}
-        <section className="mt-10">
+      {/* ================= DISCLAIMER ================= */}
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="health-disclaimer">
 
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <AlertCircle size={17} />
 
-              <div className="flex items-center gap-4">
+        <p>
+          Your saved health profile is for personal reference.
+          It should not be used as a substitute for professional
+          medical diagnosis or treatment.
+        </p>
 
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50">
-                  <Scale
-                    size={26}
-                    className="text-green-600"
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900">
-                    Health Profile
-                  </h3>
-
-                  <p className="mt-1 text-sm text-slate-500">
-                    Complete your health information to keep
-                    your profile organized.
-                  </p>
-                </div>
-
-              </div>
-
-              <div className="rounded-xl bg-green-50 px-5 py-3 text-center">
-                <p className="text-xs font-medium text-green-600">
-                  Profile Status
-                </p>
-
-                <p className="mt-1 font-bold text-green-700">
-                  Getting Started
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        {/* ================= SAFETY ================= */}
-        <section className="mt-8">
-
-          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-6">
-
-            <div className="flex gap-4">
-
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white">
-                <ShieldCheck
-                  size={24}
-                  className="text-blue-600"
-                />
-              </div>
-
-              <div>
-
-                <h3 className="font-bold text-slate-900">
-                  Health Information Notice
-                </h3>
-
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  This page is for organizing health information.
-                  It does not replace advice, diagnosis, or treatment
-                  from a qualified healthcare professional.
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-      </main>
+      </div>
 
     </div>
+  );
+}
+
+
+/* ================= HEALTH FIELD ================= */
+
+function HealthField({
+  label,
+  value,
+  editing,
+  onChange,
+  suffix,
+  type = "text",
+  options = [],
+}) {
+  return (
+    <div className="health-field">
+
+      <label>
+        {label}
+      </label>
+
+      {editing ? (
+
+        type === "select" ? (
+
+          <select
+            value={value}
+            onChange={(e) =>
+              onChange(e.target.value)
+            }
+          >
+            <option value="">Select {label.toLowerCase()}</option>
+            {options.map((option) => (
+              <option
+                key={option}
+                value={option}
+              >
+                {option}
+              </option>
+            ))}
+          </select>
+
+        ) : (
+
+          <div className="field-input-wrapper">
+
+            <input
+              type="text"
+              value={value}
+              onChange={(e) =>
+                onChange(e.target.value)
+              }
+            />
+
+            {suffix && (
+              <span>{suffix}</span>
+            )}
+
+          </div>
+
+        )
+
+      ) : (
+
+        <div className="health-read-value">
+
+          <strong className={value ? "" : "health-value-empty"}>
+            {value || "Not added"}
+          </strong>
+
+          {suffix && (
+            <span>{suffix}</span>
+          )}
+
+        </div>
+
+      )}
+
+    </div>
+  );
+}
+
+function HealthSummaryCard({ icon: Icon, title, value }) {
+  return (
+    <article className="health-summary-card">
+      <div className="health-summary-icon"><Icon size={18} /></div>
+      <div>
+        <h3>{title}</h3>
+        <p>{value}</p>
+      </div>
+    </article>
   );
 }
 

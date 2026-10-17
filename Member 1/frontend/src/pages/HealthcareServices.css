@@ -1,0 +1,964 @@
+.healthcare-page {
+  min-height: 100vh;
+  padding: 45px 6% 70px;
+
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(15, 118, 110, 0.12),
+      transparent 28%
+    ),
+    #f4fbf9;
+
+  color: #173f3b;
+}
+
+
+/* ================= HEADER ================= */
+
+.healthcare-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+.healthcare-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  color: #0f766e;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.healthcare-header h1 {
+  margin: 0 0 11px;
+
+  color: #173f3b;
+
+  font-size: clamp(35px, 5vw, 52px);
+
+  line-height: 1.05;
+
+  letter-spacing: -1.5px;
+}
+
+.healthcare-header h1 span {
+  color: #0f766e;
+}
+
+.healthcare-header p {
+  max-width: 680px;
+
+  margin: 0;
+
+  color: #788f8a;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+.healthcare-header-icon {
+  width: 76px;
+  height: 76px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0f766e,
+      #159d91
+    );
+
+  color: white;
+
+  box-shadow:
+    0 16px 35px rgba(15, 118, 110, 0.2);
+}
+
+
+/* ================= SEARCH ================= */
+
+.search-card {
+  max-width: 1200px;
+
+  margin: 0 auto 15px;
+
+  padding: 13px;
+
+  display: flex;
+
+  gap: 10px;
+
+  background: white;
+
+  border: 1px solid #dcefeb;
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 118, 110, 0.05);
+}
+
+.search-box {
+  flex: 1;
+
+  min-height: 43px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 13px;
+
+  border: 1px solid #e1ecea;
+
+  border-radius: 10px;
+
+  background: #f9fcfb;
+
+  color: #0f766e;
+}
+
+.search-box input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #42635d;
+
+  font-size: 10px;
+}
+
+.search-box input::placeholder {
+  color: #9baca8;
+}
+
+.clear-search {
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #e8f3f1;
+
+  color: #6e8983;
+
+  cursor: pointer;
+}
+
+.location-button {
+  min-height: 43px;
+
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #0f766e;
+
+  color: white;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.location-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.live-location-status,
+.blood-live-status {
+  max-width: 1200px;
+  margin: 0 auto 14px;
+  padding: 10px 13px;
+  border: 1px solid #cfe7e1;
+  border-radius: 10px;
+  background: #eff9f6;
+  color: #54766e;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.live-source-badge {
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: #e8f7f2;
+  color: #27836f;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+
+
+/* ================= FILTERS ================= */
+
+.healthcare-filters {
+  max-width: 1200px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+
+  gap: 7px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.healthcare-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-button {
+  flex-shrink: 0;
+
+  padding: 8px 13px;
+
+  border: 1px solid #dbeae7;
+
+  border-radius: 20px;
+
+  background: white;
+
+  color: #718782;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.filter-button:hover {
+  border-color: #a6d4cd;
+
+  color: #0f766e;
+}
+
+.filter-button.active {
+  border-color: #0f766e;
+
+  background: #0f766e;
+
+  color: white;
+}
+
+
+/* ================= QUICK ================= */
+
+.quick-services {
+  max-width: 1200px;
+
+  margin: 0 auto 25px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+.quick-service {
+  min-height: 72px;
+
+  padding: 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1px solid #dcefeb;
+
+  border-radius: 15px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 25px rgba(15, 118, 110, 0.04);
+}
+
+.quick-service > div {
+  width: 39px;
+  height: 39px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #e1f5f0;
+
+  color: #0f766e;
+}
+
+.quick-service section {
+  flex: 1;
+}
+
+.quick-service section span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #99aaa7;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+}
+
+.quick-service section strong {
+  color: #45645e;
+
+  font-size: 9px;
+}
+
+.quick-service a {
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #e5f7f2;
+
+  color: #0f766e;
+}
+
+.emergency-quick {
+  border-color: #ead9d5;
+}
+
+.emergency-quick > div {
+  background: #fff0ee;
+  color: #bd665e;
+}
+
+.emergency-quick a {
+  background: #fff0ee;
+  color: #bd665e;
+}
+
+
+/* ================= SERVICES ================= */
+
+.services-section {
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+.services-title {
+  margin-bottom: 13px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.services-title span {
+  color: #95aaa5;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.services-title h2 {
+  margin: 4px 0 0;
+
+  color: #3d6059;
+
+  font-size: 20px;
+}
+
+.services-title p {
+  margin: 0;
+
+  color: #8b9f9a;
+
+  font-size: 8px;
+}
+
+
+/* ================= GRID ================= */
+
+.services-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+
+/* ================= CARD ================= */
+
+.service-card {
+  padding: 17px;
+
+  background: white;
+
+  border: 1px solid #dcefeb;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 9px 28px rgba(15, 118, 110, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 15px 35px rgba(15, 118, 110, 0.09);
+}
+
+.service-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.service-icon {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #e1f5f0;
+
+  color: #0f766e;
+}
+
+.service-rating {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 5px 7px;
+
+  border-radius: 7px;
+
+  background: #fff8e9;
+
+  color: #b67c28;
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+.service-type {
+  margin-top: 13px;
+
+  color: #0f766e;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+}
+
+.service-card h3 {
+  margin: 4px 0 6px;
+
+  color: #3c6059;
+
+  font-size: 13px;
+}
+
+.service-description {
+  min-height: 32px;
+
+  margin: 0 0 12px;
+
+  color: #879b96;
+
+  font-size: 8px;
+
+  line-height: 1.5;
+}
+
+
+/* ================= DETAILS ================= */
+
+.service-details {
+  padding: 10px 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  border-top: 1px solid #edf4f2;
+
+  border-bottom: 1px solid #edf4f2;
+}
+
+.service-details div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #78908a;
+
+  font-size: 8px;
+}
+
+.service-details svg {
+  flex-shrink: 0;
+
+  color: #0f766e;
+}
+
+
+/* ================= EMERGENCY ================= */
+
+.emergency-badge {
+  margin-top: 10px;
+
+  padding: 6px 8px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 7px;
+
+  background: #fff3f1;
+
+  color: #b9675f;
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.service-actions {
+  margin-top: 12px;
+
+  display: flex;
+
+  gap: 7px;
+}
+
+.details-button {
+  flex: 1;
+
+  height: 35px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #0f766e;
+
+  color: white;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.direction-button {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d9eae7;
+
+  border-radius: 9px;
+
+  background: #f7fbfa;
+
+  color: #0f766e;
+
+  cursor: pointer;
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty-services {
+  padding: 65px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 1px dashed #b9d9d3;
+
+  border-radius: 17px;
+
+  background: white;
+
+  color: #0f766e;
+
+  text-align: center;
+}
+
+.empty-services h3 {
+  margin: 12px 0 5px;
+
+  color: #46645e;
+
+  font-size: 13px;
+}
+
+.empty-services p {
+  margin: 0;
+
+  color: #8a9d99;
+
+  font-size: 9px;
+}
+
+
+/* ================= MODAL ================= */
+
+.service-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 55, 51, 0.38);
+
+  backdrop-filter: blur(4px);
+}
+
+.service-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 430px;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  background: white;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.18);
+
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-close {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #eef6f4;
+
+  color: #66817b;
+
+  cursor: pointer;
+}
+
+.modal-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 15px;
+
+  background: #e1f5f0;
+
+  color: #0f766e;
+}
+
+.modal-type {
+  color: #0f766e;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.service-modal h2 {
+  margin: 5px 0 8px;
+
+  color: #355b54;
+
+  font-size: 21px;
+}
+
+.service-modal > p {
+  margin: 0;
+
+  color: #7e938e;
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+.modal-details {
+  margin-top: 17px;
+
+  padding: 13px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+
+  border-radius: 12px;
+
+  background: #f5fbf9;
+}
+
+.modal-details div {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #637d77;
+
+  font-size: 9px;
+}
+
+.modal-details svg {
+  color: #0f766e;
+}
+
+.modal-actions {
+  margin-top: 15px;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.modal-actions button,
+.modal-actions a {
+  flex: 1;
+
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #0f766e;
+
+  color: white;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.modal-actions a {
+  background: #e1f5f0;
+
+  color: #0f766e;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1050px) {
+
+  .quick-services {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .healthcare-page {
+    padding: 90px 15px 45px;
+  }
+
+  .healthcare-header {
+    align-items: flex-start;
+  }
+
+  .healthcare-header h1 {
+    font-size: 38px;
+  }
+
+  .healthcare-header p {
+    font-size: 11px;
+  }
+
+  .healthcare-header-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+  }
+
+  .search-card {
+    flex-direction: column;
+  }
+
+  .location-button {
+    justify-content: center;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .healthcare-header {
+    flex-direction: column;
+  }
+
+  .healthcare-header-icon {
+    display: none;
+  }
+
+  .quick-services {
+    grid-template-columns: 1fr;
+  }
+
+  .services-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+}
