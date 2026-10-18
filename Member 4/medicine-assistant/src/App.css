@@ -308,3 +308,18 @@ footer {
 .info-card p {
   text-align: left;
 }
+
+/* Center the medicine details panel */
+.content-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.details-panel {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
