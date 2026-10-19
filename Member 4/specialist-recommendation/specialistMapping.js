@@ -1,132 +1,1877 @@
 const specialistMapping = {
-  migraine: {
-    specialist: "Neurologist",
-    department: "Neurology",
-    reason:
-      "Neurologists evaluate and treat conditions involving the brain, nerves, and nervous system."
+  Neurologist: {
+    description: "Specializes in the brain, spinal cord, nerves, and nervous system.",
+    conditions: ["Migraine", "Epilepsy", "Nerve disorders"],
+    nextStep: "Describe your symptoms and their duration during your consultation.",
+    icon: "🧠",
+  },
+  Dermatologist: {
+    description: "Specializes in diseases of the skin, hair, and nails.",
+    conditions: ["Acne", "Eczema", "Psoriasis"],
+    nextStep: "Mention any skin changes, itching, or products that affect your condition.",
+    icon: "🧴",
+  },
+  Endocrinologist: {
+    description: "Specializes in hormones, glands, and metabolic conditions.",
+    conditions: ["Diabetes", "Thyroid disorders", "Hormonal disorders"],
+    nextStep: "Bring any available blood sugar or hormone test results.",
+    icon: "🩸",
+  },
+  Pulmonologist: {
+    description: "Specializes in diseases of the lungs and respiratory system.",
+    conditions: ["Asthma", "Pneumonia", "Chronic lung conditions"],
+    nextStep: "Discuss breathing symptoms, triggers, and current medicines.",
+    icon: "🫁",
+  },
+  Cardiologist: {
+    description: "Specializes in the heart and cardiovascular system.",
+    conditions: ["Heart disease", "Hypertension", "Heart rhythm disorders"],
+    nextStep: "Bring relevant blood pressure readings and previous test results.",
+    icon: "❤️",
+  },
+  Nephrologist: {
+    description: "Specializes in kidney function and kidney diseases.",
+    conditions: ["Kidney disease", "Chronic kidney conditions"],
+    nextStep: "Bring available kidney function reports and your medication list.",
+    icon: "🫘",
+  },
+  Rheumatologist: {
+    description: "Specializes in inflammatory and autoimmune conditions affecting joints and connective tissues.",
+    conditions: ["Arthritis", "Autoimmune conditions", "Joint inflammation"],
+    nextStep: "Describe joint pain, stiffness, swelling, and how long symptoms have lasted.",
+    icon: "🦴",
+  },
+  Ophthalmologist: {
+    description: "A medical doctor who diagnoses and treats eye diseases.",
+    conditions: ["Glaucoma", "Cataracts", "Other eye conditions"],
+    nextStep: "Mention any changes in vision and bring previous eye examination records.",
+    icon: "👁️",
+  },
+  Psychiatrist: {
+    description: "A medical doctor specializing in mental health conditions.",
+    conditions: ["Depression", "Anxiety", "Other mental health conditions"],
+    nextStep: "Discuss your symptoms, their duration, and how they affect daily life.",
+    icon: "🧠",
+  },
+  Gastroenterologist: {
+    description: "Specializes in the digestive system, including the stomach and intestines.",
+    conditions: ["Gastritis", "Acid reflux", "Digestive disorders"],
+    nextStep: "Describe your digestive symptoms, their frequency, and any medicines you take.",
+    icon: "🩺",
+  },
+  
+  "Interventional Cardiologist": {
+    description: "Treats heart and blood vessel disease using catheter-based procedures.",
+    conditions: ["Blocked arteries", "Heart attack", "Angioplasty needs"],
+    nextStep: "Bring ECG, angiography and stress test reports.",
+    icon: "🫀",
+  },
+  "Electrophysiologist": {
+    description: "Specializes in the electrical system and rhythm of the heart.",
+    conditions: ["Arrhythmia", "Atrial fibrillation", "Palpitations"],
+    nextStep: "Note when palpitations occur and bring any ECG or Holter reports.",
+    icon: "⚡",
+  },
+  "Pediatric Cardiologist": {
+    description: "Diagnoses and treats heart conditions in infants and children.",
+    conditions: ["Congenital heart defects", "Heart murmurs", "Childhood arrhythmia"],
+    nextStep: "Share your child's growth, feeding and activity history.",
+    icon: "👶",
+  },
+  "Cardiac Surgeon": {
+    description: "Performs surgery on the heart and major vessels.",
+    conditions: ["Bypass surgery", "Valve disease", "Aortic disease"],
+    nextStep: "Bring angiography, echo reports and your medicine list.",
+    icon: "🔪",
+  },
+  "Vascular Surgeon": {
+    description: "Treats diseases of arteries and veins outside the heart.",
+    conditions: ["Aneurysm", "Peripheral artery disease", "Varicose veins"],
+    nextStep: "Describe leg pain, swelling or color changes.",
+    icon: "🩸",
+  },
+  "Heart Failure Specialist": {
+    description: "Manages weak or failing heart function over the long term.",
+    conditions: ["Heart failure", "Cardiomyopathy", "Fluid retention"],
+    nextStep: "Track daily weight and swelling and bring your medicines.",
+    icon: "💓",
+  },
+  "Preventive Cardiologist": {
+    description: "Focuses on lowering the risk of heart disease before it develops.",
+    conditions: ["High cholesterol", "Family heart risk", "Lifestyle risk factors"],
+    nextStep: "Bring lipid profile, blood pressure logs and family history.",
+    icon: "🛡️",
+  },
+  "Cardiac Imaging Specialist": {
+    description: "Uses echo, CT and MRI to evaluate the heart.",
+    conditions: ["Unexplained chest pain", "Valve problems", "Heart muscle disease"],
+    nextStep: "Bring prior scans and note your symptoms.",
+    icon: "🖥️",
+  },
+  "Phlebologist": {
+    description: "Specializes in vein disorders and their treatment.",
+    conditions: ["Varicose veins", "Spider veins", "Chronic venous insufficiency"],
+    nextStep: "Mention leg heaviness, swelling and skin changes.",
+    icon: "🦵",
+  },
+  "Lipidologist": {
+    description: "Specializes in cholesterol and fat metabolism disorders.",
+    conditions: ["Familial hypercholesterolemia", "High triglycerides", "Dyslipidemia"],
+    nextStep: "Bring recent lipid reports and family history.",
+    icon: "🧪",
+  },
+  "Hypertension Specialist": {
+    description: "Focuses on diagnosing and controlling high blood pressure.",
+    conditions: ["Resistant hypertension", "Secondary hypertension", "Blood pressure swings"],
+    nextStep: "Bring home blood pressure readings and medicine list.",
+    icon: "📈",
+  },
+  "Thoracic Surgeon": {
+    description: "Operates on the chest, lungs, esophagus and related structures.",
+    conditions: ["Lung tumors", "Esophageal disease", "Chest wall problems"],
+    nextStep: "Bring chest scans and previous biopsy reports.",
+    icon: "🫁",
+  },
+  "Neurosurgeon": {
+    description: "Performs surgery on the brain, spine and nerves.",
+    conditions: ["Brain tumors", "Head injury", "Spinal compression"],
+    nextStep: "Bring MRI or CT scans and describe neurological symptoms.",
+    icon: "🧠",
+  },
+  "Epileptologist": {
+    description: "Specializes in diagnosing and managing seizure disorders.",
+    conditions: ["Seizures", "Drug-resistant epilepsy", "Blackout episodes"],
+    nextStep: "Describe seizure episodes and bring EEG reports.",
+    icon: "⚡",
+  },
+  "Pediatric Neurologist": {
+    description: "Treats nervous system conditions in children.",
+    conditions: ["Childhood seizures", "Developmental delay", "Febrile convulsions"],
+    nextStep: "Note milestones reached and describe any episodes.",
+    icon: "🧒",
+  },
+  "Neuromuscular Specialist": {
+    description: "Treats disorders of nerves and muscles.",
+    conditions: ["Muscular dystrophy", "Myasthenia gravis", "Muscle weakness"],
+    nextStep: "Describe weakness patterns and bring nerve test results.",
+    icon: "💪",
+  },
+  "Movement Disorder Specialist": {
+    description: "Treats conditions causing abnormal or slow movements.",
+    conditions: ["Parkinson's disease", "Tremor", "Dystonia"],
+    nextStep: "Record videos of tremors or movement problems.",
+    icon: "🚶",
+  },
+  "Headache Specialist": {
+    description: "Focuses on chronic and complex headache conditions.",
+    conditions: ["Chronic headache", "Cluster headache", "Medication overuse headache"],
+    nextStep: "Keep a headache diary with triggers and timing.",
+    icon: "🤕",
+  },
+  "Stroke Specialist": {
+    description: "Treats and prevents stroke and brain blood vessel disease.",
+    conditions: ["Stroke", "Transient ischemic attack", "Carotid disease"],
+    nextStep: "Note the time symptoms began and bring scans.",
+    icon: "🚑",
+  },
+  "Neuro-oncologist": {
+    description: "Treats tumors of the brain and nervous system.",
+    conditions: ["Brain tumors", "Spinal tumors", "Metastatic brain disease"],
+    nextStep: "Bring MRI scans and pathology reports.",
+    icon: "🎗️",
+  },
+  "Neuroradiologist": {
+    description: "Interprets imaging and performs image-guided procedures of the brain and spine.",
+    conditions: ["Brain imaging", "Spine imaging", "Vascular malformations"],
+    nextStep: "Bring all prior scans on disc or digital copy.",
+    icon: "🩻",
+  },
+  "Sleep Medicine Specialist": {
+    description: "Diagnoses and treats sleep disorders.",
+    conditions: ["Insomnia", "Sleep apnea", "Narcolepsy"],
+    nextStep: "Keep a sleep diary and mention snoring or daytime tiredness.",
+    icon: "😴",
+  },
+  "Neuropsychologist": {
+    description: "Assesses memory, thinking and behavior after brain conditions.",
+    conditions: ["Memory loss", "Cognitive decline", "Post-injury cognitive problems"],
+    nextStep: "Describe memory or attention concerns with examples.",
+    icon: "🧩",
+  },
+  "Neurorehabilitation Specialist": {
+    description: "Helps recovery of function after nervous system injury.",
+    conditions: ["Post-stroke recovery", "Spinal cord injury", "Brain injury"],
+    nextStep: "Bring discharge summaries and therapy records.",
+    icon: "♿",
+  },
+  "Neuro-ophthalmologist": {
+    description: "Treats vision problems caused by the nervous system.",
+    conditions: ["Optic neuritis", "Double vision", "Visual field loss"],
+    nextStep: "Describe vision changes and bring eye test reports.",
+    icon: "👁️",
+  },
+  "Neuro-otologist": {
+    description: "Treats ear and balance disorders linked to the nervous system.",
+    conditions: ["Vertigo", "Acoustic neuroma", "Balance disorders"],
+    nextStep: "Describe dizziness episodes and bring hearing tests.",
+    icon: "🌀",
+  },
+  "Pain Management Specialist": {
+    description: "Diagnoses and treats chronic and complex pain.",
+    conditions: ["Chronic back pain", "Neuropathic pain", "Cancer pain"],
+    nextStep: "Rate your pain and list treatments already tried.",
+    icon: "💊",
+  },
+  "Spine Surgeon": {
+    description: "Performs surgery for spinal disorders.",
+    conditions: ["Slipped disc", "Spinal stenosis", "Scoliosis"],
+    nextStep: "Bring spine MRI or X-rays and describe leg or arm symptoms.",
+    icon: "🦴",
+  },
+  "Pediatric Dermatologist": {
+    description: "Treats skin conditions in infants and children.",
+    conditions: ["Infant eczema", "Birthmarks", "Childhood skin infections"],
+    nextStep: "Share photos of skin changes and any known allergies.",
+    icon: "👶",
+  },
+  "Cosmetic Dermatologist": {
+    description: "Provides aesthetic treatments for skin and appearance.",
+    conditions: ["Wrinkles", "Pigmentation", "Skin rejuvenation"],
+    nextStep: "Discuss your goals and any past cosmetic treatments.",
+    icon: "✨",
+  },
+  "Dermatopathologist": {
+    description: "Diagnoses skin disease by examining skin tissue samples.",
+    conditions: ["Skin biopsy review", "Skin cancer diagnosis", "Rare rashes"],
+    nextStep: "Bring biopsy slides and reports if available.",
+    icon: "🔬",
+  },
+  "Mohs Surgeon": {
+    description: "Removes skin cancers with precise layer-by-layer surgery.",
+    conditions: ["Basal cell carcinoma", "Squamous cell carcinoma", "Facial skin cancer"],
+    nextStep: "Bring biopsy reports and photos of the lesion.",
+    icon: "🎯",
+  },
+  "Trichologist": {
+    description: "Specializes in hair and scalp health.",
+    conditions: ["Hair loss", "Dandruff", "Scalp conditions"],
+    nextStep: "Mention hair care routine and recent stress or illness.",
+    icon: "💇",
+  },
+  "Allergist": {
+    description: "Diagnoses and treats allergic conditions.",
+    conditions: ["Food allergy", "Hay fever", "Allergic reactions"],
+    nextStep: "List suspected triggers and reactions you have had.",
+    icon: "🤧",
+  },
+  "Clinical Immunologist": {
+    description: "Treats disorders of the immune system.",
+    conditions: ["Immune deficiency", "Recurrent infections", "Autoimmune disorders"],
+    nextStep: "Bring infection history and immune test results.",
+    icon: "🛡️",
+  },
+  "Plastic Surgeon": {
+    description: "Performs reconstructive and cosmetic surgery.",
+    conditions: ["Reconstruction", "Scar revision", "Cosmetic procedures"],
+    nextStep: "Discuss expectations and bring any prior surgery records.",
+    icon: "🩹",
+  },
+  "Reconstructive Surgeon": {
+    description: "Restores form and function after injury or disease.",
+    conditions: ["Trauma reconstruction", "Cancer reconstruction", "Congenital defects"],
+    nextStep: "Bring imaging and surgical history.",
+    icon: "🧵",
+  },
+  "Burn Specialist": {
+    description: "Treats burn injuries and their complications.",
+    conditions: ["Thermal burns", "Chemical burns", "Burn scars"],
+    nextStep: "Describe how the burn happened and bring treatment records.",
+    icon: "🔥",
+  },
+  "Wound Care Specialist": {
+    description: "Treats chronic and non-healing wounds.",
+    conditions: ["Diabetic ulcers", "Pressure sores", "Non-healing wounds"],
+    nextStep: "Note how long the wound has been present.",
+    icon: "🩹",
+  },
+  "Venereologist": {
+    description: "Treats sexually transmitted and genital skin infections.",
+    conditions: ["Sexually transmitted infections", "Genital warts", "Genital skin conditions"],
+    nextStep: "Be open about symptoms and recent exposures.",
+    icon: "🔒",
+  },
+  "Pediatric Endocrinologist": {
+    description: "Treats hormone and growth disorders in children.",
+    conditions: ["Growth problems", "Early puberty", "Childhood diabetes"],
+    nextStep: "Bring growth charts and height measurements.",
+    icon: "📏",
+  },
+  "Diabetologist": {
+    description: "Specializes in diagnosing and managing diabetes.",
+    conditions: ["Type 1 diabetes", "Type 2 diabetes", "Gestational diabetes"],
+    nextStep: "Bring glucose logs and HbA1c reports.",
+    icon: "🍬",
+  },
+  "Reproductive Endocrinologist": {
+    description: "Treats hormonal causes of reproductive problems.",
+    conditions: ["Infertility", "PCOS", "Irregular periods"],
+    nextStep: "Bring cycle records and hormone test results.",
+    icon: "🌸",
+  },
+  "Thyroid Surgeon": {
+    description: "Performs surgery on the thyroid and parathyroid glands.",
+    conditions: ["Thyroid nodules", "Goiter", "Thyroid cancer"],
+    nextStep: "Bring ultrasound, biopsy and thyroid function reports.",
+    icon: "🦋",
+  },
+  "Bariatric Specialist": {
+    description: "Manages severe obesity with medical and surgical options.",
+    conditions: ["Severe obesity", "Weight-related disease", "Pre-surgery evaluation"],
+    nextStep: "Share weight history and past diet attempts.",
+    icon: "⚖️",
+  },
+  "Obesity Medicine Specialist": {
+    description: "Treats weight gain and its medical causes.",
+    conditions: ["Obesity", "Metabolic syndrome", "Weight-related hormone issues"],
+    nextStep: "Bring weight records and current medicines.",
+    icon: "📉",
+  },
+  "Metabolic Specialist": {
+    description: "Treats inherited and acquired metabolic disorders.",
+    conditions: ["Metabolic syndrome", "Enzyme disorders", "Electrolyte imbalance"],
+    nextStep: "Bring blood and urine test results.",
+    icon: "🧬",
+  },
+  "Osteoporosis Specialist": {
+    description: "Treats bone loss and fracture risk.",
+    conditions: ["Osteoporosis", "Low bone density", "Fragility fractures"],
+    nextStep: "Bring bone density scan and calcium or vitamin D reports.",
+    icon: "🦴",
+  },
+  "Andrologist": {
+    description: "Specializes in male reproductive and hormonal health.",
+    conditions: ["Low testosterone", "Male infertility", "Testicular disorders"],
+    nextStep: "Bring semen analysis and hormone reports if available.",
+    icon: "♂️",
+  },
+  "Pituitary Specialist": {
+    description: "Treats disorders of the pituitary gland.",
+    conditions: ["Pituitary tumors", "Acromegaly", "Cushing's disease"],
+    nextStep: "Bring MRI scans and hormone test results.",
+    icon: "🧠",
+  },
+  "Interventional Pulmonologist": {
+    description: "Uses scopes and procedures to diagnose and treat lung problems.",
+    conditions: ["Lung nodules", "Airway blockage", "Pleural effusion"],
+    nextStep: "Bring chest CT scans and previous lung reports.",
+    icon: "🔭",
+  },
+  "Critical Care Specialist": {
+    description: "Treats severely ill patients needing intensive support.",
+    conditions: ["Respiratory failure", "Sepsis", "Multi-organ failure"],
+    nextStep: "Provide medical history and recent hospital records.",
+    icon: "🏥",
+  },
+  "Pediatric Pulmonologist": {
+    description: "Treats lung and breathing problems in children.",
+    conditions: ["Childhood asthma", "Recurrent cough", "Chronic wheezing"],
+    nextStep: "Describe cough patterns and triggers.",
+    icon: "🧒",
+  },
+  "Tuberculosis Specialist": {
+    description: "Diagnoses and treats tuberculosis and related infections.",
+    conditions: ["Pulmonary TB", "Drug-resistant TB", "Latent TB"],
+    nextStep: "Mention cough duration, fever, weight loss and contacts.",
+    icon: "🦠",
+  },
+  "Respiratory Therapist": {
+    description: "Provides breathing treatments and ventilation support.",
+    conditions: ["Breathing difficulty", "Oxygen therapy", "Ventilator support"],
+    nextStep: "Bring oxygen readings and current treatments.",
+    icon: "😮‍💨",
+  },
+  "Pulmonary Rehabilitation Specialist": {
+    description: "Guides exercise and breathing programs for lung patients.",
+    conditions: ["COPD recovery", "Breathlessness", "Post-lung surgery recovery"],
+    nextStep: "Bring lung function tests and discharge notes.",
+    icon: "🏃",
+  },
+  "Occupational Lung Disease Specialist": {
+    description: "Treats lung disease caused by work exposure.",
+    conditions: ["Silicosis", "Asbestosis", "Occupational asthma"],
+    nextStep: "Describe your job history and workplace exposures.",
+    icon: "🏭",
+  },
+  "Lung Transplant Specialist": {
+    description: "Evaluates and manages lung transplant patients.",
+    conditions: ["End-stage lung disease", "Transplant evaluation", "Post-transplant care"],
+    nextStep: "Bring complete lung history and test results.",
+    icon: "🫁",
+  },
+  "Cystic Fibrosis Specialist": {
+    description: "Treats cystic fibrosis and its complications.",
+    conditions: ["Cystic fibrosis", "Chronic lung infection", "Digestive absorption problems"],
+    nextStep: "Bring genetic and sputum test reports.",
+    icon: "🧬",
+  },
+  "Pulmonary Hypertension Specialist": {
+    description: "Treats high blood pressure in the lung arteries.",
+    conditions: ["Pulmonary hypertension", "Breathlessness on exertion", "Right heart strain"],
+    nextStep: "Bring echo and right heart test results.",
+    icon: "📈",
+  },
+  "Urologist": {
+    description: "Treats the urinary tract and male reproductive system.",
+    conditions: ["Kidney stones", "Prostate problems", "Urinary infections"],
+    nextStep: "Describe urinary symptoms and bring any urine tests.",
+    icon: "🚽",
+  },
+  "Pediatric Urologist": {
+    description: "Treats urinary and genital conditions in children.",
+    conditions: ["Bedwetting", "Undescended testis", "Urinary reflux"],
+    nextStep: "Share your child's urinary habits and infection history.",
+    icon: "👶",
+  },
+  "Uro-oncologist": {
+    description: "Treats cancers of the urinary and male reproductive systems.",
+    conditions: ["Prostate cancer", "Bladder cancer", "Kidney cancer"],
+    nextStep: "Bring biopsy, PSA and imaging reports.",
+    icon: "🎗️",
+  },
+  "Transplant Nephrologist": {
+    description: "Manages patients before and after kidney transplant.",
+    conditions: ["Kidney transplant", "Rejection monitoring", "Transplant medicines"],
+    nextStep: "Bring transplant records and drug levels.",
+    icon: "🫘",
+  },
+  "Dialysis Specialist": {
+    description: "Manages patients on dialysis treatment.",
+    conditions: ["End-stage kidney disease", "Dialysis access", "Fluid overload"],
+    nextStep: "Bring dialysis charts and recent blood tests.",
+    icon: "💧",
+  },
+  "Pediatric Nephrologist": {
+    description: "Treats kidney problems in children.",
+    conditions: ["Nephrotic syndrome", "Childhood kidney infection", "Kidney malformations"],
+    nextStep: "Bring urine tests and your child's growth records.",
+    icon: "🧒",
+  },
+  "Urogynecologist": {
+    description: "Treats female pelvic floor and bladder problems.",
+    conditions: ["Urinary incontinence", "Pelvic organ prolapse", "Recurrent bladder infection"],
+    nextStep: "Describe leakage patterns and childbirth history.",
+    icon: "🌷",
+  },
+  "Endourologist": {
+    description: "Treats urinary stones and blockages using minimally invasive methods.",
+    conditions: ["Kidney stones", "Ureteric stones", "Urinary obstruction"],
+    nextStep: "Bring CT or ultrasound scans and stone history.",
+    icon: "💎",
+  },
+  "Kidney Stone Specialist": {
+    description: "Focuses on preventing and treating kidney stones.",
+    conditions: ["Recurrent kidney stones", "Flank pain", "Stone prevention"],
+    nextStep: "Bring stone analysis and urine test results.",
+    icon: "💎",
+  },
+  "Transplant Surgeon": {
+    description: "Performs organ transplant surgery.",
+    conditions: ["Kidney transplant", "Liver transplant", "Organ donation evaluation"],
+    nextStep: "Bring complete organ function reports.",
+    icon: "❤️‍🩹",
+  },
+  "Male Infertility Specialist": {
+    description: "Evaluates and treats male reproductive problems.",
+    conditions: ["Low sperm count", "Varicocele", "Erectile problems"],
+    nextStep: "Bring semen analysis and hormone reports.",
+    icon: "♂️",
+  },
+  "Glomerular Disease Specialist": {
+    description: "Treats diseases that damage kidney filters.",
+    conditions: ["Glomerulonephritis", "Protein in urine", "Lupus nephritis"],
+    nextStep: "Bring urine protein tests and kidney biopsy reports.",
+    icon: "🫘",
+  },
+  "Polycystic Kidney Specialist": {
+    description: "Manages inherited cystic kidney disease.",
+    conditions: ["Polycystic kidney disease", "Kidney cysts", "Family kidney disease"],
+    nextStep: "Bring family history and kidney imaging.",
+    icon: "🫘",
+  },
+  "Bladder Specialist": {
+    description: "Treats bladder function and disease.",
+    conditions: ["Overactive bladder", "Bladder pain", "Bladder stones"],
+    nextStep: "Keep a bladder diary of frequency and leakage.",
+    icon: "🚽",
+  },
+  "Prostate Specialist": {
+    description: "Treats prostate conditions in men.",
+    conditions: ["Enlarged prostate", "Prostatitis", "Elevated PSA"],
+    nextStep: "Bring PSA reports and note urinary stream changes.",
+    icon: "♂️",
+  },
+  "Incontinence Specialist": {
+    description: "Treats loss of bladder or bowel control.",
+    conditions: ["Stress incontinence", "Urge incontinence", "Bowel leakage"],
+    nextStep: "Describe when leakage occurs and what you have tried.",
+    icon: "💧",
+  },
+  "Neurourologist": {
+    description: "Treats bladder problems caused by nerve disorders.",
+    conditions: ["Neurogenic bladder", "Spinal injury bladder", "Retention"],
+    nextStep: "Bring neurological history and bladder records.",
+    icon: "🧠",
+  },
+  "Pelvic Pain Specialist": {
+    description: "Treats long-term pelvic pain.",
+    conditions: ["Chronic pelvic pain", "Pelvic floor pain", "Bladder pain syndrome"],
+    nextStep: "Track pain triggers and previous treatments.",
+    icon: "🌡️",
+  },
+  "Orthopedic Surgeon": {
+    description: "Treats bones, joints, ligaments and muscles surgically and non-surgically.",
+    conditions: ["Fractures", "Joint pain", "Ligament injuries"],
+    nextStep: "Bring X-rays or scans and describe how the injury happened.",
+    icon: "🦴",
+  },
+  "Pediatric Orthopedist": {
+    description: "Treats bone and joint conditions in children.",
+    conditions: ["Clubfoot", "Scoliosis", "Childhood fractures"],
+    nextStep: "Share your child's growth and walking pattern.",
+    icon: "🧒",
+  },
+  "Sports Medicine Specialist": {
+    description: "Treats sports-related injuries and performance issues.",
+    conditions: ["Sprains", "Tendon injuries", "Overuse injuries"],
+    nextStep: "Describe your sport, training load and injury timing.",
+    icon: "🏅",
+  },
+  "Hand Surgeon": {
+    description: "Treats conditions of the hand, wrist and forearm.",
+    conditions: ["Carpal tunnel syndrome", "Trigger finger", "Hand fractures"],
+    nextStep: "Mention numbness, grip weakness and work activities.",
+    icon: "✋",
+  },
+  "Joint Replacement Surgeon": {
+    description: "Performs hip, knee and other joint replacements.",
+    conditions: ["Hip arthritis", "Knee arthritis", "Joint replacement revision"],
+    nextStep: "Bring X-rays and note walking limits and pain levels.",
+    icon: "🦿",
+  },
+  "Foot and Ankle Specialist": {
+    description: "Treats foot and ankle disorders.",
+    conditions: ["Ankle sprain", "Flat feet", "Heel pain"],
+    nextStep: "Bring footwear and describe pain with walking.",
+    icon: "🦶",
+  },
+  "Podiatrist": {
+    description: "Provides care for foot health and foot disorders.",
+    conditions: ["Corns and calluses", "Ingrown toenails", "Diabetic foot care"],
+    nextStep: "Mention diabetes status and any foot sores.",
+    icon: "🦶",
+  },
+  "Shoulder and Elbow Specialist": {
+    description: "Treats shoulder and elbow injuries and disease.",
+    conditions: ["Rotator cuff tear", "Frozen shoulder", "Tennis elbow"],
+    nextStep: "Describe which movements cause pain.",
+    icon: "💪",
+  },
+  "Orthopedic Oncologist": {
+    description: "Treats bone and soft tissue tumors.",
+    conditions: ["Bone tumors", "Soft tissue sarcoma", "Metastatic bone disease"],
+    nextStep: "Bring imaging and any biopsy reports.",
+    icon: "🎗️",
+  },
+  "Physiatrist": {
+    description: "Specializes in physical medicine and rehabilitation.",
+    conditions: ["Post-injury rehabilitation", "Chronic pain", "Mobility problems"],
+    nextStep: "Describe daily function limits and past therapy.",
+    icon: "♿",
+  },
+  "Physiotherapist": {
+    description: "Restores movement and function through physical therapy.",
+    conditions: ["Back pain", "Post-surgery rehabilitation", "Muscle weakness"],
+    nextStep: "Wear comfortable clothing and describe your pain.",
+    icon: "🧘",
+  },
+  "Occupational Therapist": {
+    description: "Helps people regain daily living and work skills.",
+    conditions: ["Hand function loss", "Daily living difficulty", "Post-stroke recovery"],
+    nextStep: "Describe tasks you find hard to perform.",
+    icon: "🖐️",
+  },
+  "Chiropractor": {
+    description: "Treats musculoskeletal problems through spinal and joint manipulation.",
+    conditions: ["Back pain", "Neck pain", "Joint stiffness"],
+    nextStep: "Share injury history and any spine conditions.",
+    icon: "🤲",
+  },
+  "Osteopath": {
+    description: "Treats musculoskeletal problems with hands-on techniques.",
+    conditions: ["Neck pain", "Posture problems", "Joint strain"],
+    nextStep: "Describe pain location and daily posture.",
+    icon: "🤲",
+  },
+  "Pediatric Rheumatologist": {
+    description: "Treats rheumatic and autoimmune conditions in children.",
+    conditions: ["Juvenile arthritis", "Childhood lupus", "Recurrent joint swelling"],
+    nextStep: "Note morning stiffness and fever patterns.",
+    icon: "🧒",
+  },
+  "Lupus Specialist": {
+    description: "Treats systemic lupus and related conditions.",
+    conditions: ["Systemic lupus", "Rashes and joint pain", "Lupus kidney disease"],
+    nextStep: "Bring autoimmune blood tests and symptom timeline.",
+    icon: "🦋",
+  },
+  "Gout Specialist": {
+    description: "Treats gout and crystal-related arthritis.",
+    conditions: ["Gout", "High uric acid", "Joint swelling attacks"],
+    nextStep: "Bring uric acid levels and note diet triggers.",
+    icon: "🦶",
+  },
+  "Prosthetist and Orthotist": {
+    description: "Designs artificial limbs and supportive braces.",
+    conditions: ["Amputation", "Limb weakness", "Brace needs"],
+    nextStep: "Bring surgical records and mobility needs.",
+    icon: "🦾",
+  },
+  "Trauma Surgeon": {
+    description: "Treats severe injuries and emergencies.",
+    conditions: ["Accident injuries", "Multiple fractures", "Internal injuries"],
+    nextStep: "Provide the injury details and any emergency records.",
+    icon: "🚨",
+  },
+  "Fracture Specialist": {
+    description: "Focuses on complex bone fractures and healing.",
+    conditions: ["Complex fractures", "Non-union", "Bone healing problems"],
+    nextStep: "Bring X-rays and describe the injury.",
+    icon: "🦴",
+  },
+  "Fibromyalgia Specialist": {
+    description: "Treats widespread chronic pain and fatigue.",
+    conditions: ["Fibromyalgia", "Widespread pain", "Chronic fatigue"],
+    nextStep: "Keep a pain and sleep diary.",
+    icon: "😣",
+  },
+  "Osteoarthritis Specialist": {
+    description: "Treats degenerative joint disease.",
+    conditions: ["Knee osteoarthritis", "Hip osteoarthritis", "Joint stiffness"],
+    nextStep: "Bring X-rays and list pain treatments tried.",
+    icon: "🦵",
+  },
+  "Spondylitis Specialist": {
+    description: "Treats inflammatory spine arthritis.",
+    conditions: ["Ankylosing spondylitis", "Morning back stiffness", "Sacroiliitis"],
+    nextStep: "Note morning stiffness duration and bring MRI.",
+    icon: "🦴",
+  },
+  "Scleroderma Specialist": {
+    description: "Treats scleroderma and skin-hardening disease.",
+    conditions: ["Scleroderma", "Raynaud's phenomenon", "Skin thickening"],
+    nextStep: "Describe finger color changes and skin tightness.",
+    icon: "🖐️",
+  },
+  "Vasculitis Specialist": {
+    description: "Treats inflammation of blood vessels.",
+    conditions: ["Vasculitis", "Unexplained fever", "Organ inflammation"],
+    nextStep: "Bring inflammation markers and organ test results.",
+    icon: "🩸",
+  },
+  "Retina Specialist": {
+    description: "Treats diseases of the retina and vitreous.",
+    conditions: ["Retinal detachment", "Macular degeneration", "Diabetic retinopathy"],
+    nextStep: "Describe floaters or flashes and bring eye scans.",
+    icon: "👁️",
+  },
+  "Glaucoma Specialist": {
+    description: "Treats glaucoma and eye pressure disorders.",
+    conditions: ["Glaucoma", "High eye pressure", "Optic nerve damage"],
+    nextStep: "Bring eye pressure and visual field reports.",
+    icon: "👁️",
+  },
+  "Cornea Specialist": {
+    description: "Treats diseases of the cornea and front eye.",
+    conditions: ["Keratoconus", "Corneal infection", "Corneal transplant"],
+    nextStep: "Mention contact lens use and eye pain.",
+    icon: "👁️",
+  },
+  "Pediatric Ophthalmologist": {
+    description: "Treats eye conditions in children.",
+    conditions: ["Squint", "Lazy eye", "Childhood vision problems"],
+    nextStep: "Describe your child's eye alignment and vision complaints.",
+    icon: "🧒",
+  },
+  "Oculoplastic Surgeon": {
+    description: "Performs surgery on eyelids and around the eyes.",
+    conditions: ["Drooping eyelids", "Tear duct blockage", "Eyelid tumors"],
+    nextStep: "Bring photos showing eyelid changes.",
+    icon: "👁️",
+  },
+  "Optometrist": {
+    description: "Tests vision and prescribes corrective lenses.",
+    conditions: ["Refractive errors", "Eye strain", "Glasses prescription"],
+    nextStep: "Bring current glasses and describe screen time.",
+    icon: "👓",
+  },
+  "Cataract Surgeon": {
+    description: "Performs cataract removal and lens replacement.",
+    conditions: ["Cataracts", "Blurred vision", "Glare problems"],
+    nextStep: "Bring previous eye records and list medicines.",
+    icon: "👁️",
+  },
+  "Uveitis Specialist": {
+    description: "Treats inflammation inside the eye.",
+    conditions: ["Uveitis", "Red painful eye", "Light sensitivity"],
+    nextStep: "Mention autoimmune history and recurrent episodes.",
+    icon: "👁️",
+  },
+  "Refractive Surgeon": {
+    description: "Performs vision correction surgery.",
+    conditions: ["Myopia", "Hyperopia", "Astigmatism"],
+    nextStep: "Bring glasses prescription and stable power records.",
+    icon: "🔍",
+  },
+  "Orthoptist": {
+    description: "Evaluates and treats eye movement and alignment problems.",
+    conditions: ["Double vision", "Squint", "Eye coordination problems"],
+    nextStep: "Describe when double vision occurs.",
+    icon: "👀",
+  },
+  "Low Vision Specialist": {
+    description: "Helps people with permanent vision loss use remaining sight.",
+    conditions: ["Low vision", "Visual impairment", "Daily living aids"],
+    nextStep: "Describe tasks that are hard because of vision.",
+    icon: "🦯",
+  },
+  "Ocular Oncologist": {
+    description: "Treats tumors of the eye.",
+    conditions: ["Retinoblastoma", "Eye melanoma", "Eyelid cancers"],
+    nextStep: "Bring scans and any biopsy reports.",
+    icon: "🎗️",
+  },
+  "Dry Eye Specialist": {
+    description: "Treats dry and irritated eyes.",
+    conditions: ["Dry eye", "Eye irritation", "Burning eyes"],
+    nextStep: "Mention screen time and any eye drops used.",
+    icon: "💧",
+  },
+  "Myopia Control Specialist": {
+    description: "Slows progression of nearsightedness in children.",
+    conditions: ["Rising myopia", "Frequent glasses changes", "Eye elongation"],
+    nextStep: "Bring past prescriptions and screen habits.",
+    icon: "👓",
+  },
+  "Diabetic Retinopathy Specialist": {
+    description: "Treats eye damage caused by diabetes.",
+    conditions: ["Diabetic retinopathy", "Macular edema", "Vision changes"],
+    nextStep: "Bring HbA1c and prior retinal scans.",
+    icon: "🍬",
+  },
+  "ENT Specialist": {
+    description: "Treats ear, nose and throat disorders.",
+    conditions: ["Sinusitis", "Ear infections", "Throat problems"],
+    nextStep: "Describe symptoms and duration.",
+    icon: "👂",
+  },
+  "Audiologist": {
+    description: "Tests hearing and treats balance problems.",
+    conditions: ["Hearing loss", "Tinnitus", "Balance problems"],
+    nextStep: "Bring previous hearing tests.",
+    icon: "🎧",
+  },
+  "Rhinologist": {
+    description: "Specializes in nose and sinus disorders.",
+    conditions: ["Chronic sinusitis", "Nasal polyps", "Deviated septum"],
+    nextStep: "Mention congestion, smell loss and past treatments.",
+    icon: "👃",
+  },
+  "Laryngologist": {
+    description: "Treats voice box and throat disorders.",
+    conditions: ["Hoarseness", "Vocal cord problems", "Swallowing difficulty"],
+    nextStep: "Describe voice changes and how long they last.",
+    icon: "🗣️",
+  },
+  "Otologist": {
+    description: "Treats diseases of the ear.",
+    conditions: ["Chronic ear infection", "Eardrum perforation", "Otosclerosis"],
+    nextStep: "Bring hearing tests and describe ear discharge.",
+    icon: "👂",
+  },
+  "Pediatric ENT Specialist": {
+    description: "Treats ear, nose and throat problems in children.",
+    conditions: ["Recurrent ear infection", "Tonsillitis", "Adenoid enlargement"],
+    nextStep: "Note snoring, ear pulling and infection frequency.",
+    icon: "🧒",
+  },
+  "Head and Neck Surgeon": {
+    description: "Operates on head and neck tumors and disorders.",
+    conditions: ["Throat cancer", "Neck lumps", "Salivary gland disease"],
+    nextStep: "Bring imaging and biopsy reports.",
+    icon: "🎗️",
+  },
+  "Speech-Language Pathologist": {
+    description: "Treats speech, language and swallowing disorders.",
+    conditions: ["Speech delay", "Stuttering", "Swallowing problems"],
+    nextStep: "Bring a speech sample and describe communication difficulty.",
+    icon: "🗨️",
+  },
+  "Vestibular Specialist": {
+    description: "Treats dizziness and balance disorders.",
+    conditions: ["Vertigo", "Meniere's disease", "Balance loss"],
+    nextStep: "Describe dizziness episodes and triggers.",
+    icon: "🌀",
+  },
+  "Facial Plastic Surgeon": {
+    description: "Performs surgery to restore or enhance the face.",
+    conditions: ["Nose reshaping", "Facial trauma", "Facial reconstruction"],
+    nextStep: "Bring photos and discuss your goals.",
+    icon: "🪞",
+  },
+  "Cochlear Implant Specialist": {
+    description: "Evaluates and manages cochlear implants for deafness.",
+    conditions: ["Severe hearing loss", "Cochlear implant", "Deafness in children"],
+    nextStep: "Bring audiograms and hearing aid history.",
+    icon: "🦻",
+  },
+  "Snoring and Sleep Surgeon": {
+    description: "Treats airway problems that cause snoring and sleep apnea.",
+    conditions: ["Snoring", "Obstructive sleep apnea", "Enlarged tonsils"],
+    nextStep: "Bring sleep study results and note partner observations.",
+    icon: "😴",
+  },
+  "Tinnitus Specialist": {
+    description: "Treats ringing and noise in the ears.",
+    conditions: ["Tinnitus", "Ear noise", "Hearing sensitivity"],
+    nextStep: "Describe the sound and when it is worst.",
+    icon: "🔔",
+  },
+  "Smell and Taste Disorder Specialist": {
+    description: "Treats loss or change of smell and taste.",
+    conditions: ["Loss of smell", "Loss of taste", "Altered taste"],
+    nextStep: "Note onset and any recent infection or injury.",
+    icon: "👅",
+  },
+  "Hearing Aid Specialist": {
+    description: "Fits and adjusts hearing aids.",
+    conditions: ["Hearing aid fitting", "Hearing aid adjustment", "Mild to moderate hearing loss"],
+    nextStep: "Bring your hearing test and current devices.",
+    icon: "🦻",
+  },
+  "Child Psychiatrist": {
+    description: "Treats mental health conditions in children and teens.",
+    conditions: ["Childhood anxiety", "Behavior problems", "Adolescent depression"],
+    nextStep: "Share school reports and describe behavior changes.",
+    icon: "🧒",
+  },
+  "Geriatric Psychiatrist": {
+    description: "Treats mental health conditions in older adults.",
+    conditions: ["Late-life depression", "Dementia behavior changes", "Anxiety in elderly"],
+    nextStep: "Bring a medicine list and family observations.",
+    icon: "👴",
+  },
+  "Addiction Psychiatrist": {
+    description: "Treats substance use and addictive disorders.",
+    conditions: ["Alcohol dependence", "Drug addiction", "Withdrawal"],
+    nextStep: "Be honest about substance use and past treatment.",
+    icon: "🚭",
+  },
+  "Clinical Psychologist": {
+    description: "Provides therapy and psychological assessment.",
+    conditions: ["Anxiety", "Depression", "Trauma"],
+    nextStep: "Describe your concerns and what you hope to change.",
+    icon: "🛋️",
+  },
+  "Child Psychologist": {
+    description: "Assesses and supports emotional and behavioral issues in children.",
+    conditions: ["Behavior difficulties", "Learning problems", "Childhood anxiety"],
+    nextStep: "Share school and family observations.",
+    icon: "🧒",
+  },
+  "Counseling Psychologist": {
+    description: "Provides talk therapy for life stress and relationships.",
+    conditions: ["Stress", "Relationship problems", "Grief"],
+    nextStep: "List the main problems you want to discuss.",
+    icon: "💬",
+  },
+  "Psychotherapist": {
+    description: "Treats emotional problems through structured talk therapy.",
+    conditions: ["Emotional distress", "Past trauma", "Low self-esteem"],
+    nextStep: "Think about goals for therapy before the first session.",
+    icon: "💬",
+  },
+  "Neuropsychiatrist": {
+    description: "Treats mental symptoms linked to brain disease.",
+    conditions: ["Post-stroke depression", "Epilepsy-related mood changes", "Dementia behaviors"],
+    nextStep: "Bring neurological records and describe mood changes.",
+    icon: "🧠",
+  },
+  "Forensic Psychiatrist": {
+    description: "Provides mental health assessment for legal matters.",
+    conditions: ["Fitness assessment", "Legal capacity", "Risk assessment"],
+    nextStep: "Bring relevant legal and medical documents.",
+    icon: "⚖️",
+  },
+  "Behavioral Therapist": {
+    description: "Uses behavior-based methods to change harmful patterns.",
+    conditions: ["Phobias", "Habit disorders", "Behavior problems"],
+    nextStep: "Note triggers and behaviors you want to change.",
+    icon: "🔁",
+  },
+  "Marriage and Family Therapist": {
+    description: "Helps couples and families resolve conflict.",
+    conditions: ["Marital conflict", "Family conflict", "Communication problems"],
+    nextStep: "Discuss the issues each person wants to address.",
+    icon: "👨‍👩‍👧",
+  },
+  "Trauma Therapist": {
+    description: "Specializes in treating trauma-related conditions.",
+    conditions: ["PTSD", "Abuse recovery", "Complex trauma"],
+    nextStep: "Share only what you feel ready to discuss.",
+    icon: "🕊️",
+  },
+  "Eating Disorder Specialist": {
+    description: "Treats eating disorders and disordered eating.",
+    conditions: ["Anorexia", "Bulimia", "Binge eating"],
+    nextStep: "Describe eating patterns and any physical symptoms.",
+    icon: "🍽️",
+  },
+  "Sex Therapist": {
+    description: "Treats sexual and intimacy difficulties.",
+    conditions: ["Low desire", "Sexual pain", "Performance anxiety"],
+    nextStep: "Discuss your concerns openly and any related health issues.",
+    icon: "🔒",
+  },
+  "Autism Specialist": {
+    description: "Evaluates and supports people with autism spectrum conditions.",
+    conditions: ["Autism spectrum disorder", "Social communication difficulty", "Sensory sensitivity"],
+    nextStep: "Share developmental history and early behavior notes.",
+    icon: "🧩",
+  },
+  "Developmental Pediatrician": {
+    description: "Evaluates developmental and behavioral issues in children.",
+    conditions: ["Developmental delay", "Learning difficulty", "Speech delay"],
+    nextStep: "Bring milestone records and school feedback.",
+    icon: "👶",
+  },
+  "ADHD Specialist": {
+    description: "Evaluates and treats attention and hyperactivity disorders.",
+    conditions: ["ADHD", "Poor attention", "Impulsivity"],
+    nextStep: "Share school or work feedback and symptom examples.",
+    icon: "🎯",
+  },
+  "Rehabilitation Psychologist": {
+    description: "Supports adjustment to disability and chronic illness.",
+    conditions: ["Adjustment to disability", "Chronic illness coping", "Injury recovery stress"],
+    nextStep: "Describe how the condition affects daily life.",
+    icon: "♿",
+  },
+  "Pain Psychologist": {
+    description: "Helps manage chronic pain using psychological methods.",
+    conditions: ["Chronic pain coping", "Pain-related anxiety", "Pain-related sleep problems"],
+    nextStep: "Bring your pain history and treatments tried.",
+    icon: "🧘",
+  },
+  "Hypnotherapist": {
+    description: "Uses guided hypnosis to support behavior and symptom change.",
+    conditions: ["Phobias", "Habit control", "Stress"],
+    nextStep: "Describe your goals and any past therapy.",
+    icon: "🌀",
+  },
+  "Art Therapist": {
+    description: "Uses creative expression to support emotional healing.",
+    conditions: ["Emotional expression", "Trauma healing", "Child anxiety"],
+    nextStep: "No art skill needed; share what you hope to explore.",
+    icon: "🎨",
+  },
+  "Music Therapist": {
+    description: "Uses music to support emotional and physical health.",
+    conditions: ["Stress relief", "Autism support", "Dementia care"],
+    nextStep: "Mention music preferences and goals.",
+    icon: "🎵",
+  },
+  "Hepatologist": {
+    description: "Specializes in liver and biliary disease.",
+    conditions: ["Fatty liver", "Hepatitis", "Cirrhosis"],
+    nextStep: "Bring liver function tests and imaging.",
+    icon: "🍂",
+  },
+  "Colorectal Surgeon": {
+    description: "Operates on the colon, rectum and anus.",
+    conditions: ["Colon cancer", "Piles", "Anal fistula"],
+    nextStep: "Describe bowel habits and bleeding.",
+    icon: "🔪",
+  },
+  "Proctologist": {
+    description: "Treats disorders of the rectum and anus.",
+    conditions: ["Hemorrhoids", "Anal fissure", "Rectal bleeding"],
+    nextStep: "Describe pain, bleeding and bowel habits.",
+    icon: "🩺",
+  },
+  "Pediatric Gastroenterologist": {
+    description: "Treats digestive problems in children.",
+    conditions: ["Childhood constipation", "Reflux in infants", "Food intolerance"],
+    nextStep: "Share feeding history and stool patterns.",
+    icon: "🧒",
+  },
+  "Inflammatory Bowel Disease Specialist": {
+    description: "Treats Crohn's disease and ulcerative colitis.",
+    conditions: ["Crohn's disease", "Ulcerative colitis", "Chronic diarrhea"],
+    nextStep: "Bring colonoscopy reports and stool tests.",
+    icon: "🩸",
+  },
+  "Pancreatic Specialist": {
+    description: "Treats diseases of the pancreas.",
+    conditions: ["Pancreatitis", "Pancreatic cysts", "Pancreatic tumors"],
+    nextStep: "Bring CT scans and enzyme test results.",
+    icon: "🧪",
+  },
+  "Hepatobiliary Surgeon": {
+    description: "Operates on the liver, gallbladder and bile ducts.",
+    conditions: ["Gallstones", "Liver tumors", "Bile duct disease"],
+    nextStep: "Bring ultrasound or CT scans.",
+    icon: "🔪",
+  },
+  "Gastrointestinal Surgeon": {
+    description: "Performs surgery on the digestive tract.",
+    conditions: ["Appendicitis", "Intestinal blockage", "Stomach tumors"],
+    nextStep: "Bring scans and describe abdominal pain.",
+    icon: "🔪",
+  },
+  "Endoscopist": {
+    description: "Examines the digestive tract using scopes.",
+    conditions: ["Endoscopy", "Colonoscopy", "Polyp removal"],
+    nextStep: "Follow fasting instructions and bring prior reports.",
+    icon: "🔭",
+  },
+  "Clinical Nutritionist": {
+    description: "Provides diet plans for medical conditions.",
+    conditions: ["Diet planning", "Nutrient deficiency", "Medical nutrition"],
+    nextStep: "Bring blood reports and a diary of what you eat.",
+    icon: "🥗",
+  },
+  "Dietitian": {
+    description: "Provides food and nutrition guidance.",
+    conditions: ["Weight management", "Diabetes diet", "Food intolerance"],
+    nextStep: "Note your food habits and health conditions.",
+    icon: "🥦",
+  },
+  "Liver Transplant Specialist": {
+    description: "Evaluates and manages liver transplant patients.",
+    conditions: ["End-stage liver disease", "Liver failure", "Transplant evaluation"],
+    nextStep: "Bring full liver reports and imaging.",
+    icon: "🍂",
+  },
+  "Gastrointestinal Motility Specialist": {
+    description: "Treats disorders of digestive movement.",
+    conditions: ["Gastroparesis", "Chronic constipation", "Swallowing disorders"],
+    nextStep: "Describe bloating, nausea and meal tolerance.",
+    icon: "🔄",
+  },
+  "Celiac Disease Specialist": {
+    description: "Diagnoses and manages gluten-related disease.",
+    conditions: ["Celiac disease", "Gluten sensitivity", "Nutrient malabsorption"],
+    nextStep: "Continue gluten before testing and bring antibody tests.",
+    icon: "🌾",
+  },
+  "Hepatitis Specialist": {
+    description: "Treats viral and other hepatitis.",
+    conditions: ["Hepatitis B", "Hepatitis C", "Chronic hepatitis"],
+    nextStep: "Bring viral load and liver function reports.",
+    icon: "🧪",
+  },
+  "General Physician": {
+    description: "Provides first-line care for a wide range of common illnesses.",
+    conditions: ["Fever", "Common infections", "General checkups"],
+    nextStep: "Describe your symptoms and when they began.",
+    icon: "🩺",
+  },
+  "Family Physician": {
+    description: "Provides ongoing care for people of all ages in a family.",
+    conditions: ["Routine care", "Chronic disease follow-up", "Preventive screening"],
+    nextStep: "Bring your medical history and medicine list.",
+    icon: "👨‍👩‍👧",
+  },
+  "Internist": {
+    description: "Treats complex adult medical conditions.",
+    conditions: ["Multiple chronic diseases", "Unexplained symptoms", "Adult preventive care"],
+    nextStep: "Bring all previous reports and medicines.",
+    icon: "🩺",
+  },
+  "Geriatrician": {
+    description: "Cares for the health needs of older adults.",
+    conditions: ["Falls", "Memory problems", "Multiple medicines"],
+    nextStep: "Bring all medicines and a caregiver if possible.",
+    icon: "👴",
+  },
+  "Pediatrician": {
+    description: "Provides medical care for infants, children and teens.",
+    conditions: ["Childhood fever", "Vaccinations", "Growth concerns"],
+    nextStep: "Bring vaccination and growth records.",
+    icon: "👶",
+  },
+  "Neonatologist": {
+    description: "Cares for newborns, especially premature or sick babies.",
+    conditions: ["Premature birth", "Newborn jaundice", "Breathing problems in newborns"],
+    nextStep: "Share pregnancy and delivery details.",
+    icon: "🍼",
+  },
+  "Adolescent Medicine Specialist": {
+    description: "Provides care for teenagers' physical and emotional health.",
+    conditions: ["Puberty concerns", "Teen mental health", "Menstrual problems"],
+    nextStep: "Teen may want a private discussion time.",
+    icon: "🧑",
+  },
+  "Hospitalist": {
+    description: "Manages the care of patients admitted to hospital.",
+    conditions: ["Acute illness", "Inpatient care", "Discharge planning"],
+    nextStep: "Keep medical records and medicines handy.",
+    icon: "🏥",
+  },
+  "Emergency Medicine Specialist": {
+    description: "Treats urgent and life-threatening conditions.",
+    conditions: ["Chest pain", "Severe injury", "Acute breathlessness"],
+    nextStep: "Go immediately and report symptoms and medicines.",
+    icon: "🚑",
+  },
+  "Palliative Care Specialist": {
+    description: "Provides comfort care for serious illness.",
+    conditions: ["Advanced cancer pain", "Symptom relief", "Quality-of-life care"],
+    nextStep: "Discuss goals, symptoms and family support needs.",
+    icon: "🕊️",
+  },
+  "Travel Medicine Specialist": {
+    description: "Advises on health risks and vaccines for travel.",
+    conditions: ["Travel vaccines", "Malaria prevention", "Altitude sickness"],
+    nextStep: "Bring travel dates, destinations and vaccination records.",
+    icon: "✈️",
+  },
+  "Occupational Medicine Specialist": {
+    description: "Treats and prevents work-related health problems.",
+    conditions: ["Work injuries", "Workplace exposures", "Fitness for work"],
+    nextStep: "Describe your job duties and workplace hazards.",
+    icon: "🏭",
+  },
+  "Preventive Medicine Specialist": {
+    description: "Focuses on disease prevention and health screening.",
+    conditions: ["Health screening", "Risk assessment", "Vaccination planning"],
+    nextStep: "Bring family history and previous checkups.",
+    icon: "🛡️",
+  },
+  "Lifestyle Medicine Specialist": {
+    description: "Uses lifestyle changes to prevent and treat disease.",
+    conditions: ["Diet-related disease", "Inactivity", "Stress-related illness"],
+    nextStep: "Describe your diet, activity, sleep and stress.",
+    icon: "🥗",
+  },
+  "Integrative Medicine Specialist": {
+    description: "Combines conventional and complementary treatments.",
+    conditions: ["Chronic illness support", "Stress", "Holistic care"],
+    nextStep: "List all medicines and supplements you take.",
+    icon: "🌿",
+  },
+  "Infectious Disease Specialist": {
+    description: "Diagnoses and treats complex infections.",
+    conditions: ["Prolonged fever", "Resistant infections", "Tropical infections"],
+    nextStep: "Mention travel history, fever pattern and exposures.",
+    icon: "🦠",
+  },
+  "HIV Specialist": {
+    description: "Treats HIV infection and related conditions.",
+    conditions: ["HIV infection", "Opportunistic infections", "HIV prevention"],
+    nextStep: "Bring viral load, CD4 counts and medicine history.",
+    icon: "🎗️",
+  },
+  "Tropical Medicine Specialist": {
+    description: "Treats infections common in tropical regions.",
+    conditions: ["Malaria", "Dengue", "Typhoid"],
+    nextStep: "Share travel and mosquito exposure history.",
+    icon: "🦟",
+  },
+  "Pediatric Infectious Disease Specialist": {
+    description: "Treats complex infections in children.",
+    conditions: ["Recurrent infections in children", "Prolonged fever", "Vaccine concerns"],
+    nextStep: "Bring vaccination records and fever chart.",
+    icon: "🧒",
+  },
+  "Long COVID Specialist": {
+    description: "Treats lasting symptoms after COVID-19.",
+    conditions: ["Post-COVID fatigue", "Brain fog", "Breathlessness"],
+    nextStep: "Note when COVID occurred and current symptoms.",
+    icon: "😶‍🌫️",
+  },
+  "Chronic Fatigue Specialist": {
+    description: "Evaluates persistent unexplained tiredness.",
+    conditions: ["Chronic fatigue syndrome", "Unrefreshing sleep", "Exercise intolerance"],
+    nextStep: "Keep an activity and energy diary.",
+    icon: "🔋",
+  },
+  "Gynecologist": {
+    description: "Treats conditions of the female reproductive system.",
+    conditions: ["Irregular periods", "Pelvic pain", "Fibroids"],
+    nextStep: "Note menstrual dates and symptoms.",
+    icon: "🌸",
+  },
+  "Obstetrician": {
+    description: "Cares for women during pregnancy and childbirth.",
+    conditions: ["Pregnancy care", "Labor and delivery", "Pregnancy complications"],
+    nextStep: "Bring pregnancy reports and last menstrual date.",
+    icon: "🤰",
+  },
+  "Maternal-Fetal Medicine Specialist": {
+    description: "Manages high-risk pregnancies.",
+    conditions: ["High-risk pregnancy", "Fetal abnormalities", "Pregnancy diabetes"],
+    nextStep: "Bring scan reports and pregnancy history.",
+    icon: "🤰",
+  },
+  "Gynecologic Oncologist": {
+    description: "Treats cancers of the female reproductive system.",
+    conditions: ["Ovarian cancer", "Cervical cancer", "Uterine cancer"],
+    nextStep: "Bring biopsy, scans and Pap test results.",
+    icon: "🎗️",
+  },
+  "Fertility Specialist": {
+    description: "Treats infertility and assists conception.",
+    conditions: ["Infertility", "Recurrent miscarriage", "IVF planning"],
+    nextStep: "Bring both partners' test results.",
+    icon: "👶",
+  },
+  "Menopause Specialist": {
+    description: "Manages symptoms and risks of menopause.",
+    conditions: ["Hot flashes", "Menopause symptoms", "Bone health"],
+    nextStep: "Track symptoms and cycle changes.",
+    icon: "🌡️",
+  },
+  "Breast Surgeon": {
+    description: "Operates on breast disease and cancers.",
+    conditions: ["Breast lumps", "Breast cancer", "Breast pain"],
+    nextStep: "Bring mammogram and ultrasound reports.",
+    icon: "🎗️",
+  },
+  "Lactation Consultant": {
+    description: "Supports breastfeeding mothers and babies.",
+    conditions: ["Latch problems", "Low milk supply", "Breast pain"],
+    nextStep: "Bring the baby and describe feeding pattern.",
+    icon: "🍼",
+  },
+  "Midwife": {
+    description: "Provides care during pregnancy, birth and postpartum.",
+    conditions: ["Normal pregnancy care", "Birth planning", "Postpartum care"],
+    nextStep: "Share birth preferences and pregnancy history.",
+    icon: "🤱",
+  },
+  "Pelvic Floor Specialist": {
+    description: "Treats pelvic floor muscle problems.",
+    conditions: ["Pelvic floor weakness", "Pelvic pain", "Postpartum recovery"],
+    nextStep: "Describe leakage, heaviness or pain.",
+    icon: "🌷",
+  },
+  "Adolescent Gynecologist": {
+    description: "Treats gynecological issues in teenage girls.",
+    conditions: ["Painful periods", "Irregular periods", "Puberty concerns"],
+    nextStep: "Track periods and symptoms beforehand.",
+    icon: "🌸",
+  },
+  "Fetal Medicine Specialist": {
+    description: "Evaluates unborn baby health and development.",
+    conditions: ["Fetal anomalies", "Growth restriction", "Prenatal diagnosis"],
+    nextStep: "Bring all pregnancy scans and test reports.",
+    icon: "🤰",
+  },
+  "Endometriosis Specialist": {
+    description: "Treats endometriosis and related pelvic pain.",
+    conditions: ["Endometriosis", "Painful periods", "Pain during intercourse"],
+    nextStep: "Keep a diary of pain and cycle days.",
+    icon: "🌺",
+  },
+  "PCOS Specialist": {
+    description: "Treats polycystic ovary syndrome.",
+    conditions: ["PCOS", "Irregular periods", "Excess hair growth"],
+    nextStep: "Bring hormone tests and ovarian ultrasound.",
+    icon: "🌸",
+  },
+  "Postpartum Care Specialist": {
+    description: "Supports recovery after childbirth.",
+    conditions: ["Postpartum recovery", "Postpartum depression", "Wound healing"],
+    nextStep: "Describe delivery type and current symptoms.",
+    icon: "🤱",
+  },
+  "Colposcopy Specialist": {
+    description: "Evaluates abnormal cervical screening results.",
+    conditions: ["Abnormal Pap smear", "HPV infection", "Cervical changes"],
+    nextStep: "Bring Pap and HPV test results.",
+    icon: "🔬",
+  },
+  "Medical Oncologist": {
+    description: "Treats cancer with chemotherapy and targeted drugs.",
+    conditions: ["Chemotherapy", "Targeted therapy", "Immunotherapy"],
+    nextStep: "Bring biopsy, scans and previous treatment records.",
+    icon: "🎗️",
+  },
+  "Radiation Oncologist": {
+    description: "Treats cancer using radiation therapy.",
+    conditions: ["Radiotherapy", "Tumor control", "Palliative radiation"],
+    nextStep: "Bring scans and pathology reports.",
+    icon: "☢️",
+  },
+  "Surgical Oncologist": {
+    description: "Performs cancer surgery.",
+    conditions: ["Tumor removal", "Cancer staging", "Lymph node surgery"],
+    nextStep: "Bring biopsy reports and imaging.",
+    icon: "🔪",
+  },
+  "Hematologist": {
+    description: "Treats diseases of blood and blood-forming organs.",
+    conditions: ["Anemia", "Clotting disorders", "Leukemia"],
+    nextStep: "Bring complete blood counts and prior reports.",
+    icon: "🩸",
+  },
+  "Pediatric Oncologist": {
+    description: "Treats cancers in children.",
+    conditions: ["Childhood leukemia", "Brain tumors in children", "Lymphoma"],
+    nextStep: "Bring all scans and biopsy results.",
+    icon: "🎗️",
+  },
+  "Pediatric Hematologist": {
+    description: "Treats blood disorders in children.",
+    conditions: ["Childhood anemia", "Bleeding disorders", "Sickle cell disease"],
+    nextStep: "Bring blood tests and family history.",
+    icon: "🩸",
+  },
+  "Bone Marrow Transplant Specialist": {
+    description: "Performs stem cell and marrow transplants.",
+    conditions: ["Leukemia", "Lymphoma", "Aplastic anemia"],
+    nextStep: "Bring complete treatment and donor information.",
+    icon: "🧬",
+  },
+  "Breast Oncologist": {
+    description: "Treats breast cancer medically.",
+    conditions: ["Breast cancer", "Hormone therapy", "Targeted therapy"],
+    nextStep: "Bring mammograms, biopsy and receptor reports.",
+    icon: "🎗️",
+  },
+  "Thoracic Oncologist": {
+    description: "Treats cancers of the lungs and chest.",
+    conditions: ["Lung cancer", "Mesothelioma", "Thymoma"],
+    nextStep: "Bring chest CT and biopsy reports.",
+    icon: "🎗️",
+  },
+  "Hematopathologist": {
+    description: "Diagnoses blood and lymph node diseases from samples.",
+    conditions: ["Leukemia diagnosis", "Lymphoma diagnosis", "Bone marrow review"],
+    nextStep: "Provide slides and previous reports.",
+    icon: "🔬",
+  },
+  "Pathologist": {
+    description: "Diagnoses disease by examining tissue and body fluids.",
+    conditions: ["Biopsy review", "Cancer diagnosis", "Laboratory tests"],
+    nextStep: "Bring slides, blocks and reports.",
+    icon: "🔬",
+  },
+  "Cytopathologist": {
+    description: "Diagnoses disease from cell samples.",
+    conditions: ["Pap smear review", "Fine needle aspiration", "Fluid cytology"],
+    nextStep: "Bring cytology reports and slides.",
+    icon: "🔬",
+  },
+  "Nuclear Medicine Specialist": {
+    description: "Uses radioactive tracers for diagnosis and treatment.",
+    conditions: ["PET scan", "Thyroid therapy", "Bone scan"],
+    nextStep: "Follow preparation instructions and bring prior scans.",
+    icon: "☢️",
+  },
+  "Radiologist": {
+    description: "Interprets medical imaging.",
+    conditions: ["X-ray review", "CT and MRI review", "Ultrasound review"],
+    nextStep: "Bring previous images for comparison.",
+    icon: "🩻",
+  },
+  "Interventional Radiologist": {
+    description: "Treats conditions using image-guided minimally invasive procedures.",
+    conditions: ["Tumor embolization", "Vascular blockages", "Image-guided biopsy"],
+    nextStep: "Bring imaging and blood thinner details.",
+    icon: "🩻",
+  },
+  "Genetic Counselor": {
+    description: "Explains inherited risks and genetic test results.",
+    conditions: ["Inherited disease risk", "Family cancer history", "Genetic test results"],
+    nextStep: "Bring a three-generation family history.",
+    icon: "🧬",
+  },
+  "Medical Geneticist": {
+    description: "Diagnoses and manages genetic disorders.",
+    conditions: ["Genetic syndromes", "Rare diseases", "Birth defects"],
+    nextStep: "Bring family history and prior genetic tests.",
+    icon: "🧬",
+  },
+  "Pediatric Surgeon": {
+    description: "Performs surgery on infants and children.",
+    conditions: ["Hernia in children", "Appendicitis", "Congenital defects"],
+    nextStep: "Share your child's history and scan reports.",
+    icon: "🧒",
+  },
+  "Sarcoma Specialist": {
+    description: "Treats cancers of bone and soft tissue.",
+    conditions: ["Soft tissue sarcoma", "Osteosarcoma", "Ewing sarcoma"],
+    nextStep: "Bring MRI and biopsy reports.",
+    icon: "🎗️",
+  },
+  "Dentist": {
+    description: "Provides general oral and dental care.",
+    conditions: ["Tooth decay", "Gum problems", "Toothache"],
+    nextStep: "Describe tooth pain and last dental visit.",
+    icon: "🦷",
+  },
+  "Orthodontist": {
+    description: "Corrects teeth and jaw alignment.",
+    conditions: ["Crooked teeth", "Bite problems", "Jaw misalignment"],
+    nextStep: "Bring dental X-rays and past dental records.",
+    icon: "🦷",
+  },
+  "Periodontist": {
+    description: "Treats gum disease and supports dental implants.",
+    conditions: ["Gum disease", "Loose teeth", "Gum recession"],
+    nextStep: "Mention gum bleeding and brushing habits.",
+    icon: "🦷",
+  },
+  "Endodontist": {
+    description: "Treats the inner tooth and root canals.",
+    conditions: ["Root canal", "Tooth abscess", "Severe toothache"],
+    nextStep: "Describe pain triggers and swelling.",
+    icon: "🦷",
+  },
+  "Prosthodontist": {
+    description: "Restores missing or damaged teeth.",
+    conditions: ["Dentures", "Crowns", "Missing teeth"],
+    nextStep: "Bring dental X-rays and describe chewing problems.",
+    icon: "🦷",
+  },
+  "Oral and Maxillofacial Surgeon": {
+    description: "Performs surgery on the mouth, jaws and face.",
+    conditions: ["Wisdom teeth", "Jaw fractures", "Facial infections"],
+    nextStep: "Bring dental X-rays or CT scans.",
+    icon: "🦷",
+  },
+  "Pediatric Dentist": {
+    description: "Provides dental care for children.",
+    conditions: ["Childhood cavities", "Baby teeth care", "Tooth injuries"],
+    nextStep: "Share feeding and brushing habits.",
+    icon: "🧒",
+  },
+  "Oral Pathologist": {
+    description: "Diagnoses diseases of the mouth and jaws.",
+    conditions: ["Oral lesions", "Oral cancer diagnosis", "Jaw cysts"],
+    nextStep: "Bring biopsy reports and photos of lesions.",
+    icon: "🔬",
+  },
+  "Oral Medicine Specialist": {
+    description: "Treats medical conditions of the mouth.",
+    conditions: ["Mouth ulcers", "Lichen planus", "Dry mouth"],
+    nextStep: "Note how long ulcers or patches have lasted.",
+    icon: "👄",
+  },
+  "Cosmetic Dentist": {
+    description: "Improves the look of teeth and smile.",
+    conditions: ["Teeth whitening", "Veneers", "Smile design"],
+    nextStep: "Discuss your smile goals and budget.",
+    icon: "😁",
+  },
+  "Dental Implantologist": {
+    description: "Places and restores dental implants.",
+    conditions: ["Missing teeth", "Implant placement", "Bone grafting"],
+    nextStep: "Bring dental X-rays or CBCT scans.",
+    icon: "🦷",
+  },
+  "TMJ Specialist": {
+    description: "Treats jaw joint and facial pain disorders.",
+    conditions: ["Jaw pain", "Jaw clicking", "Teeth grinding"],
+    nextStep: "Describe jaw locking and morning pain.",
+    icon: "🦷",
+  },
+  "Dental Hygienist": {
+    description: "Provides cleaning and gum care.",
+    conditions: ["Plaque and tartar", "Gum bleeding", "Preventive dental care"],
+    nextStep: "Mention brushing and flossing routine.",
+    icon: "🪥",
+  },
+  "Special Care Dentist": {
+    description: "Provides dental care for people with special needs.",
+    conditions: ["Disability dental care", "Anxious dental patients", "Medically complex dental care"],
+    nextStep: "Share medical history and communication needs.",
+    icon: "🦷",
+  },
+  "Anesthesiologist": {
+    description: "Manages anesthesia and pain during surgery.",
+    conditions: ["Anesthesia planning", "Surgery pain control", "Perioperative care"],
+    nextStep: "Disclose allergies, medicines and past anesthesia reactions.",
+    icon: "💉",
+  },
+  "Pediatric Anesthesiologist": {
+    description: "Provides anesthesia care for children.",
+    conditions: ["Child anesthesia", "Surgery sedation", "Pain control in children"],
+    nextStep: "Share fasting status and any past reactions.",
+    icon: "🧒",
+  },
+  "Intensivist": {
+    description: "Treats critically ill patients in intensive care.",
+    conditions: ["Sepsis", "Respiratory failure", "Shock"],
+    nextStep: "Provide complete medical history to the care team.",
+    icon: "🏥",
+  },
+  "Pediatric Intensivist": {
+    description: "Treats critically ill children.",
+    conditions: ["Severe infection", "Respiratory failure", "Post-surgery intensive care"],
+    nextStep: "Share your child's complete history and medicines.",
+    icon: "🧒",
+  },
+  "General Surgeon": {
+    description: "Performs a wide range of common surgical procedures.",
+    conditions: ["Hernia", "Gallstones", "Appendicitis"],
+    nextStep: "Bring scans and describe your abdominal symptoms.",
+    icon: "🔪",
+  },
+  "Laparoscopic Surgeon": {
+    description: "Performs keyhole surgery.",
+    conditions: ["Gallbladder surgery", "Hernia repair", "Keyhole procedures"],
+    nextStep: "Bring imaging and discuss recovery expectations.",
+    icon: "🔪",
+  },
+  "Robotic Surgeon": {
+    description: "Performs robot-assisted surgery.",
+    conditions: ["Prostate surgery", "Kidney surgery", "Gynecologic surgery"],
+    nextStep: "Bring scans and surgical history.",
+    icon: "🤖",
+  },
+  "Minimally Invasive Surgeon": {
+    description: "Performs surgery through small incisions.",
+    conditions: ["Keyhole surgery", "Faster recovery surgery", "Abdominal procedures"],
+    nextStep: "Bring scans and list your medicines.",
+    icon: "🔪",
+  },
+  "Hernia Surgeon": {
+    description: "Specializes in hernia repair.",
+    conditions: ["Inguinal hernia", "Umbilical hernia", "Incisional hernia"],
+    nextStep: "Mention bulge, pain and prior abdominal surgery.",
+    icon: "🔪",
+  },
+  "Endocrine Surgeon": {
+    description: "Operates on hormone-producing glands.",
+    conditions: ["Parathyroid disease", "Adrenal tumors", "Thyroid nodules"],
+    nextStep: "Bring hormone tests and imaging.",
+    icon: "🦋",
+  },
+  "Bariatric Surgeon": {
+    description: "Performs weight loss surgery.",
+    conditions: ["Severe obesity", "Sleeve gastrectomy", "Gastric bypass"],
+    nextStep: "Bring weight history and obesity-related reports.",
+    icon: "⚖️",
+  },
+  "Cleft and Craniofacial Surgeon": {
+    description: "Treats facial and skull birth defects.",
+    conditions: ["Cleft lip", "Cleft palate", "Craniofacial deformities"],
+    nextStep: "Share your child's feeding and speech history.",
+    icon: "🧒",
+  },
+  "Hair Transplant Surgeon": {
+    description: "Restores hair through transplantation.",
+    conditions: ["Male pattern baldness", "Hair thinning", "Hairline restoration"],
+    nextStep: "Bring photos of past hair density and treatments tried.",
+    icon: "💇",
+  },
+  "Cosmetic Surgeon": {
+    description: "Performs aesthetic surgical procedures.",
+    conditions: ["Body contouring", "Facial rejuvenation", "Breast enhancement"],
+    nextStep: "Discuss goals and medical history.",
+    icon: "✨",
+  },
+  "Breast Reconstruction Surgeon": {
+    description: "Rebuilds the breast after surgery or injury.",
+    conditions: ["Post-mastectomy reconstruction", "Breast asymmetry", "Implant revision"],
+    nextStep: "Bring surgical and oncology records.",
+    icon: "🎗️",
+  },
+  "Microsurgeon": {
+    description: "Performs delicate nerve, vessel and tissue repair.",
+    conditions: ["Nerve repair", "Free flap surgery", "Limb reattachment"],
+    nextStep: "Bring injury details and imaging.",
+    icon: "🔬",
+  },
+  "Pediatric Neurosurgeon": {
+    description: "Performs brain and spine surgery in children.",
+    conditions: ["Hydrocephalus", "Childhood brain tumors", "Spina bifida"],
+    nextStep: "Bring scans and developmental history.",
+    icon: "🧒",
+  },
+  "Skull Base Surgeon": {
+    description: "Operates on tumors and disease at the base of the skull.",
+    conditions: ["Skull base tumors", "Pituitary tumors", "Acoustic neuroma"],
+    nextStep: "Bring MRI and CT scans.",
+    icon: "🧠",
+  },
+  "Pediatric Plastic Surgeon": {
+    description: "Performs reconstructive surgery in children.",
+    conditions: ["Birthmarks", "Congenital deformities", "Childhood scars"],
+    nextStep: "Share photos and developmental history.",
+    icon: "🧒",
+  },
+  "Pediatric Cardiac Surgeon": {
+    description: "Performs heart surgery for children.",
+    conditions: ["Congenital heart disease", "Valve repair in children", "Complex heart defects"],
+    nextStep: "Bring echo reports and cardiology notes.",
+    icon: "🧒",
+  },
+  "Adult Congenital Heart Specialist": {
+    description: "Cares for adults born with heart defects.",
+    conditions: ["Congenital heart disease", "Previous childhood heart surgery", "Heart rhythm problems"],
+    nextStep: "Bring childhood surgery and cardiac records.",
+    icon: "❤️",
+  },
+  "Cardio-Oncologist": {
+    description: "Protects heart health during cancer treatment.",
+    conditions: ["Chemotherapy heart effects", "Radiation heart damage", "Cardiac monitoring"],
+    nextStep: "Bring cancer treatment plan and heart tests.",
+    icon: "🎗️",
+  },
+  "Cardiac Rehabilitation Specialist": {
+    description: "Guides recovery after heart events.",
+    conditions: ["Post-heart attack recovery", "Post-bypass rehabilitation", "Exercise safety"],
+    nextStep: "Bring discharge summary and ECG reports.",
+    icon: "🏃",
+  },
+  "Amyloidosis Specialist": {
+    description: "Treats diseases caused by abnormal protein deposits.",
+    conditions: ["Cardiac amyloidosis", "Kidney amyloidosis", "Nerve amyloidosis"],
+    nextStep: "Bring biopsy and organ test results.",
+    icon: "🧬",
+  },
+  "Sickle Cell Specialist": {
+    description: "Treats sickle cell disease and its complications.",
+    conditions: ["Sickle cell disease", "Pain crises", "Anemia"],
+    nextStep: "Bring blood reports and crisis history.",
+    icon: "🩸",
+  },
+  "Thalassemia Specialist": {
+    description: "Treats thalassemia and iron overload.",
+    conditions: ["Thalassemia", "Iron overload", "Chronic anemia"],
+    nextStep: "Bring transfusion records and ferritin levels.",
+    icon: "🩸",
+  },
+  "Hemophilia Specialist": {
+    description: "Treats inherited bleeding disorders.",
+    conditions: ["Hemophilia", "Bleeding disorders", "Joint bleeds"],
+    nextStep: "Bring clotting factor test results.",
+    icon: "🩸",
+  },
+  "Thrombosis Specialist": {
+    description: "Treats and prevents abnormal blood clots.",
+    conditions: ["Deep vein thrombosis", "Pulmonary embolism", "Clotting disorders"],
+    nextStep: "Bring clotting tests and blood thinner details.",
+    icon: "🩸",
+  },
+  "Neuroendocrinologist": {
+    description: "Treats hormone problems linked to the brain.",
+    conditions: ["Hypothalamic disorders", "Pituitary dysfunction", "Hormone imbalance"],
+    nextStep: "Bring MRI scans and hormone panels.",
+    icon: "🧠",
+  },
+  "Adrenal Specialist": {
+    description: "Treats disorders of the adrenal glands.",
+    conditions: ["Adrenal insufficiency", "Cushing's syndrome", "Adrenal tumors"],
+    nextStep: "Bring cortisol tests and adrenal scans.",
+    icon: "🩸",
+  },
+  "Vitiligo Specialist": {
+    description: "Treats loss of skin pigment.",
+    conditions: ["Vitiligo", "White patches", "Pigment loss"],
+    nextStep: "Share photos showing how patches have changed.",
+    icon: "🤍",
+  },
+  "Psoriasis Specialist": {
+    description: "Treats psoriasis and related skin disease.",
+    conditions: ["Plaque psoriasis", "Scalp psoriasis", "Psoriatic arthritis"],
+    nextStep: "Note flare triggers and treatments tried.",
+    icon: "🧴",
+  },
+  "Laser Dermatologist": {
+    description: "Treats skin conditions using laser technology.",
+    conditions: ["Pigmentation", "Scars", "Unwanted hair"],
+    nextStep: "Share your skin type and sun exposure history.",
+    icon: "✨",
+  },
+  "Scar Specialist": {
+    description: "Treats and reduces scars.",
+    conditions: ["Keloids", "Acne scars", "Surgical scars"],
+    nextStep: "Bring photos and describe scar history.",
+    icon: "🩹",
+  },
+  "Contact Dermatitis Specialist": {
+    description: "Finds causes of skin allergic reactions.",
+    conditions: ["Contact dermatitis", "Skin allergy", "Patch testing"],
+    nextStep: "Bring products you use and note exposure patterns.",
+    icon: "🧴",
+  },
+  "Pediatric Allergist": {
+    description: "Treats allergies in children.",
+    conditions: ["Childhood food allergy", "Eczema allergy", "Allergic asthma"],
+    nextStep: "Note foods, triggers and reactions.",
+    icon: "🧒",
+  },
+  "Dementia Specialist": {
+    description: "Diagnoses and manages memory-loss disorders.",
+    conditions: ["Alzheimer's disease", "Vascular dementia", "Memory loss"],
+    nextStep: "Bring a family member who can describe changes.",
+    icon: "🧠",
+  },
+  "Multiple Sclerosis Specialist": {
+    description: "Treats multiple sclerosis and related conditions.",
+    conditions: ["Multiple sclerosis", "Optic neuritis", "Relapses"],
+    nextStep: "Bring MRI scans and symptom timeline.",
+    icon: "🧠",
+  },
+  "Motor Neuron Disease Specialist": {
+    description: "Treats progressive nerve and muscle disease.",
+    conditions: ["ALS", "Progressive weakness", "Muscle wasting"],
+    nextStep: "Describe weakness progression and bring nerve tests.",
+    icon: "💪",
+  },
+  "Neuropathy Specialist": {
+    description: "Treats peripheral nerve damage.",
+    conditions: ["Diabetic neuropathy", "Numbness", "Burning feet"],
+    nextStep: "Describe numbness patterns and bring blood sugar records.",
+    icon: "🦶",
+  },
+  "Cerebral Palsy Specialist": {
+    description: "Cares for movement disorders from early brain injury.",
+    conditions: ["Cerebral palsy", "Spasticity", "Motor delay"],
+    nextStep: "Bring birth history and therapy records.",
+    icon: "🧒",
+  },
+  "Concussion Specialist": {
+    description: "Treats head injury and concussion symptoms.",
+    conditions: ["Concussion", "Post-concussion headache", "Dizziness after head injury"],
+    nextStep: "Describe the injury and any loss of consciousness.",
+    icon: "🤕",
+  },
+  "Spinal Cord Injury Specialist": {
+    description: "Manages care after spinal cord injury.",
+    conditions: ["Paralysis", "Spasticity", "Bladder and bowel dysfunction"],
+    nextStep: "Bring injury and rehabilitation records.",
+    icon: "♿",
+  },
+  "Stroke Rehabilitation Specialist": {
+    description: "Guides recovery after stroke.",
+    conditions: ["Post-stroke weakness", "Speech recovery", "Walking recovery"],
+    nextStep: "Bring discharge notes and therapy goals.",
+    icon: "♿",
+  },
+  "Pediatric Physiotherapist": {
+    description: "Provides physical therapy for children.",
+    conditions: ["Delayed motor milestones", "Cerebral palsy", "Childhood injury"],
+    nextStep: "Share milestone history and any diagnosis.",
+    icon: "🧒",
+  },
+  "Sports Physiotherapist": {
+    description: "Helps athletes recover and prevent injury.",
+    conditions: ["Sports injuries", "Return-to-play rehab", "Muscle strain"],
+    nextStep: "Describe your sport and injury history.",
+    icon: "🏅",
+  },
+  "Lymphedema Specialist": {
+    description: "Treats chronic limb swelling from lymph system problems.",
+    conditions: ["Lymphedema", "Swollen limbs", "Post-cancer swelling"],
+    nextStep: "Note when swelling began and any surgery or radiation.",
+    icon: "🦵",
+  },
+  "Diabetic Foot Specialist": {
+    description: "Treats foot complications of diabetes.",
+    conditions: ["Diabetic ulcers", "Foot infection", "Neuropathic foot"],
+    nextStep: "Inspect your feet and bring blood sugar records.",
+    icon: "🦶",
+  },
+  "Pediatric Radiologist": {
+    description: "Interprets imaging in infants and children.",
+    conditions: ["Pediatric scans", "Congenital anomalies", "Childhood injury imaging"],
+    nextStep: "Bring prior scans and reports.",
+    icon: "🧒",
+  },
+  "Pediatric Emergency Specialist": {
+    description: "Treats urgent illness and injury in children.",
+    conditions: ["High fever", "Childhood injuries", "Breathing trouble in children"],
+    nextStep: "Go immediately; bring vaccination records.",
+    icon: "🚑",
+  },
+  "Pediatric Palliative Care Specialist": {
+    description: "Provides comfort care for seriously ill children.",
+    conditions: ["Serious childhood illness", "Symptom relief", "Family support"],
+    nextStep: "Discuss your child's symptoms and family goals.",
+    icon: "🕊️",
+  },
+  "Pediatric Sleep Specialist": {
+    description: "Treats sleep problems in children.",
+    conditions: ["Childhood snoring", "Night waking", "Bedtime resistance"],
+    nextStep: "Keep a sleep diary for your child.",
+    icon: "😴",
+  },
+  "Sexual Medicine Specialist": {
+    description: "Treats sexual health problems.",
+    conditions: ["Erectile dysfunction", "Low libido", "Painful intercourse"],
+    nextStep: "Discuss symptoms openly and bring your medicine list.",
+    icon: "🔒",
+  },
+  "Transgender Health Specialist": {
+    description: "Provides medical care for gender-affirming needs.",
+    conditions: ["Hormone therapy", "Gender-affirming care", "Health monitoring"],
+    nextStep: "Share your goals and medical history.",
+    icon: "🏳️‍⚧️",
+  },
+  "Clinical Pharmacist": {
+    description: "Reviews and optimizes medicine therapy.",
+    conditions: ["Medicine interactions", "Dosing problems", "Multiple medicines"],
+    nextStep: "Bring all medicines, supplements and prescriptions.",
+    icon: "💊",
+  },
+  "Toxicologist": {
+    description: "Treats poisoning and harmful chemical exposure.",
+    conditions: ["Poisoning", "Overdose", "Chemical exposure"],
+    nextStep: "Bring the substance container and note timing.",
+    icon: "☠️",
+  },
+  "Forensic Pathologist": {
+    description: "Determines cause of death and injury through examination.",
+    conditions: ["Cause of death", "Injury analysis", "Legal medical review"],
+    nextStep: "Provide case documents and records.",
+    icon: "⚖️",
+  },
+  "Aviation Medicine Specialist": {
+    description: "Assesses medical fitness for flying.",
+    conditions: ["Pilot medical fitness", "Altitude effects", "Aviation health"],
+    nextStep: "Bring medical records and licensing requirements.",
+    icon: "✈️",
+  },
+  "Hyperbaric Medicine Specialist": {
+    description: "Treats conditions using pressurized oxygen therapy.",
+    conditions: ["Non-healing wounds", "Decompression sickness", "Carbon monoxide poisoning"],
+    nextStep: "Bring wound or exposure records.",
+    icon: "🫧",
+  },
+  "Ayurvedic Practitioner": {
+    description: "Provides care based on traditional Ayurvedic medicine.",
+    conditions: ["Digestive imbalance", "Stress", "Chronic lifestyle conditions"],
+    nextStep: "Share your diet, sleep and any current medicines.",
+    icon: "🌿",
   },
 
-  headache: {
-    specialist: "Neurologist",
-    department: "Neurology",
-    reason:
-      "Persistent or recurrent headaches may require evaluation by a neurologist."
-  },
-
-  epilepsy: {
-    specialist: "Neurologist",
-    department: "Neurology",
-    reason:
-      "Epilepsy involves recurrent seizures and is generally evaluated by a neurologist."
-  },
-
-  acne: {
-    specialist: "Dermatologist",
-    department: "Dermatology",
-    reason:
-      "Dermatologists diagnose and treat conditions affecting the skin."
-  },
-
-  eczema: {
-    specialist: "Dermatologist",
-    department: "Dermatology",
-    reason:
-      "Eczema is a skin condition commonly managed by a dermatologist."
-  },
-
-  psoriasis: {
-    specialist: "Dermatologist",
-    department: "Dermatology",
-    reason:
-      "Psoriasis is a chronic skin condition commonly treated by a dermatologist."
-  },
-
-  diabetes: {
-    specialist: "Endocrinologist",
-    department: "Endocrinology",
-    reason:
-      "Endocrinologists specialize in hormonal and metabolic conditions such as diabetes."
-  },
-
-  asthma: {
-    specialist: "Pulmonologist",
-    department: "Pulmonology",
-    reason:
-      "Pulmonologists specialize in diseases affecting the lungs and respiratory system."
-  },
-
-  pneumonia: {
-    specialist: "Pulmonologist",
-    department: "Pulmonology",
-    reason:
-      "Pneumonia affects the lungs and may require evaluation by a respiratory specialist."
-  },
-
-  hypertension: {
-    specialist: "Cardiologist",
-    department: "Cardiology",
-    reason:
-      "High blood pressure can require cardiovascular evaluation, especially when persistent or complicated."
-  },
-
-  "heart disease": {
-    specialist: "Cardiologist",
-    department: "Cardiology",
-    reason:
-      "Cardiologists diagnose and manage diseases involving the heart and cardiovascular system."
-  },
-
-  "kidney disease": {
-    specialist: "Nephrologist",
-    department: "Nephrology",
-    reason:
-      "Nephrologists specialize in kidney diseases and kidney function."
-  },
-
-  arthritis: {
-    specialist: "Rheumatologist",
-    department: "Rheumatology",
-    reason:
-      "Rheumatologists manage many inflammatory and autoimmune conditions affecting joints and connective tissues."
-  },
-
-  glaucoma: {
-    specialist: "Ophthalmologist",
-    department: "Ophthalmology",
-    reason:
-      "Ophthalmologists diagnose and treat diseases affecting the eyes."
-  },
-
-  depression: {
-    specialist: "Psychiatrist",
-    department: "Psychiatry",
-    reason:
-      "Psychiatrists evaluate and treat mental health conditions."
-  },
-
-  anxiety: {
-    specialist: "Psychiatrist",
-    department: "Psychiatry",
-    reason:
-      "Persistent or severe anxiety may require assessment by a mental health professional."
-  },
-
-  gastritis: {
-    specialist: "Gastroenterologist",
-    department: "Gastroenterology",
-    reason:
-      "Gastroenterologists specialize in conditions affecting the digestive system."
-  }
 };
 
-function getRecommendedSpecialist(disease) {
-  if (!disease) {
+
+  function getRecommendedSpecialist(disease) {
+   if (!disease) {
     return null;
+   }
+
+   const normalizedDisease = disease.trim().toLowerCase();
+
+   return specialistMapping[normalizedDisease] || null;
   }
 
-  const normalizedDisease = disease.trim().toLowerCase();
-
-  return specialistMapping[normalizedDisease] || null;
-}
-
-export { specialistMapping, getRecommendedSpecialist };
+   export { specialistMapping, getRecommendedSpecialist };
