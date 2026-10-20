@@ -3,456 +3,286 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
+.blood-page {
+  width: min(1100px, 94%);
+  margin: 0 auto;
+  padding: 28px 0 40px;
+  color: #243044;
   font-family: Arial, Helvetica, sans-serif;
-  background: #f5f7fb;
-  color: #172033;
 }
 
-button,
-input,
-select {
-  font: inherit;
+.blood-header {
+  padding: 32px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #851936, #bd3452);
+  color: white;
 }
 
-button {
-  cursor: pointer;
+.blood-logo,
+.blood-empty-icon,
+.blood-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
-.app {
-  min-height: 100vh;
-}
-
-.header {
-  padding: 35px 7%;
+.blood-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   background: white;
-  border-bottom: 1px solid #e5e9f0;
-}
-
-.logo {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  margin: 0;
+  color: #951b3d;
   font-size: 36px;
 }
 
-.header p {
-  margin: 10px 0 0;
-  color: #667085;
-  line-height: 1.6;
+.blood-eyebrow {
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: bold;
 }
 
-.container {
-  width: 86%;
-  max-width: 1250px;
-  margin: 30px auto;
+.blood-header h1 {
+  margin: 10px 0;
+  font-size: clamp(28px, 4vw, 42px);
 }
 
-.search-card,
-.results-section,
-.blood-bank-section,
-.registration-card,
-.request-card {
+.blood-subtitle {
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+.blood-notice {
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid #f0d59a;
+  border-radius: 10px;
+  background: #fff8e7;
+  line-height: 1.7;
+}
+
+.blood-search {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+  border: 1px solid #e0e5ed;
+  border-radius: 14px;
   background: white;
-  border-radius: 18px;
-  padding: 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 8px 30px rgba(20, 30, 50, 0.06);
 }
 
-.section-title h2,
-.section-heading h2 {
+.blood-search label {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.blood-search input,
+.blood-search select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd3df;
+  border-radius: 8px;
+  background: white;
+  color: #243044;
+  font-size: 15px;
+}
+
+.blood-reset {
+  justify-self: start;
+  margin-top: 5px;
+  padding: 10px 15px;
+  border: 1px solid #951b3d;
+  border-radius: 8px;
+  background: white;
+  color: #951b3d;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.blood-results {
+  margin-top: 30px;
+}
+
+.blood-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.blood-results-heading h2 {
   margin: 0;
 }
 
-.section-title p,
-.section-heading p {
-  margin: 7px 0 0;
-  color: #667085;
-  line-height: 1.6;
+.blood-results-heading span {
+  color: #687386;
+  font-size: 14px;
 }
 
-.section-heading {
-  margin-bottom: 20px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 18px;
-  align-items: end;
-  margin-top: 25px;
-}
-
-.registration-grid {
+.blood-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
-  margin-bottom: 20px;
 }
 
-.form-group {
+.blood-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 22px;
+  border: 1px solid #e0e5ed;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 4px 14px rgba(25, 40, 60, 0.04);
+}
+
+.blood-card-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #f9e8ed;
+  color: #951b3d;
+  font-size: 30px;
+}
+
+.blood-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.blood-card h3 {
+  margin: 2px 0 6px;
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.blood-card-district {
+  margin: 0 0 18px;
+  color: #687386;
+}
+
+.blood-detail {
+  margin: 12px 0;
+}
+
+.blood-detail-label {
+  color: #687386;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.blood-detail p {
+  margin: 5px 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.blood-source {
+  margin-top: 15px;
+  color: #687386;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.blood-call {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: #951b3d;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.blood-call:hover {
+  background: #75132e;
+}
+
+.blood-empty {
+  padding: 40px 22px;
+  border: 1px dashed #cbd3df;
+  border-radius: 14px;
+  background: white;
+  text-align: center;
+}
+
+.blood-empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #f9e8ed;
+  color: #951b3d;
+  font-size: 32px;
+}
+
+.blood-empty h3 {
+  margin-bottom: 8px;
+}
+
+.blood-empty p {
+  max-width: 550px;
+  margin: 0 auto;
+  color: #687386;
+  line-height: 1.7;
+}
+
+.blood-footer {
+  margin-top: 30px;
+  color: #687386;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .blood-page {
+    width: 92%;
+    padding-top: 16px;
+  }
+
+  .blood-header {
+    padding: 22px;
+  }
+
+  .blood-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blood-card {
+    padding: 16px;
+  }
+
+  
+.blood-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.blood-filter-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-width: 0;
 }
 
-.form-group label {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.form-group input,
-.form-group select {
+.blood-filter-field select,
+.blood-filter-field input {
   width: 100%;
-  min-width: 0;
-  padding: 13px 14px;
-  border: 1px solid #d9dee8;
-  border-radius: 10px;
-  outline: none;
-  background: white;
-  color: #172033;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.button-group {
-  display: flex;
-  gap: 8px;
-}
-
-.search-button,
-.reset-button,
-.request-button {
-  border: none;
-  border-radius: 10px;
-  padding: 13px 17px;
-  font-weight: 700;
-}
-
-.search-button,
-.request-button {
-  background: #dc2626;
-  color: white;
-}
-
-.search-button:hover,
-.request-button:hover {
-  background: #b91c1c;
-}
-
-.reset-button {
-  background: #eef1f6;
-  color: #344054;
-}
-
-.reset-button:hover {
-  background: #e0e5ed;
-}
-
-.search-button:focus-visible,
-.reset-button:focus-visible,
-.request-button:focus-visible,
-.text-button:focus-visible {
-  outline: 3px solid #93c5fd;
-  outline-offset: 2px;
-}
-
-.donor-grid,
-.blood-bank-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-}
-
-.donor-card,
-.blood-bank-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  min-width: 0;
-  border: 1px solid #e5e9f0;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.blood-badge {
-  flex-shrink: 0;
-  min-width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 800;
-  font-size: 18px;
-}
-
-.donor-info {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.donor-info h3,
-.blood-bank-card h3 {
-  margin: 0 0 10px;
-}
-
-.donor-info p,
-.blood-bank-card p {
-  margin: 7px 0;
-  color: #667085;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.contact-button,
-.maps-button {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.contact-button {
-  background: #ecfdf3;
-  color: #027a48;
-}
-
-.maps-button {
-  background: #eef4ff;
-  color: #1d4ed8;
-}
-
-.text-button {
-  display: block;
-  margin-top: 12px;
-  padding: 5px 0;
-  border: none;
-  background: transparent;
-  color: #b91c1c;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: left;
-  text-decoration: underline;
-}
-
-.small-note {
-  font-size: 12px !important;
-  color: #8a4b08 !important;
-}
-
-.empty-card {
-  text-align: center;
-  padding: 40px 20px;
-  border: 1px dashed #d9dee8;
-  border-radius: 14px;
-}
-
-.empty-icon {
-  font-size: 42px;
-}
-
-.empty-card h3 {
-  margin-bottom: 5px;
-}
-
-.empty-card p {
-  color: #667085;
-  line-height: 1.6;
-}
-
-.bank-icon {
-  font-size: 32px;
-}
-
-.consent-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 18px 0;
-  color: #475467;
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.consent-row input {
-  flex-shrink: 0;
-  width: 17px;
-  height: 17px;
-  margin-top: 3px;
-  accent-color: #dc2626;
-}
-
-.message {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  border: 1px solid #bfdbfe;
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #1e40af;
-  line-height: 1.5;
-}
-
-.message-close {
-  flex-shrink: 0;
-  padding: 0 5px;
-  border: none;
-  background: transparent;
-  color: inherit;
-  font-size: 24px;
-}
-
-.request-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  background: #fff7ed;
-}
-
-.request-icon {
-  flex-shrink: 0;
-  font-size: 40px;
-}
-
-.request-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.request-card h2 {
-  margin: 0;
-}
-
-.request-card p {
-  color: #667085;
-  line-height: 1.6;
-}
-
-.request-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.request-form .request-button {
-  align-self: end;
-  min-height: 45px;
-}
-
-.saved-requests {
-  margin-top: 25px;
-}
-
-.saved-requests h3 {
-  font-size: 16px;
-}
-
-.request-item {
-  margin-top: 12px;
-  padding: 14px;
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  background: white;
-}
-
-.request-item p {
-  margin: 6px 0;
-  font-size: 14px;
-}
-
-.notice {
-  padding: 17px 20px;
-  border-radius: 12px;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  color: #92400e;
-  line-height: 1.7;
-  font-size: 14px;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #667085;
-  font-size: 13px;
-}
-
-@media (max-width: 900px) {
-  .form-grid,
-  .donor-grid,
-  .blood-bank-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .button-group {
-    flex-wrap: wrap;
-  }
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
-  .header {
-    padding: 28px 5%;
-  }
-
-  .header h1 {
-    font-size: 28px;
-  }
-
-  .container {
-    width: 92%;
-    margin: 20px auto;
-  }
-
-  .search-card,
-  .results-section,
-  .blood-bank-section,
-  .registration-card,
-  .request-card {
-    padding: 18px;
-  }
-
-  .registration-grid,
-  .request-form {
+  .blood-filter-row {
     grid-template-columns: 1fr;
   }
+}
 
-  .button-group {
-    flex-direction: column;
-  }
-
-  .button-group button {
-    width: 100%;
-  }
-
-  .request-card {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .donor-card,
-  .blood-bank-card {
-    padding: 15px;
-    gap: 12px;
-  }
 }
