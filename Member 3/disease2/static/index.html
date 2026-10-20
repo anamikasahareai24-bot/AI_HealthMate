@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical AI - Disease Prediction System</title>
+    <meta name="description" content="Standalone Clinical Disease Prediction System powered by Random Forest Classifier.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=1.1">
+</head>
+<body>
+    <!-- Background Ambient Glow -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>Clinical AI <span class="brand-badge">Random Forest</span></h1>
+                    <p class="brand-sub">Standalone Multi-Class Disease Prediction Engine</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="btn-view-metrics" class="btn-secondary" title="View Model Performance & Metrics">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    Model Metrics
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-layout">
+        <!-- Left Panel: Symptom Selection -->
+        <section class="panel panel-left" aria-label="Symptom Selection Panel">
+            <div class="panel-header">
+                <h2>1. Select Patient Symptoms</h2>
+                <span class="badge" id="symptom-counter">0 Selected</span>
+            </div>
+
+            <!-- Preset Clinical Cases Bar -->
+            <div class="preset-selector-box">
+                <label for="preset-select" class="field-label">Load Clinical Test Case (10 Presets):</label>
+                <div class="preset-select-wrapper">
+                    <select id="preset-select">
+                        <option value="">-- Choose a Preset Clinical Case (10 Presets) --</option>
+                    </select>
+                    <button id="btn-load-preset" class="btn-preset-load" disabled>Load Case</button>
+                </div>
+            </div>
+
+            <!-- Search & Quick Filter Bar -->
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="symptom-search" placeholder="Search 377 symptoms (e.g. fever, chest pain, cough)..." autocomplete="off">
+                    <button id="btn-clear-search" class="clear-search-btn" title="Clear Search" style="display:none;">&times;</button>
+                </div>
+            </div>
+
+            <!-- Organ System Category Tabs -->
+            <div class="category-tabs" id="category-tabs" role="tablist">
+                <button class="cat-tab active" data-category="all">All (377)</button>
+            </div>
+
+            <!-- Symptom Grid / Search Results -->
+            <div class="symptom-browser" id="symptom-browser">
+                <div class="loading-spinner" id="symptom-loading">Loading 377 clinical symptoms...</div>
+                <div class="symptom-pill-container" id="symptom-pills"></div>
+            </div>
+
+            <!-- Active Selected Symptoms Tray -->
+            <div class="selected-tray">
+                <div class="tray-header">
+                    <h3>Active Selected Symptoms (<span id="tray-count">0</span>)</h3>
+                    <button id="btn-clear-all" class="text-btn">Clear All</button>
+                </div>
+                <div class="selected-tags" id="selected-tags">
+                    <p class="empty-hint">No symptoms selected yet. Click symptoms above or choose a preset from the dropdown.</p>
+                </div>
+            </div>
+
+            <!-- Predict Button Action -->
+            <div class="action-footer">
+                <button id="btn-predict" class="btn-primary" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    Analyze Symptoms & Predict Disease
+                </button>
+            </div>
+        </section>
+
+        <!-- Right Panel: Prediction Results & Diagnostics -->
+        <section class="panel panel-right" aria-label="Differential Diagnosis Panel">
+            <div class="panel-header">
+                <h2>2. Differential Diagnosis Results</h2>
+                <span class="badge" id="status-badge">Awaiting Symptoms</span>
+            </div>
+
+            <div class="results-container" id="results-container">
+                <!-- Initial Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-illustration">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <h3>No Symptoms Analyzed</h3>
+                    <p>Select symptoms from the left panel or choose a clinical test preset, then click <strong>Analyze Symptoms</strong>.</p>
+                </div>
+
+                <!-- Live Results Content -->
+                <div class="results-content" id="results-content" style="display: none;">
+                    <div class="results-summary-card">
+                        <div class="summary-meta">
+                            <span class="meta-label">Analyzed Symptoms:</span>
+                            <span class="meta-val" id="res-analyzed-count">0 symptoms</span>
+                        </div>
+                        <h3 class="results-heading">Top 3 possible diseases based on the selected symptoms.</h3>
+                    </div>
+
+                    <!-- Top 3 Disease Cards -->
+                    <div class="predictions-list" id="predictions-list"></div>
+
+                    <!-- Partial Symptom Explanation Alert -->
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                        </div>
+                        <div class="info-text">
+                            <strong>Partial-Symptom Evaluator:</strong> Unselected symptoms are evaluated as unobserved rather than confirmed absent, ensuring diseases with broader symptom sets are not artificially penalized.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prominent Medical Disclaimer Banner -->
+            <div class="disclaimer-banner">
+                <div class="disclaimer-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <div class="disclaimer-text">
+                    <strong>Medical Notice:</strong> These results are generated from symptom patterns learned from the dataset and are <u>not a confirmed medical diagnosis</u>. For academic and research decision-support only.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Metrics Modal -->
+    <div class="modal-backdrop" id="metrics-modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Random Forest Model Performance & Validation</h3>
+                <button class="modal-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-metrics-body">
+                <div class="loading-spinner">Loading metrics...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/app.js?v=1.1"></script>
+</body>
+</html>

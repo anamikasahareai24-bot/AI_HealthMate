@@ -1,0 +1,271 @@
+TOPIC: FEVER
+
+Fever means a temporary rise in body temperature. It commonly happens when the body is responding to an infection or another illness.
+
+Common symptoms may include feeling hot, chills, sweating, headache, body aches, weakness, and increased thirst.
+
+Common causes include viral infections, bacterial infections, and some inflammatory conditions.
+
+Persistent, very high, or concerning fever, especially when accompanied by difficulty breathing, confusion, severe headache, stiff neck, seizures, or severe weakness, needs prompt medical attention.
+
+
+---
+
+TOPIC: DIABETES
+
+Diabetes is a condition in which blood glucose levels become too high because the body does not produce enough insulin or does not use insulin effectively.
+
+Common symptoms can include increased thirst, frequent urination, tiredness, blurred vision, and unexplained weight changes.
+
+Diabetes can be managed with appropriate medical care, lifestyle measures, monitoring, and treatment recommended by a healthcare professional.
+
+A diagnosis of diabetes requires proper medical evaluation and blood glucose testing.
+
+
+---
+
+TOPIC: MIGRAINE
+
+Migraine is a neurological condition that can cause recurring headaches.
+
+A migraine may be associated with nausea, vomiting, and sensitivity to light or sound. Some people may experience warning symptoms called aura before or during an attack.
+
+Migraine symptoms can vary between people.
+
+Recurring or severe headaches should be evaluated by a healthcare professional, especially when the pattern changes or unusual symptoms occur.
+
+
+---
+
+TOPIC: DENGUE
+
+Dengue is a viral infection transmitted mainly by infected mosquitoes.
+
+Common symptoms can include fever, headache, pain behind the eyes, muscle and joint pain, nausea, vomiting, and rash.
+
+Dengue can range from a mild illness to a serious condition.
+
+Warning signs such as severe abdominal pain, repeated vomiting, bleeding, extreme weakness, restlessness, or difficulty breathing require urgent medical attention.
+
+A healthcare professional should evaluate suspected dengue. Testing may be needed to confirm the infection.
+
+
+---
+
+TOPIC: ANEMIA
+
+Anemia is a condition in which the blood does not have enough healthy red blood cells or hemoglobin to carry oxygen effectively.
+
+Common symptoms may include tiredness, weakness, dizziness, headache, shortness of breath, or pale skin.
+
+Iron deficiency is one common cause, but anemia can have several different causes.
+
+The underlying cause should be identified by a healthcare professional before treatment is decided.
+
+
+---
+
+TOPIC: HEMOGLOBIN
+
+Hemoglobin is a protein inside red blood cells that carries oxygen from the lungs to the rest of the body.
+
+A low hemoglobin level can be associated with anemia and may occur due to causes such as nutritional deficiencies, blood loss, or other medical conditions.
+
+A high hemoglobin level can occur for different reasons, including dehydration or conditions associated with increased red blood cell production.
+
+The meaning of a hemoglobin result depends on the laboratory reference range, age, sex, health conditions, and other test results.
+
+
+---
+
+TOPIC: WHITE BLOOD CELLS
+
+White blood cells, also called WBCs or leukocytes, are part of the immune system and help the body respond to infections and other conditions.
+
+A high WBC count can occur with infections, inflammation, stress, or some medications and medical conditions.
+
+A low WBC count can have several causes, including some infections, medications, nutritional problems, or medical conditions.
+
+A WBC result should be interpreted using the laboratory reference range and the person's overall health information.
+
+
+---
+
+TOPIC: BLOOD PRESSURE
+
+Blood pressure is the force of blood pushing against the walls of blood vessels.
+
+It is usually recorded using two numbers: systolic pressure and diastolic pressure.
+
+Persistently high blood pressure is called hypertension and can increase the risk of cardiovascular and kidney problems.
+
+A single abnormal reading does not always establish a diagnosis. Blood pressure should be measured correctly and interpreted by a healthcare professional when readings remain abnormal.
+
+
+---
+
+TOPIC: HIGH CHOLESTEROL
+
+Cholesterol is a waxy substance that the body needs for several important functions.
+
+Different types of cholesterol are measured in a lipid profile, including LDL and HDL cholesterol.
+
+High LDL cholesterol can contribute to buildup of fatty deposits in arteries and may increase cardiovascular risk.
+
+Cholesterol results should be interpreted together with other health and risk factors rather than from one value alone.
+
+
+---
+
+TOPIC: COMMON COLD
+
+The common cold is a common viral infection affecting the upper respiratory tract.
+
+Symptoms may include runny or blocked nose, sneezing, sore throat, cough, and mild tiredness.
+
+Most colds improve with time.
+
+Severe breathing difficulty, persistent or worsening symptoms, or other concerning symptoms should be evaluated by a healthcare professional.
+
+
+---
+
+TOPIC: COUGH
+
+A cough is a reflex that helps clear the airways of mucus, irritants, or foreign material.
+
+Cough can occur with infections such as the common cold, allergies, asthma, or other respiratory conditions.
+
+The cause of a cough cannot always be determined from the cough alone.
+
+A persistent, severe, or worsening cough, especially with breathing difficulty, chest pain, or coughing up blood, needs medical evaluation.
+
+
+---
+
+TOPIC: ASTHMA
+
+Asthma is a condition in which the airways can become inflamed and narrowed, causing breathing symptoms.
+
+Common symptoms include wheezing, coughing, chest tightness, and shortness of breath.
+
+Symptoms can vary over time and may be triggered by factors such as allergens, exercise, infections, smoke, or air pollution.
+
+Severe difficulty breathing or rapidly worsening breathing symptoms require urgent medical attention.
+
+
+---
+
+TOPIC: THYROID
+
+The thyroid is a gland in the neck that produces hormones involved in metabolism and many body functions.
+
+An underactive thyroid is called hypothyroidism. It may be associated with tiredness, feeling unusually cold, constipation, and other symptoms.
+
+An overactive thyroid is called hyperthyroidism. It may be associated with fast heartbeat, increased sweating, heat intolerance, and other symptoms.
+
+Thyroid conditions are evaluated using symptoms, medical history, and blood tests such as thyroid hormone tests.
+
+
+---
+
+TOPIC: DEHYDRATION
+
+Dehydration occurs when the body loses more fluid than it takes in.
+
+Possible symptoms include thirst, dry mouth, tiredness, dizziness, headache, and reduced urination.
+
+Dehydration can happen because of vomiting, diarrhea, fever, heavy sweating, or not drinking enough fluids.
+
+Severe dehydration can be serious and requires prompt medical attention.
+
+
+---
+
+TOPIC: HEADACHE
+
+A headache is pain or discomfort in the head or surrounding areas.
+
+Headaches can have many causes, including tension, migraine, dehydration, illness, lack of sleep, or other conditions.
+
+The location, duration, severity, and associated symptoms can help a healthcare professional understand the possible cause.
+
+A sudden severe headache, or a headache associated with confusion, fainting, weakness, vision problems, seizures, or other serious symptoms requires urgent medical evaluation.
+
+
+---
+
+TOPIC: NAUSEA
+
+Nausea is the feeling that you may vomit.
+
+It can occur with infections, migraine, motion sickness, digestive problems, medications, or many other conditions.
+
+Nausea by itself does not identify a specific disease.
+
+Persistent vomiting, inability to keep fluids down, severe abdominal pain, confusion, or signs of dehydration require medical evaluation.
+
+
+---
+
+TOPIC: BODY TEMPERATURE
+
+Body temperature can vary depending on the person, time of day, activity, environment, and method of measurement.
+
+An elevated temperature can occur during infections and other illnesses.
+
+Temperature should be interpreted together with symptoms and the measurement method.
+
+If an elevated temperature is persistent or accompanied by serious symptoms, medical advice should be sought.
+
+
+---
+
+TOPIC: CBC
+
+A complete blood count, commonly called CBC, is a blood test that measures several blood components.
+
+Common CBC parameters include hemoglobin, red blood cells, white blood cells, hematocrit, and platelets.
+
+CBC results can provide useful information about blood cells, but an abnormal result does not automatically identify a specific disease.
+
+Results should be interpreted using the laboratory's reference ranges and the person's clinical context.
+
+
+---
+
+TOPIC: PLATELETS
+
+Platelets are blood cells that help the body form clots and stop bleeding.
+
+A low platelet count is called thrombocytopenia and can have many causes.
+
+A high platelet count can also occur for different reasons, including inflammation and certain medical conditions.
+
+Platelet results should be interpreted using the laboratory reference range and other clinical information.
+
+
+---
+
+TOPIC: MEDICAL REPORT
+
+A medical report contains laboratory or clinical information collected during a medical evaluation.
+
+Reference ranges may differ between laboratories and can depend on factors such as age, sex, and testing methods.
+
+An abnormal laboratory value does not necessarily mean that a person has a disease.
+
+Medical reports should be interpreted together with symptoms, medical history, and professional medical advice.
+
+
+---
+
+TOPIC: WHEN TO SEEK URGENT MEDICAL HELP
+
+Some symptoms may indicate a medical emergency.
+
+Urgent medical evaluation is appropriate for symptoms such as severe difficulty breathing, severe chest pain, loss of consciousness, new severe confusion, seizures, sudden weakness, or other rapidly worsening serious symptoms.
+
+A health information chatbot cannot determine whether an emergency is occurring.
+
+When symptoms appear severe or life-threatening, contact local emergency medical services or seek immediate professional medical care.

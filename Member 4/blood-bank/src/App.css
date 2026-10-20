@@ -1,0 +1,288 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.blood-page {
+  width: min(1100px, 94%);
+  margin: 0 auto;
+  padding: 28px 0 40px;
+  color: #243044;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.blood-header {
+  padding: 32px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #851936, #bd3452);
+  color: white;
+}
+
+.blood-logo,
+.blood-empty-icon,
+.blood-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.blood-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: white;
+  color: #951b3d;
+  font-size: 36px;
+}
+
+.blood-eyebrow {
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.blood-header h1 {
+  margin: 10px 0;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.blood-subtitle {
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+.blood-notice {
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid #f0d59a;
+  border-radius: 10px;
+  background: #fff8e7;
+  line-height: 1.7;
+}
+
+.blood-search {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+  border: 1px solid #e0e5ed;
+  border-radius: 14px;
+  background: white;
+}
+
+.blood-search label {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.blood-search input,
+.blood-search select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd3df;
+  border-radius: 8px;
+  background: white;
+  color: #243044;
+  font-size: 15px;
+}
+
+.blood-reset {
+  justify-self: start;
+  margin-top: 5px;
+  padding: 10px 15px;
+  border: 1px solid #951b3d;
+  border-radius: 8px;
+  background: white;
+  color: #951b3d;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.blood-results {
+  margin-top: 30px;
+}
+
+.blood-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.blood-results-heading h2 {
+  margin: 0;
+}
+
+.blood-results-heading span {
+  color: #687386;
+  font-size: 14px;
+}
+
+.blood-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.blood-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 22px;
+  border: 1px solid #e0e5ed;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 4px 14px rgba(25, 40, 60, 0.04);
+}
+
+.blood-card-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #f9e8ed;
+  color: #951b3d;
+  font-size: 30px;
+}
+
+.blood-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.blood-card h3 {
+  margin: 2px 0 6px;
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.blood-card-district {
+  margin: 0 0 18px;
+  color: #687386;
+}
+
+.blood-detail {
+  margin: 12px 0;
+}
+
+.blood-detail-label {
+  color: #687386;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.blood-detail p {
+  margin: 5px 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.blood-source {
+  margin-top: 15px;
+  color: #687386;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.blood-call {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: #951b3d;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.blood-call:hover {
+  background: #75132e;
+}
+
+.blood-empty {
+  padding: 40px 22px;
+  border: 1px dashed #cbd3df;
+  border-radius: 14px;
+  background: white;
+  text-align: center;
+}
+
+.blood-empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #f9e8ed;
+  color: #951b3d;
+  font-size: 32px;
+}
+
+.blood-empty h3 {
+  margin-bottom: 8px;
+}
+
+.blood-empty p {
+  max-width: 550px;
+  margin: 0 auto;
+  color: #687386;
+  line-height: 1.7;
+}
+
+.blood-footer {
+  margin-top: 30px;
+  color: #687386;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .blood-page {
+    width: 92%;
+    padding-top: 16px;
+  }
+
+  .blood-header {
+    padding: 22px;
+  }
+
+  .blood-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blood-card {
+    padding: 16px;
+  }
+
+  
+.blood-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.blood-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.blood-filter-field select,
+.blood-filter-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .blood-filter-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+}

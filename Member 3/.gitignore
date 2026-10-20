@@ -1,5 +1,34 @@
+<<<<<<< HEAD
 venv/
 __pycache__/
 *.pyc
 .env
 .vscode/
+=======
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Temporary uploaded reports
+temp_uploaded_report.*
+
+# Chatbot cache
+chatbot/cache.json
+
+# Jupyter
+.ipynb_checkpoints/
+>>>>>>> 49734198c3bbb557106e31af6a79bb40b47e2330
