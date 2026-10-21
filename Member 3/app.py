@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 from report_analyzer.report_analyzer import analyze_file
-from chatbot.healthbot import get_healthbot_response
+
 
 # ============================================================
 # PATH SETUP
@@ -558,70 +558,3 @@ elif st.session_state.page == "Report Analyzer":
         st.info(
             "📤 Please upload a medical report in PDF or image format."
         )
-
-
-# ============================================================
-# AI CHATBOT - EXISTING CODE PRESERVED
-# ============================================================
-
-elif st.session_state.page == "AI Chatbot":
-
-    st.header("💬 AI Healthcare Chatbot")
-
-    st.write("Ask a healthcare-related question.")
-
-    # Display previous messages
-    for message in st.session_state.chat_messages:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
-    question = st.chat_input("Ask your health question...")
-
-    if question:
-
-        st.session_state.chat_messages.append({
-            "role": "user",
-            "content": question
-        })
-
-        with st.chat_message("user"):
-            st.write(question)
-
-        try:
-
-            conversation_history = [
-                {
-                    "role": message["role"],
-                    "content": message["content"]
-                }
-                for message in st.session_state.chat_messages[:-1]
-            ]
-
-            with st.chat_message("assistant"):
-
-                with st.spinner("Thinking..."):
-
-                    answer = get_healthbot_response(
-                        question,
-                        conversation_history
-                    )
-
-                    st.write(answer)
-
-            st.session_state.chat_messages.append({
-                "role": "assistant",
-                "content": answer
-            })
-
-        except Exception as e:
-
-            st.error(
-                "Unable to connect to AI HealthMate right now."
-            )
-
-            st.exception(e)
-
-    st.caption(
-        "⚠️ AI HealthMate provides general health information "
-        "and is not a substitute for professional medical advice."
-    )
